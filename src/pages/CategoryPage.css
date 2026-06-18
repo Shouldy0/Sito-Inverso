@@ -1,0 +1,30 @@
+.category-page {
+  padding: 4rem 2rem 6rem;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.category-header {
+  margin-bottom: 4rem;
+  text-align: center;
+}
+
+.category-header h1 {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.category-header p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.category-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 3rem 2rem;
+}

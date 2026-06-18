@@ -1,0 +1,88 @@
+.diario-page {
+  padding-bottom: 8rem;
+}
+
+.diario-header {
+  padding: 8rem 2rem 6rem;
+  background-color: var(--color-bg-secondary);
+  border-bottom: 1px solid var(--color-border);
+  text-align: center;
+}
+
+.diario-title {
+  font-family: var(--font-heading);
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+}
+
+.diario-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 1.2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.blog-card {
+  border-top: 1px solid var(--color-border);
+  padding-top: 1.5rem;
+}
+
+.blog-card-meta {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+.blog-category {
+  color: var(--color-text-primary);
+  font-weight: 500;
+}
+
+.blog-date {
+  color: var(--color-text-secondary);
+}
+
+.blog-card-title {
+  font-family: var(--font-heading);
+  font-size: 1.8rem;
+  color: var(--color-text-primary);
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.blog-card-excerpt {
+  color: var(--color-text-secondary);
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+}
+
+.blog-read-more {
+  display: inline-block;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-primary);
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: border-color var(--transition-fast);
+}
+
+.blog-read-more:hover {
+  border-color: var(--color-text-primary);
+}
+
+.mt-5 {
+  margin-top: 5rem;
+}
