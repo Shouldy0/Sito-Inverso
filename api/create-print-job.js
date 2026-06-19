@@ -1,4 +1,5 @@
 import { createPrintJob } from './_luluService.js';
+import Stripe from 'stripe';
 
 const DEFAULT_SHIPPING_LEVEL = 'MAIL';
 
@@ -24,11 +25,25 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { contact, shipping, items } = req.body;
+    const { contact, shipping, items, paymentIntentId } = req.body;
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Il carrello è vuoto' });
     }
+
+    if (!paymentIntentId) {
+      return res.status(400).json({ error: 'Pagamento non verificato (Manca ID Stripe)' });
+    }
+
+    // --- STRIPE VERIFICATION ---
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+    
+    // Controlla che il pagamento sia andato davvero a buon fine su Stripe
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    if (paymentIntent.status !== 'succeeded') {
+      return res.status(400).json({ error: 'Pagamento non andato a buon fine su Stripe' });
+    }
+    // ---------------------------
 
     const lineItems = items.map(item => {
       // Se il prodotto usa il Reprint API con un printable_id esistente su Lulu

@@ -1,12 +1,19 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Button from '../components/UI/Button';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './Checkout.css';
 
-const Checkout = () => {
-  const { cartItems, cartTotal } = useCart();
+// Assicurati di mettere la tua Publishable Key VERA in .env come VITE_STRIPE_PUBLIC_KEY, o passala qui se non ce l'hai ancora
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
+
+const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
+  const stripe = useStripe();
+  const elements = useElements();
   const navigate = useNavigate();
+  
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
 
@@ -27,28 +34,60 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!stripe || !elements) return;
+
     setIsProcessing(true);
     setError(null);
-    
+
     try {
-      const response = await fetch('/api/create-print-job', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // 1. Conferma il pagamento con Stripe
+      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/success',
+          payment_method_data: {
+            billing_details: {
+              name: `${formData.firstName} ${formData.lastName}`,
+              email: formData.email,
+              phone: formData.phone,
+              address: {
+                city: formData.city,
+                country: formData.countryCode,
+                line1: formData.address,
+                postal_code: formData.zipcode
+              }
+            }
+          }
         },
-        body: JSON.stringify({
-          contact: { email: formData.email },
-          shipping: formData,
-          items: cartItems
-        }),
+        redirect: 'if_required', // Gestiamo il redirect manualmente
       });
 
-      const data = await response.json();
+      if (stripeError) {
+        throw new Error(stripeError.message);
+      }
 
-      if (data.success) {
-        navigate('/success');
+      if (paymentIntent && paymentIntent.status === 'succeeded') {
+        // 2. Pagamento riuscito! Ora diciamo a Lulu di stampare
+        const luluResponse = await fetch('/api/create-print-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact: { email: formData.email },
+            shipping: formData,
+            items: cartItems,
+            paymentIntentId: paymentIntent.id // Passiamo l'ID di Stripe al nostro server per verifica!
+          }),
+        });
+
+        const luluData = await luluResponse.json();
+
+        if (luluData.success) {
+          navigate('/success');
+        } else {
+          throw new Error('Pagamento effettuato, ma errore nell\'ordine di stampa: ' + (luluData.error || 'Errore sconosciuto'));
+        }
       } else {
-        throw new Error(data.error || 'Errore durante la creazione dell\'ordine');
+        throw new Error('Lo stato del pagamento non è confermato. Riprova.');
       }
     } catch (err) {
       setError(err.message);
@@ -56,6 +95,92 @@ const Checkout = () => {
       setIsProcessing(false);
     }
   };
+
+  return (
+    <form onSubmit={handleSubmit} className="checkout-form">
+      <div className="form-section">
+        <h2>1. Informazioni di Contatto e Spedizione</h2>
+        <div className="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="tu@email.com" />
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Nome</label>
+            <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} placeholder="Mario" />
+          </div>
+          <div className="form-group half">
+            <label>Cognome</label>
+            <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} placeholder="Rossi" />
+          </div>
+        </div>
+        <div className="form-group">
+          <label>Indirizzo di Spedizione</label>
+          <input type="text" name="address" required value={formData.address} onChange={handleChange} placeholder="Via Roma, 123" />
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Città</label>
+            <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Roma" />
+          </div>
+          <div className="form-group half">
+            <label>CAP</label>
+            <input type="text" name="zipcode" required value={formData.zipcode} onChange={handleChange} placeholder="00100" />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Paese (Codice 2 lettere)</label>
+            <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
+          </div>
+          <div className="form-group half">
+            <label>Telefono</label>
+            <input type="text" name="phone" required value={formData.phone} onChange={handleChange} placeholder="+39 333 1234567" />
+          </div>
+        </div>
+      </div>
+
+      <div className="form-section stripe-section">
+        <h2>2. Pagamento Sicuro</h2>
+        <div className="stripe-element-container">
+          <PaymentElement />
+        </div>
+        {error && <div className="checkout-error">{error}</div>}
+      </div>
+
+      <Button 
+        variant="primary" 
+        type="submit" 
+        className="w-full submit-btn" 
+        disabled={isProcessing || !stripe || !elements}
+      >
+        {isProcessing ? 'Elaborazione in corso...' : `Paga €${cartTotal.toFixed(2)}`}
+      </Button>
+    </form>
+  );
+};
+
+const Checkout = () => {
+  const { cartItems, cartTotal } = useCart();
+  const navigate = useNavigate();
+  const [clientSecret, setClientSecret] = useState('');
+
+  useEffect(() => {
+    if (cartTotal > 0) {
+      // Crea il PaymentIntent non appena il componente viene caricato
+      fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: cartTotal }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if(data.clientSecret) {
+            setClientSecret(data.clientSecret);
+          }
+        });
+    }
+  }, [cartTotal]);
 
   if (cartItems.length === 0) {
     return (
@@ -72,65 +197,15 @@ const Checkout = () => {
         
         <div className="checkout-form-section">
           <h1>Checkout</h1>
-          <p className="checkout-subtitle">Inserisci i tuoi dati per completare l'ordine.</p>
+          <p className="checkout-subtitle">Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
 
-          {error && <div className="checkout-error">{error}</div>}
-
-          <form onSubmit={handleSubmit} className="checkout-form">
-            
-            <div className="form-section">
-              <h2>1. Informazioni di Contatto</h2>
-              <div className="form-group">
-                <label>Email</label>
-                <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="tu@email.com" />
-              </div>
-              <div className="form-group">
-                <label>Telefono</label>
-                <input type="text" name="phone" required value={formData.phone} onChange={handleChange} placeholder="+39 333 1234567" />
-              </div>
-            </div>
-
-            <div className="form-section">
-              <h2>2. Indirizzo di Spedizione</h2>
-              <div className="form-row">
-                <div className="form-group half">
-                  <label>Nome</label>
-                  <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} placeholder="Mario" />
-                </div>
-                <div className="form-group half">
-                  <label>Cognome</label>
-                  <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} placeholder="Rossi" />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Indirizzo</label>
-                <input type="text" name="address" required value={formData.address} onChange={handleChange} placeholder="Via Roma, 123" />
-              </div>
-              <div className="form-row">
-                <div className="form-group half">
-                  <label>Città</label>
-                  <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Roma" />
-                </div>
-                <div className="form-group half">
-                  <label>CAP</label>
-                  <input type="text" name="zipcode" required value={formData.zipcode} onChange={handleChange} placeholder="00100" />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Paese (Codice 2 lettere)</label>
-                <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
-              </div>
-            </div>
-
-            <Button 
-              variant="primary" 
-              type="submit" 
-              className="w-full submit-btn" 
-              disabled={isProcessing}
-            >
-              {isProcessing ? 'Elaborazione in corso...' : `Paga e Spedisci €${cartTotal.toFixed(2)}`}
-            </Button>
-          </form>
+          {clientSecret ? (
+            <Elements options={{ clientSecret }} stripe={stripePromise}>
+              <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
+            </Elements>
+          ) : (
+            <div className="loading-payment">Caricamento modulo di pagamento...</div>
+          )}
         </div>
 
         <div className="checkout-summary-section">
@@ -160,10 +235,10 @@ const Checkout = () => {
               </div>
               <div className="summary-row">
                 <span>Spedizione (Lulu)</span>
-                <span>Calcolata dopo</span>
+                <span>Inclusa</span>
               </div>
               <div className="summary-row total">
-                <span>Totale (Stima)</span>
+                <span>Totale Da Pagare</span>
                 <span>€{cartTotal.toFixed(2)}</span>
               </div>
             </div>
