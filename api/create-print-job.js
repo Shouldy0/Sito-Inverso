@@ -1,15 +1,28 @@
-const express = require('express');
-const cors = require('cors');
-const { createPrintJob } = require('./luluService');
-
-const app = express();
-
-app.use(cors());
-app.use(express.json());
+import { createPrintJob } from './_luluService.js';
 
 const DEFAULT_SHIPPING_LEVEL = 'MAIL';
 
-app.post('/api/create-print-job', async (req, res) => {
+export default async function handler(req, res) {
+  // Configurazione CORS per Vercel
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
+
+  // Risposta rapida per richieste pre-flight (OPTIONS)
+  if (req.method === 'OPTIONS') {
+    res.status(200).end();
+    return;
+  }
+
+  // Accettiamo solo POST
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
   try {
     const { contact, shipping, items } = req.body;
 
@@ -44,7 +57,7 @@ app.post('/api/create-print-job', async (req, res) => {
 
     const result = await createPrintJob(luluOrderPayload);
 
-    res.json({
+    res.status(200).json({
       success: true,
       job_id: result.id,
       status: result.status,
@@ -58,9 +71,4 @@ app.post('/api/create-print-job', async (req, res) => {
       error: error.message 
     });
   }
-});
-
-const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => {
-  console.log(`INverso Backend Server in ascolto sulla porta ${PORT}`);
-});
+}

@@ -1,6 +1,6 @@
-const axios = require('axios');
-require('dotenv').config();
+import axios from 'axios';
 
+// Variabili d'ambiente (su Vercel sono iniettate in process.env in automatico)
 const API_KEY = process.env.LULU_API_KEY;
 const API_SECRET = process.env.LULU_API_SECRET;
 const ENV = process.env.LULU_ENV || 'sandbox';
@@ -11,8 +11,8 @@ const BASE_URL = ENV === 'sandbox'
 
 const AUTH_URL = `${BASE_URL}/auth/realms/glasstree/protocol/openid-connect/token`;
 
-async function getAccessToken() {
-  if (API_KEY === 'test_api_key_sandbox') {
+export async function getAccessToken() {
+  if (API_KEY === 'test_api_key_sandbox' || !API_KEY) {
     return 'mock_access_token';
   }
 
@@ -35,7 +35,7 @@ async function getAccessToken() {
   }
 }
 
-async function createPrintJob(orderData) {
+export async function createPrintJob(orderData) {
   const token = await getAccessToken();
 
   if (token === 'mock_access_token') {
@@ -66,7 +66,3 @@ async function createPrintJob(orderData) {
     throw new Error('Impossibile inviare l\'ordine a Lulu: ' + (error.response?.data?.detail || error.message));
   }
 }
-
-module.exports = {
-  createPrintJob
-};

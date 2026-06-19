@@ -31,7 +31,7 @@ const Checkout = () => {
     setError(null);
     
     try {
-      const response = await fetch('http://localhost:3001/api/create-print-job', {
+      const response = await fetch('/api/create-print-job', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
