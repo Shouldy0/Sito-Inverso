@@ -8,6 +8,7 @@ import ProductDetail from './pages/ProductDetail';
 import Diario from './pages/Diario';
 import Universo from './pages/Universo';
 import InfoPage from './pages/InfoPage';
+import Checkout from './pages/Checkout';
 import { CartProvider } from './context/CartContext';
 import './index.css';
 
@@ -25,6 +26,7 @@ function App() {
             <Route path="diario" element={<Diario />} />
             <Route path="universo" element={<Universo />} />
             <Route path="info/:pageId" element={<InfoPage />} />
+            <Route path="checkout" element={<Checkout />} />
           </Route>
         </Routes>
       </Router>
