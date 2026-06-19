@@ -9,7 +9,8 @@ const CartDrawer = ({ isOpen, closeCart }) => {
   const navigate = useNavigate();
 
   const handleCheckout = () => {
-    alert("Questa funzione sarà collegata al checkout reale di Stripe appena verranno inserite le chiavi API.");
+    closeCart();
+    navigate('/checkout');
   };
 
   return (
