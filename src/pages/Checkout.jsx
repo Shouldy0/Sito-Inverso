@@ -169,6 +169,7 @@ const Checkout = () => {
   const { cartItems, cartTotal } = useCart();
   const navigate = useNavigate();
   const [clientSecret, setClientSecret] = useState('');
+  const [loadingError, setLoadingError] = useState('');
 
   useEffect(() => {
     if (cartTotal > 0) {
@@ -178,11 +179,24 @@ const Checkout = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: cartTotal }),
       })
-        .then((res) => res.json())
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then(data => {
+              throw new Error(data.error || 'Errore del server');
+            });
+          }
+          return res.json();
+        })
         .then((data) => {
           if(data.clientSecret) {
             setClientSecret(data.clientSecret);
+          } else {
+            throw new Error('Nessun clientSecret ricevuto dal server');
           }
+        })
+        .catch(err => {
+          console.error("Errore recupero PaymentIntent:", err);
+          setLoadingError(err.message);
         });
     }
   }, [cartTotal]);
@@ -209,6 +223,13 @@ const Checkout = () => {
               <h3>⚠️ Errore di Configurazione Stripe</h3>
               <p>La chiave pubblica inserita in Vercel non è valida.</p>
               <p>Assicurati di inserire la <strong>Publishable key</strong> che inizia con <code>pk_live_...</code> (NON apikey_...).</p>
+            </div>
+          ) : loadingError ? (
+            <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
+              <h3>⚠️ Errore di Configurazione Stripe</h3>
+              <p>Non è stato possibile caricare il modulo di pagamento:</p>
+              <p style={{ color: '#ff6b6b', margin: '1rem 0', fontWeight: 'bold' }}>{loadingError}</p>
+              <p>Verifica che la chiave segreta (<strong>STRIPE_SECRET_KEY</strong>) inserita su Vercel sia corretta e corrisponda alla chiave pubblica.</p>
             </div>
           ) : clientSecret ? (
             <Elements options={{ clientSecret }} stripe={stripePromise}>
