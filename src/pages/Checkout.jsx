@@ -1,27 +1,20 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Button from '../components/UI/Button';
-import { loadStripe } from '@stripe/stripe-js';
-import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
+import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js';
 import './Checkout.css';
 
-// Caricamento sicuro di Stripe (evita la pagina bianca se la chiave è sbagliata)
-let stripePromise = null;
-const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx';
+// Caricamento sicuro di PayPal Client ID
+const paypalClientId = import.meta.env.VITE_PAYPAL_CLIENT_ID || '';
 
-if (stripeKey.startsWith('pk_') || stripeKey.startsWith('rk_')) {
-  stripePromise = loadStripe(stripeKey).catch(err => console.error("Errore loadStripe:", err));
-}
-
-const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
-  const stripe = useStripe();
-  const elements = useElements();
+const Checkout = () => {
+  const { cartItems, cartTotal } = useCart();
   const navigate = useNavigate();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
-
+  
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -37,169 +30,83 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    if (!stripe || !elements) return;
+  const validateForm = () => {
+    const requiredFields = ['email', 'firstName', 'lastName', 'address', 'city', 'zipcode', 'phone'];
+    for (const field of requiredFields) {
+      if (!formData[field] || formData[field].trim() === '') {
+        return false;
+      }
+    }
+    return true;
+  };
 
+  // Funzione chiamata da PayPal per avviare il pagamento
+  const createOrder = async (data, actions) => {
+    setError(null);
+
+    if (!validateForm()) {
+      const errMessage = 'Per favore, compila tutti i campi di spedizione obbligatori prima di procedere al pagamento.';
+      setError(errMessage);
+      alert(errMessage);
+      return actions.reject();
+    }
+
+    try {
+      const response = await fetch('/api/create-paypal-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: cartTotal }),
+      });
+
+      const orderData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(orderData.error || 'Errore durante la creazione dell\'ordine PayPal');
+      }
+
+      return orderData.id;
+    } catch (err) {
+      console.error(err);
+      setError(err.message);
+      throw err;
+    }
+  };
+
+  // Funzione chiamata da PayPal dopo che l'utente ha confermato il pagamento
+  const onApprove = async (data, actions) => {
     setIsProcessing(true);
     setError(null);
 
     try {
-      // 1. Conferma il pagamento con Stripe
-      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        confirmParams: {
-          return_url: window.location.origin + '/success',
-          payment_method_data: {
-            billing_details: {
-              name: `${formData.firstName} ${formData.lastName}`,
-              email: formData.email,
-              phone: formData.phone,
-              address: {
-                city: formData.city,
-                country: formData.countryCode,
-                line1: formData.address,
-                postal_code: formData.zipcode
-              }
-            }
-          }
-        },
-        redirect: 'if_required', // Gestiamo il redirect manualmente
+      const response = await fetch('/api/capture-paypal-order', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          orderId: data.orderID,
+          contact: { email: formData.email },
+          shipping: formData,
+          items: cartItems
+        }),
       });
 
-      if (stripeError) {
-        throw new Error(stripeError.message);
+      const resData = await response.json();
+
+      if (!response.ok) {
+        throw new Error(resData.error || 'Errore durante il completamento del pagamento');
       }
 
-      if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // 2. Pagamento riuscito! Ora diciamo a Lulu di stampare
-        const luluResponse = await fetch('/api/create-print-job', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contact: { email: formData.email },
-            shipping: formData,
-            items: cartItems,
-            paymentIntentId: paymentIntent.id // Passiamo l'ID di Stripe al nostro server per verifica!
-          }),
-        });
-
-        const luluData = await luluResponse.json();
-
-        if (luluData.success) {
-          navigate('/success');
-        } else {
-          throw new Error('Pagamento effettuato, ma errore nell\'ordine di stampa: ' + (luluData.error || 'Errore sconosciuto'));
-        }
+      if (resData.success) {
+        navigate('/success');
       } else {
-        throw new Error('Lo stato del pagamento non è confermato. Riprova.');
+        throw new Error('Pagamento completato, ma errore nell\'invio a Lulu: ' + (resData.error || 'Errore sconosciuto'));
       }
     } catch (err) {
+      console.error(err);
       setError(err.message);
     } finally {
       setIsProcessing(false);
     }
   };
-
-  return (
-    <form onSubmit={handleSubmit} className="checkout-form">
-      <div className="form-section">
-        <h2>1. Informazioni di Contatto e Spedizione</h2>
-        <div className="form-group">
-          <label>Email</label>
-          <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="tu@email.com" />
-        </div>
-        <div className="form-row">
-          <div className="form-group half">
-            <label>Nome</label>
-            <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} placeholder="Mario" />
-          </div>
-          <div className="form-group half">
-            <label>Cognome</label>
-            <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} placeholder="Rossi" />
-          </div>
-        </div>
-        <div className="form-group">
-          <label>Indirizzo di Spedizione</label>
-          <input type="text" name="address" required value={formData.address} onChange={handleChange} placeholder="Via Roma, 123" />
-        </div>
-        <div className="form-row">
-          <div className="form-group half">
-            <label>Città</label>
-            <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Roma" />
-          </div>
-          <div className="form-group half">
-            <label>CAP</label>
-            <input type="text" name="zipcode" required value={formData.zipcode} onChange={handleChange} placeholder="00100" />
-          </div>
-        </div>
-        <div className="form-row">
-          <div className="form-group half">
-            <label>Paese (Codice 2 lettere)</label>
-            <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
-          </div>
-          <div className="form-group half">
-            <label>Telefono</label>
-            <input type="text" name="phone" required value={formData.phone} onChange={handleChange} placeholder="+39 333 1234567" />
-          </div>
-        </div>
-      </div>
-
-      <div className="form-section stripe-section">
-        <h2>2. Pagamento Sicuro</h2>
-        <div className="stripe-element-container">
-          <PaymentElement />
-        </div>
-        {error && <div className="checkout-error">{error}</div>}
-      </div>
-
-      <Button 
-        variant="primary" 
-        type="submit" 
-        className="w-full submit-btn" 
-        disabled={isProcessing || !stripe || !elements}
-      >
-        {isProcessing ? 'Elaborazione in corso...' : `Paga €${cartTotal.toFixed(2)}`}
-      </Button>
-    </form>
-  );
-};
-
-const Checkout = () => {
-  const { cartItems, cartTotal } = useCart();
-  const navigate = useNavigate();
-  const [clientSecret, setClientSecret] = useState('');
-  const [loadingError, setLoadingError] = useState('');
-
-  useEffect(() => {
-    if (cartTotal > 0) {
-      // Crea il PaymentIntent non appena il componente viene caricato
-      fetch('/api/create-payment-intent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: cartTotal }),
-      })
-        .then((res) => {
-          if (!res.ok) {
-            return res.json().then(data => {
-              throw new Error(data.error || 'Errore del server');
-            });
-          }
-          return res.json();
-        })
-        .then((data) => {
-          if(data.clientSecret) {
-            setClientSecret(data.clientSecret);
-          } else {
-            throw new Error('Nessun clientSecret ricevuto dal server');
-          }
-        })
-        .catch(err => {
-          console.error("Errore recupero PaymentIntent:", err);
-          setLoadingError(err.message);
-        });
-    }
-  }, [cartTotal]);
 
   if (cartItems.length === 0) {
     return (
@@ -216,27 +123,87 @@ const Checkout = () => {
         
         <div className="checkout-form-section">
           <h1>Checkout</h1>
-          <p className="checkout-subtitle">Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
+          <p className="checkout-subtitle">Paga in sicurezza con PayPal o Carta di Credito e ricevi il libro a casa.</p>
 
-          {!stripePromise ? (
+          {!paypalClientId ? (
             <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
-              <h3>⚠️ Errore di Configurazione Stripe</h3>
-              <p>La chiave pubblica inserita in Vercel non è valida.</p>
-              <p>Assicurati di inserire la <strong>Publishable key</strong> che inizia con <code>pk_live_...</code> (NON apikey_...).</p>
+              <h3>⚠️ Errore di Configurazione PayPal</h3>
+              <p>Il Client ID di PayPal non è configurato su Vercel.</p>
+              <p>Assicurati di inserire la variabile <strong>VITE_PAYPAL_CLIENT_ID</strong> nelle impostazioni di Vercel.</p>
             </div>
-          ) : loadingError ? (
-            <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
-              <h3>⚠️ Errore di Configurazione Stripe</h3>
-              <p>Non è stato possibile caricare il modulo di pagamento:</p>
-              <p style={{ color: '#ff6b6b', margin: '1rem 0', fontWeight: 'bold' }}>{loadingError}</p>
-              <p>Verifica che la chiave segreta (<strong>STRIPE_SECRET_KEY</strong>) inserita su Vercel sia corretta e corrisponda alla chiave pubblica.</p>
-            </div>
-          ) : clientSecret ? (
-            <Elements options={{ clientSecret }} stripe={stripePromise}>
-              <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
-            </Elements>
           ) : (
-            <div className="loading-payment">Caricamento modulo di pagamento...</div>
+            <div className="checkout-form">
+              <div className="form-section">
+                <h2>1. Informazioni di Contatto e Spedizione</h2>
+                <div className="form-group">
+                  <label>Email</label>
+                  <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="tu@email.com" />
+                </div>
+                <div className="form-row">
+                  <div className="form-group half">
+                    <label>Nome</label>
+                    <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} placeholder="Mario" />
+                  </div>
+                  <div className="form-group half">
+                    <label>Cognome</label>
+                    <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} placeholder="Rossi" />
+                  </div>
+                </div>
+                <div className="form-group">
+                  <label>Indirizzo di Spedizione</label>
+                  <input type="text" name="address" required value={formData.address} onChange={handleChange} placeholder="Via Roma, 123" />
+                </div>
+                <div className="form-row">
+                  <div className="form-group half">
+                    <label>Città</label>
+                    <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Roma" />
+                  </div>
+                  <div className="form-group half">
+                    <label>CAP</label>
+                    <input type="text" name="zipcode" required value={formData.zipcode} onChange={handleChange} placeholder="00100" />
+                  </div>
+                </div>
+                <div className="form-row">
+                  <div className="form-group half">
+                    <label>Paese (Codice 2 lettere)</label>
+                    <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
+                  </div>
+                  <div className="form-group half">
+                    <label>Telefono</label>
+                    <input type="text" name="phone" required value={formData.phone} onChange={handleChange} placeholder="+39 333 1234567" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="form-section paypal-section">
+                <h2>2. Pagamento Sicuro</h2>
+                {error && <div className="checkout-error" style={{ marginBottom: '1.5rem' }}>{error}</div>}
+                
+                {isProcessing && (
+                  <div className="loading-payment" style={{ marginBottom: '1.5rem' }}>
+                    Elaborazione dell'ordine e invio a Lulu in corso... Non chiudere la pagina.
+                  </div>
+                )}
+
+                <div className="paypal-button-container" style={{ opacity: isProcessing ? 0.5 : 1, pointerEvents: isProcessing ? 'none' : 'auto' }}>
+                  <PayPalScriptProvider options={{ 
+                    "client-id": paypalClientId,
+                    currency: "EUR",
+                    intent: "capture"
+                  }}>
+                    <PayPalButtons 
+                      style={{ layout: "vertical" }}
+                      createOrder={createOrder}
+                      onApprove={onApprove}
+                      onError={(err) => {
+                        console.error("PayPal Buttons Error:", err);
+                        setError("Si è verificato un errore con PayPal. Per favore riprova.");
+                      }}
+                    />
+                  </PayPalScriptProvider>
+                </div>
+              </div>
+            </div>
           )}
         </div>
 
