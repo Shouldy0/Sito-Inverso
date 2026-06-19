@@ -7,7 +7,7 @@ export const allProducts = [
     description: 'Un\'edizione limitata che esplora le origini dell\'universo sommerso. Rilegatura artigianale e dettagli in foglia d\'oro. Questo tomo rilegato in pelle racconta le verità nascoste dietro i veli della realtà, attraverso illustrazioni e racconti perduti.',
     price: 35.00,
     imageUrl: '/src/assets/shop_book.png',
-    lulu_pod_id: '0600X0900BWSTDPB060UW444MXX', // Esempio formato 6x9 B&W Paperback
+    lulu_pod_id: '0600X0900.BW.STD.PB.060UW444.MXX', // Formato aggiornato Dotted
     cover_url: 'http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf',
     interior_url: 'http://www.lulu.com/content/static/tutorial/en/API_interior_example.pdf',
     details: [
@@ -24,7 +24,7 @@ export const allProducts = [
     description: 'Una raccolta di frammenti narrativi, pensieri e cronache di un mondo in rovina. La carta profuma ancora di fuoco antico.',
     price: 28.00,
     imageUrl: '/src/assets/shop_book.png',
-    lulu_pod_id: '0583X0827BWSTDPB060UW444MXX', // Esempio formato A5
+    lulu_pod_id: '0583X0827.BW.STD.PB.060UW444.MXX', // Formato aggiornato Dotted
     cover_url: 'http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf',
     interior_url: 'http://www.lulu.com/content/static/tutorial/en/API_interior_example.pdf',
     details: [

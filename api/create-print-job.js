@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         title: item.title,
         cover: item.cover_url || "http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf",
         interior: item.interior_url || "http://www.lulu.com/content/static/tutorial/en/API_interior_example.pdf",
-        pod_package_id: item.lulu_pod_id || "0600X0900BWSTDPB060UW444MXX",
+        pod_package_id: item.lulu_pod_id || "0600X0900.BW.STD.PB.060UW444.MXX",
         quantity: item.quantity
       };
     });
