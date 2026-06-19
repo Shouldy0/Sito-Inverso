@@ -6,8 +6,13 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './Checkout.css';
 
-// Assicurati di mettere la tua Publishable Key VERA in .env come VITE_STRIPE_PUBLIC_KEY, o passala qui se non ce l'hai ancora
-const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx');
+// Caricamento sicuro di Stripe (evita la pagina bianca se la chiave è sbagliata)
+let stripePromise = null;
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx';
+
+if (stripeKey.startsWith('pk_') || stripeKey.startsWith('rk_')) {
+  stripePromise = loadStripe(stripeKey).catch(err => console.error("Errore loadStripe:", err));
+}
 
 const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
   const stripe = useStripe();
@@ -199,7 +204,13 @@ const Checkout = () => {
           <h1>Checkout</h1>
           <p className="checkout-subtitle">Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
 
-          {clientSecret ? (
+          {!stripePromise ? (
+            <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
+              <h3>⚠️ Errore di Configurazione Stripe</h3>
+              <p>La chiave pubblica inserita in Vercel non è valida.</p>
+              <p>Assicurati di inserire la <strong>Publishable key</strong> che inizia con <code>pk_live_...</code> (NON apikey_...).</p>
+            </div>
+          ) : clientSecret ? (
             <Elements options={{ clientSecret }} stripe={stripePromise}>
               <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
             </Elements>
