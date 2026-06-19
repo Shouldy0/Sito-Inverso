@@ -1,5 +1,22 @@
 export const allProducts = [
   {
+    id: 'b3',
+    title: "Nei tuoi occhi dietro l'ombra oltre il buio",
+    type: 'Fumetto Cartaceo',
+    category: 'biblioteca',
+    description: 'Un viaggio visivo oscuro e introspettivo. Questo fumetto esplora i meandri dell\'ombra oltre il buio, con illustrazioni in bianco e nero che catturano l\'essenza del vuoto.',
+    price: 15.00,
+    imageUrl: '/src/assets/shop_book.png',
+    lulu_printable_id: '65kr4dw', // Usiamo l'ID del progetto Lulu per il ristampa
+    details: [
+      'Pagine: 21',
+      'Formato: Comic Book (168 x 260 mm)',
+      'Rilegatura: Spillato (Saddle Stitch)',
+      'Carta: 70# Bianca Patinata',
+      'Copertina: Opaca (Matte)'
+    ]
+  },
+  {
     id: 'b1',
     title: 'Il Codice del Crepuscolo',
     type: 'Libro Cartaceo',

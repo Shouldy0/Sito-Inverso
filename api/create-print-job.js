@@ -31,6 +31,16 @@ export default async function handler(req, res) {
     }
 
     const lineItems = items.map(item => {
+      // Se il prodotto usa il Reprint API con un printable_id esistente su Lulu
+      if (item.lulu_printable_id) {
+        return {
+          title: item.title,
+          printable_id: item.lulu_printable_id,
+          quantity: item.quantity
+        };
+      }
+      
+      // Altrimenti usa il normale flusso di creazione con PDF da URL
       return {
         title: item.title,
         cover: item.cover_url || "http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf",
