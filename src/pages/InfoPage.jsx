@@ -33,7 +33,7 @@ const infoData = {
       <>
         <p>Per richieste commerciali, collaborazioni o domande sugli ordini, puoi scriverci direttamente.</p>
         <div className="contact-info">
-          <p><strong>Email:</strong> info@inverso-art.com</p>
+          <p><strong>Email:</strong> info@daianavaiani.it</p>
           <p><strong>Studio:</strong> (Solo su appuntamento)</p>
           <p>Rispondiamo solitamente entro 48 ore lavorative.</p>
         </div>
