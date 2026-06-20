@@ -26,10 +26,7 @@ const Universo = () => {
             </p>
           </div>
 
-          <div className="universo-image-block">
-            <img src="/assets/shop_original.png" alt="L'artista al lavoro" className="universo-img" />
-            <span className="image-caption">L'inchiostro e l'oro sono i nostri strumenti principali.</span>
-          </div>
+
 
           <div className="universo-text-block mt-4">
             <h2>L'Artista</h2>
