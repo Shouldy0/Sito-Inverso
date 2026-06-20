@@ -3,15 +3,17 @@ import { Link } from 'react-router-dom';
 import Button from '../components/UI/Button';
 import ProductCard from '../components/UI/ProductCard';
 import { useCart } from '../context/CartContext';
-import { getFeaturedProducts } from '../data/products';
+import { allProducts } from '../data/products';
 import gsap from 'gsap';
 import './Home.css';
 
 const Home = () => {
   const { addToCart } = useCart();
-  const featuredProducts = getFeaturedProducts();
-  const featuredBook = featuredProducts[0];
-  const newArrivals = featuredProducts.slice(1);
+
+  // Seleziona i prodotti in evidenza reali dal catalogo
+  const featuredBook = allProducts.find(p => p.id === 'b3');
+  const featuredOriginal = allProducts.find(p => p.id === 'o1');
+  const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
 
   useEffect(() => {
     // 1. Cinematic Title Reveal (expansion & blur-to-clear)
@@ -71,7 +73,7 @@ const Home = () => {
   }, []);
 
   const handleAddToCart = (id) => {
-    const product = featuredProducts.find(p => p.id === id);
+    const product = allProducts.find(p => p.id === id);
     if (product) {
       addToCart(product);
     }
@@ -111,7 +113,16 @@ const Home = () => {
         </div>
       </section>
 
-      {/* Editorial Featured Section */}
+      {/* Poetic Manifesto Quote */}
+      <section className="manifesto-quote container reveal-3d">
+        <p className="quote-text">
+          “L'inchiostro è la mia voce quando il silenzio si fa troppo grande. 
+          Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.”
+        </p>
+        <span className="quote-author">— Daiana Vaiani</span>
+      </section>
+
+      {/* Editorial Featured Book Section */}
       <section className="featured-hero container">
         <Link to={`/product/${featuredBook.id}`} className="featured-image-wrapper floating-slow">
           <img src={featuredBook.imageUrl} alt={featuredBook.title} className="featured-image" />
@@ -131,16 +142,39 @@ const Home = () => {
         </div>
       </section>
 
-      {/* New Arrivals Section */}
-      {newArrivals.length > 0 && (
-        <section className="new-arrivals container">
+      {/* Featured Original Artwork Section (Asymmetric high-end layout) */}
+      {featuredOriginal && (
+        <section className="featured-original container">
+          <div className="original-content reveal-3d">
+            <span className="original-label-tag">Opera Unica</span>
+            <Link to={`/product/${featuredOriginal.id}`} style={{ textDecoration: 'none' }}>
+              <h2 className="original-title">{featuredOriginal.title}</h2>
+            </Link>
+            <p className="original-desc">{featuredOriginal.description}</p>
+            <div className="original-actions">
+              <span className="original-price">€{featuredOriginal.price.toFixed(2)}</span>
+              <Button variant="primary" onClick={() => handleAddToCart(featuredOriginal.id)}>
+                Acquista Opera Unica
+              </Button>
+            </div>
+          </div>
+          <Link to={`/product/${featuredOriginal.id}`} className="original-image-wrapper floating-medium">
+            <img src={featuredOriginal.imageUrl} alt={featuredOriginal.title} className="original-image" />
+            <span className="original-overlay-badge">Passepartout & Cornice inclusi</span>
+          </Link>
+        </section>
+      )}
+
+      {/* Prints Showcase Section */}
+      {featuredPrints.length > 0 && (
+        <section className="prints-showcase container">
           <div className="section-header reveal-3d">
-            <h2>Nuovi Arrivi</h2>
-            <Link to="/biblioteca" className="view-all-link">Vedi tutta la collezione</Link>
+            <h2>Stampe Fine Art</h2>
+            <Link to="/galleria" className="view-all-link">Esplora la Galleria</Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
-            {newArrivals.map(product => (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
+            {featuredPrints.map(product => (
               <ProductCard 
                 key={product.id}
                 {...product}

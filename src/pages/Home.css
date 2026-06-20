@@ -266,3 +266,133 @@
   z-index: 0;
 }
 
+/* Poetic Manifesto Section */
+.manifesto-quote {
+  padding: 8rem 2rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.quote-text {
+  font-family: var(--font-heading);
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+  color: var(--color-text-primary);
+  line-height: 1.85;
+  font-style: italic;
+  margin-bottom: 2rem;
+  letter-spacing: 0.02em;
+}
+
+.quote-author {
+  font-family: var(--font-text);
+  font-size: 0.85rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  font-weight: 500;
+}
+
+/* Asymmetric Original Showcase Section */
+.featured-original {
+  display: flex;
+  flex-direction: column-reverse;
+  padding: 6rem 2rem;
+  gap: 4rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 4rem;
+}
+
+@media (min-width: 992px) {
+  .featured-original {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+.original-image-wrapper {
+  flex: 1.2;
+  position: relative;
+  background-color: #fbfbf9;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), inset 0 2px 10px rgba(0, 0, 0, 0.02);
+}
+
+.original-image {
+  max-width: 100%;
+  max-height: 55vh;
+  object-fit: contain;
+  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.12));
+  transition: transform var(--transition-slow);
+}
+
+.original-image-wrapper:hover .original-image {
+  transform: scale(1.02);
+}
+
+.original-overlay-badge {
+  margin-top: 1rem;
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: #555555;
+  font-weight: 500;
+}
+
+.original-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.original-label-tag {
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-burgundy);
+  margin-bottom: 1.2rem;
+  font-weight: 600;
+  display: inline-block;
+}
+
+.original-title {
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  color: var(--color-text-primary);
+  line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+
+.original-desc {
+  font-size: 1.05rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 2.5rem;
+  max-width: 500px;
+  line-height: 1.85;
+}
+
+.original-actions {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.original-price {
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  color: var(--color-text-primary);
+}
+
+/* Prints Showcase */
+.prints-showcase {
+  padding: 6rem 2rem 0;
+  border-top: 1px solid var(--color-border);
+  margin-top: 4rem;
+}
+
