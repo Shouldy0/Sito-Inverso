@@ -25,7 +25,6 @@ const Navbar = ({ toggleCart }) => {
           <Link to="/galleria" className={location.pathname === '/galleria' ? 'active' : ''}>Stampe</Link>
           <span className="navbar-divider">|</span>
           <Link to="/universo" className={location.pathname === '/universo' ? 'active' : ''}>L'Universo</Link>
-          <Link to="/diario" className={location.pathname === '/diario' ? 'active' : ''}>Diario</Link>
         </div>
 
         <div className="navbar-actions">
@@ -50,7 +49,6 @@ const Navbar = ({ toggleCart }) => {
         <Link to="/galleria" onClick={closeMobileMenu}>Stampe</Link>
         <div className="mobile-divider"></div>
         <Link to="/universo" onClick={closeMobileMenu}>L'Universo</Link>
-        <Link to="/diario" onClick={closeMobileMenu}>Diario</Link>
       </div>
     </nav>
   );
