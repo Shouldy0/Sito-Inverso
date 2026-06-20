@@ -44,6 +44,50 @@ const Universo = () => {
           </div>
         </div>
       </div>
+
+      {/* Narrative Fragments Section */}
+      <div className="container mt-12 mb-16">
+        <div className="universo-narrative-header reveal-3d text-center">
+          <h2>Frammenti dell'Abisso</h2>
+          <p>
+            Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo INverso.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
+          <div className="narrative-card floating-slow reveal-3d">
+            <span className="narrative-tag">Frammento 01</span>
+            <h3 className="narrative-title">L'Ombra del Tempo</h3>
+            <p className="narrative-text">
+              Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine.
+            </p>
+          </div>
+
+          <div className="narrative-card floating-medium reveal-3d" data-reveal-delay="0.15">
+            <span className="narrative-tag">Personaggio</span>
+            <h3 className="narrative-title">Il Custode</h3>
+            <p className="narrative-text">
+              Colui che abita tra i risvolti delle pagine. Non parla se non attraverso il fruscio della carta cotone, indicando strade incise nella china.
+            </p>
+          </div>
+
+          <div className="narrative-card floating-medium reveal-3d">
+            <span className="narrative-tag">Archivi</span>
+            <h3 className="narrative-title">La Stanza Vetrificata</h3>
+            <p className="narrative-text">
+              Un luogo sospeso dove la musica del pianoforte si solidifica in riflessi dorati. Chi vi entra, dimentica il proprio nome ma ritrova la propria ombra.
+            </p>
+          </div>
+
+          <div className="narrative-card floating-slow reveal-3d" data-reveal-delay="0.15">
+            <span className="narrative-tag">Poesia</span>
+            <h3 className="narrative-title">Pensieri Dispersi</h3>
+            <p className="narrative-text">
+              Oltre la nebbia del giorno, dove la coscienza si incrina e lascia filtrare una luce silenziosa. Scrivere è raccogliere i cocci del mattino.
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

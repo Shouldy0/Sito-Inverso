@@ -77,3 +77,95 @@
 .mt-4 {
   margin-top: 2rem;
 }
+
+/* Universo Narrative Grid & Glassmorphism Cards */
+.universo-narrative-header {
+  margin-bottom: 3rem;
+}
+
+.universo-narrative-header h2 {
+  font-family: var(--font-heading);
+  font-size: 2.2rem;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+
+.universo-narrative-header p {
+  color: var(--color-text-secondary);
+  font-size: 1.1rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.narrative-card {
+  background: rgba(19, 19, 22, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  border-radius: 16px;
+  padding: 3rem 2.5rem;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              box-shadow 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
+              border-color 0.8s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.narrative-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--color-gold), transparent);
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.narrative-card:hover {
+  transform: translateY(-16px) scale(1.025);
+  border-color: rgba(198, 162, 103, 0.35);
+  box-shadow: 0 35px 70px rgba(0, 0, 0, 0.75), 0 15px 35px rgba(198, 162, 103, 0.06);
+}
+
+.narrative-card:hover::before {
+  opacity: 1;
+}
+
+.narrative-tag {
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: var(--color-gold);
+  font-weight: 500;
+}
+
+.narrative-title {
+  font-family: var(--font-heading);
+  font-size: 1.55rem;
+  color: var(--color-text-primary);
+  margin: 0;
+  letter-spacing: 0.03em;
+}
+
+.narrative-text {
+  color: var(--color-text-secondary);
+  font-size: 0.98rem;
+  line-height: 1.85;
+  margin: 0;
+  font-weight: 300;
+}
+
+.mb-16 {
+  margin-bottom: 4rem;
+}
+
+.mt-12 {
+  margin-top: 3rem;
+}
