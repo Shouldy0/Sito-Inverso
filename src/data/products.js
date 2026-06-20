@@ -50,47 +50,7 @@ export const allProducts = [
       'Brossura cucita a filo refe'
     ]
   },
-  {
-    id: 'p1',
-    title: 'Soglia dell\'Abisso',
-    type: 'Stampa Artistica',
-    category: 'galleria',
-    description: 'Il portale che divide i mondi. Stampa su carta fine-art da 300g, per catturare i neri più profondi e l\'oro più brillante.',
-    price: 45.00,
-    imageUrl: '/assets/shop_print.png',
-    details: [
-      'Formato: 50x70 cm',
-      'Carta: Hahnemühle Photo Rag 308g',
-      'Edizione limitata: 100 copie, numerate e firmate'
-    ]
-  },
-  {
-    id: 'p2',
-    title: 'Guardiani del Velo',
-    type: 'Stampa Artistica',
-    category: 'galleria',
-    description: 'Coloro che sorvegliano il passaggio. Un frammento visivo dell\'universo INverso. Dettagli incisi con inchiostro denso.',
-    price: 40.00,
-    imageUrl: '/assets/shop_print.png',
-    details: [
-      'Formato: 40x50 cm',
-      'Carta: Cotone Fine Art',
-      'Fornita senza cornice'
-    ]
-  },
-  {
-    id: 'p3',
-    title: 'Eclissi di Cenere',
-    type: 'Stampa Artistica',
-    category: 'galleria',
-    description: 'Il momento in cui la luce svanisce. Opera che rappresenta l\'evento catastrofico del mondo sommerso, dominato da toni grigi e neri.',
-    price: 50.00,
-    imageUrl: '/assets/shop_print.png',
-    details: [
-      'Formato: 60x80 cm',
-      'Finitura opaca anti-riflesso'
-    ]
-  },
+
   {
     id: 'o1',
     title: 'Il Cuore dell\'Orologio',
