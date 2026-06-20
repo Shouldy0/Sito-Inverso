@@ -4,9 +4,9 @@ export const allProducts = [
     title: "Nei tuoi occhi dietro l'ombra oltre il buio",
     type: 'Fumetto Cartaceo',
     category: 'biblioteca',
-    description: 'Un viaggio visivo oscuro e introspettivo. Questo fumetto esplora i meandri dell\'ombra oltre il buio, con illustrazioni in bianco e nero che catturano l\'essenza del vuoto.',
+    description: 'Vi porto un progettino nato dalla voglia di tirar fuori ciò che risiede nel profondo. “Nei tuoi occhi dietro all’ombra oltre il buio” è un libricino intimo che non racconta una storia lineare, ma raccoglie pensieri, riflessioni e frammenti di coscienza connessi tra di loro, accompagnati da disegni evocativi a inchiostro.',
     price: 15.00,
-    imageUrl: '/src/assets/shop_book.png',
+    imageUrl: '/src/assets/nei_tuoi_occhi.png',
     lulu_printable_id: '65kr4dw', // Usiamo l'ID del progetto Lulu per il ristampa
     details: [
       'Pagine: 21',
