@@ -39,7 +39,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Quest\'opera esplora l\'assenza di identità attraverso un\'estetica dark fantasy minimale. I dettagli del tratto a inchiostro si fondono con lo sfondo, creando un\'atmosfera sospesa, onirica e misteriosa.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-1.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -53,7 +53,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Un intreccio oscuro e profondo che scava nelle paure ataviche dell\'uomo. Le linee incisive esaltano il contrasto netto tra bianco e nero, evocando l\'universo sommerso di INverso.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-2.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -67,7 +67,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Una composizione surrealista dal tratto ruvido e inquieto che cattura l\'essenza dell\'ignoto. Un pezzo d\'arte pensato per collezionisti dell\'occulto e del macabro elegante.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-3.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -81,7 +81,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Silhouettes inquietanti emergono da un denso e meticoloso tratteggio a china. Un\'aggiunta raffinata per chi ama l\'arte dark e fantastica, dove le ombre raccontano storie dimenticate.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-4.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -95,7 +95,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Strutture impossibili, organiche e geometriche si fondono in un paesaggio mentale oscuro e affascinante. Questa stampa A4 cattura il senso di vertigine e solitudine tipico del mondo di INverso.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-5.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -109,7 +109,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). L\'enigma della forma umana trasfigurata dall\'inchiostro. Un\'opera dal forte impatto visivo e simbolico, dove l\'oscurità sembra inghiottire la luce lasciando emergere solo i contorni del dubbio.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-6.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
@@ -123,7 +123,7 @@ export const allProducts = [
     type: 'Stampa Artistica',
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Riverberi oscuri e vibrazioni tratteggiate a mano prendono vita su carta di pregio. Più che una semplice stampa, un portale visivo e tangibile verso le profondità dell\'universo narrativo.',
-    price: 25.00,
+    price: 12.00,
     imageUrl: '/assets/opera-7.png',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
