@@ -12,7 +12,6 @@ const Home = () => {
 
   // Seleziona i prodotti in evidenza reali dal catalogo
   const featuredBook = allProducts.find(p => p.id === 'b3');
-  const featuredOriginal = allProducts.find(p => p.id === 'o1');
   const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
 
   useEffect(() => {
@@ -141,29 +140,6 @@ const Home = () => {
           </div>
         </div>
       </section>
-
-      {/* Featured Original Artwork Section (Asymmetric high-end layout) */}
-      {featuredOriginal && (
-        <section className="featured-original container">
-          <div className="original-content reveal-3d">
-            <span className="original-label-tag">Opera Unica</span>
-            <Link to={`/product/${featuredOriginal.id}`} style={{ textDecoration: 'none' }}>
-              <h2 className="original-title">{featuredOriginal.title}</h2>
-            </Link>
-            <p className="original-desc">{featuredOriginal.description}</p>
-            <div className="original-actions">
-              <span className="original-price">€{featuredOriginal.price.toFixed(2)}</span>
-              <Button variant="primary" onClick={() => handleAddToCart(featuredOriginal.id)}>
-                Acquista Opera Unica
-              </Button>
-            </div>
-          </div>
-          <Link to={`/product/${featuredOriginal.id}`} className="original-image-wrapper floating-medium">
-            <img src={featuredOriginal.imageUrl} alt={featuredOriginal.title} className="original-image" />
-            <span className="original-overlay-badge">Passepartout & Cornice inclusi</span>
-          </Link>
-        </section>
-      )}
 
       {/* Prints Showcase Section */}
       {featuredPrints.length > 0 && (
