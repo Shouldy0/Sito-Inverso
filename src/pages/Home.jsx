@@ -8,8 +8,8 @@ import './Home.css';
 const Home = () => {
   const { addToCart } = useCart();
   const featuredProducts = getFeaturedProducts();
-  const featuredBook = featuredProducts.find(p => p.id === 'b1');
-  const newArrivals = featuredProducts.filter(p => p.id !== 'b1');
+  const featuredBook = featuredProducts[0];
+  const newArrivals = featuredProducts.slice(1);
 
   const handleAddToCart = (id) => {
     const product = featuredProducts.find(p => p.id === id);
@@ -17,6 +17,14 @@ const Home = () => {
       addToCart(product);
     }
   };
+
+  if (!featuredBook) {
+    return (
+      <div className="home-page page-transition container" style={{ padding: '8rem 2rem', textHeight: 'center' }}>
+        <h2>Nessun libro disponibile al momento.</h2>
+      </div>
+    );
+  }
 
   return (
     <div className="home-page page-transition">
@@ -42,22 +50,24 @@ const Home = () => {
       </section>
 
       {/* New Arrivals Section */}
-      <section className="new-arrivals container">
-        <div className="section-header">
-          <h2>Nuovi Arrivi</h2>
-          <Link to="/biblioteca" className="view-all-link">Vedi tutto la collezione</Link>
-        </div>
-        
-        <div className="products-grid">
-          {newArrivals.map(product => (
-            <ProductCard 
-              key={product.id}
-              {...product}
-              onAddToCart={handleAddToCart}
-            />
-          ))}
-        </div>
-      </section>
+      {newArrivals.length > 0 && (
+        <section className="new-arrivals container">
+          <div className="section-header">
+            <h2>Nuovi Arrivi</h2>
+            <Link to="/biblioteca" className="view-all-link">Vedi tutta la collezione</Link>
+          </div>
+          
+          <div className="products-grid">
+            {newArrivals.map(product => (
+              <ProductCard 
+                key={product.id}
+                {...product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        </section>
+      )}
       
     </div>
   );

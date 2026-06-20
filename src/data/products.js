@@ -16,40 +16,7 @@ export const allProducts = [
       'Copertina: Opaca (Matte)'
     ]
   },
-  {
-    id: 'b1',
-    title: 'Il Codice del Crepuscolo',
-    type: 'Libro Cartaceo',
-    category: 'biblioteca',
-    description: 'Un\'edizione limitata che esplora le origini dell\'universo sommerso. Rilegatura artigianale e dettagli in foglia d\'oro. Questo tomo rilegato in pelle racconta le verità nascoste dietro i veli della realtà, attraverso illustrazioni e racconti perduti.',
-    price: 35.00,
-    imageUrl: '/assets/shop_book.png',
-    lulu_pod_id: '0600X0900.BW.STD.PB.060UW444.MXX', // Formato aggiornato Dotted
-    cover_url: 'http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf',
-    interior_url: 'http://www.lulu.com/content/static/tutorial/en/API_interior_example.pdf',
-    details: [
-      'Pagine: 320',
-      'Carta: Avorio 120g',
-      'Copertina rigida con impressioni a caldo'
-    ]
-  },
-  {
-    id: 'b2',
-    title: 'Sussurri dalla Cenere',
-    type: 'Libro Cartaceo',
-    category: 'biblioteca',
-    description: 'Una raccolta di frammenti narrativi, pensieri e cronache di un mondo in rovina. La carta profuma ancora di fuoco antico.',
-    price: 28.00,
-    imageUrl: '/assets/shop_book.png',
-    lulu_pod_id: '0583X0827.BW.STD.PB.060UW444.MXX', // Formato aggiornato Dotted
-    cover_url: 'http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf',
-    interior_url: 'http://www.lulu.com/content/static/tutorial/en/API_interior_example.pdf',
-    details: [
-      'Pagine: 150',
-      'Carta: Riciclata 100g',
-      'Brossura cucita a filo refe'
-    ]
-  },
+
 
   {
     id: 'o1',
