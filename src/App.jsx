@@ -11,6 +11,7 @@ import InfoPage from './pages/InfoPage';
 import Checkout from './pages/Checkout';
 import Admin from './pages/Admin';
 import { CartProvider } from './context/CartContext';
+import { Analytics } from '@vercel/analytics/react';
 import './index.css';
 
 function App() {
@@ -32,6 +33,7 @@ function App() {
           </Route>
         </Routes>
       </Router>
+      <Analytics />
     </CartProvider>
   );
 }
