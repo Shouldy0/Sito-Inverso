@@ -34,9 +34,15 @@ const Universo = () => {
           <div className="universo-text-block mt-4">
             <h2>L'Artista</h2>
             <p>
-              Tutte le opere visive e i testi sono realizzati da un'unica mano. 
-              Il processo creativo mescola tecniche tradizionali come l'inchiostro di china e l'applicazione 
-              manuale della foglia d'oro, con un'impaginazione editoriale rigorosa e moderna.
+              Dietro l'universo di INverso c'è la mano e la mente di <strong>Daiana Vaiani</strong> (Kelin Daiana Vaiani Belleggia).
+              Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità 
+              attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.
+            </p>
+            <p>
+              Con un percorso di studi che unisce il diploma al Liceo Artistico alla passione per la Psicologia, Daiana riversa 
+              nelle sue opere un profondo bisogno di "tirar fuori" e dare forma a pensieri ed emozioni intime. 
+              La sua scrittura poetica, già presente in diverse pubblicazioni collettive e raccolte personali (come la sua opera <em>Pensieri dispersi</em>), 
+              si fonde con le sue illustrazioni in bianco e nero in un legame indissolubile, creando opere sospese tra l'ombra, il sogno e l'inconscio.
             </p>
           </div>
         </div>

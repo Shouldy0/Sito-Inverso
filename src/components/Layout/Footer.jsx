@@ -14,7 +14,6 @@ const Footer = () => {
           <h4>Esplora</h4>
           <Link to="/biblioteca">Libri</Link>
           <Link to="/galleria">Stampe</Link>
-          <Link to="/originali">Originali</Link>
         </div>
 
         <div className="footer-links">
