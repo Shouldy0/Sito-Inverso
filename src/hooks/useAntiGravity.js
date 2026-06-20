@@ -1,11 +1,30 @@
 import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Lenis from 'lenis';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export const useAntiGravity = (dependency) => {
   useEffect(() => {
+    // 1. Initialize Lenis Smooth Scroll
+    const lenis = new Lenis({
+      duration: 1.4,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
+      smoothWheel: true,
+      wheelMultiplier: 0.95,
+    });
+
+    // Synchronize Lenis with ScrollTrigger
+    lenis.on('scroll', ScrollTrigger.update);
+
+    const updateLenis = (time) => {
+      lenis.raf(time * 1000);
+    };
+
+    gsap.ticker.add(updateLenis);
+    gsap.ticker.lagSmoothing(0);
+
     const ctx = gsap.context(() => {
       // 1. Idle Floating Animations (Zero-Gravity)
       const floatingElements = [
@@ -50,7 +69,59 @@ export const useAntiGravity = (dependency) => {
         );
       });
 
-      // 3. 3D Spatial Reveal (.reveal-3d)
+      // 3. Multi-layer Asynchronous Parallax
+      gsap.utils.toArray('.parallax-slow').forEach((el) => {
+        const offset = parseInt(el.getAttribute('data-parallax-y')) || 70;
+        gsap.fromTo(el,
+          { y: 0 },
+          {
+            y: offset,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray('.parallax-fast').forEach((el) => {
+        const offset = parseInt(el.getAttribute('data-parallax-y')) || -110;
+        gsap.fromTo(el,
+          { y: 0 },
+          {
+            y: offset,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray('.parallax-bg').forEach((el) => {
+        const offset = parseInt(el.getAttribute('data-parallax-y')) || 160;
+        gsap.fromTo(el,
+          { y: -offset / 2 },
+          {
+            y: offset / 2,
+            ease: "none",
+            scrollTrigger: {
+              trigger: el,
+              start: "top bottom",
+              end: "bottom top",
+              scrub: true
+            }
+          }
+        );
+      });
+
+      // 4. 3D Spatial Reveal (.reveal-3d)
       gsap.utils.toArray('.reveal-3d').forEach((el) => {
         const delayAttr = parseFloat(el.getAttribute('data-reveal-delay')) || 0;
         gsap.fromTo(el,
@@ -78,6 +149,10 @@ export const useAntiGravity = (dependency) => {
 
     });
 
-    return () => ctx.revert(); // Cleanup on unmount (prevents StrictMode duplication)
+    return () => {
+      ctx.revert();
+      lenis.destroy();
+      gsap.ticker.remove(updateLenis);
+    };
   }, [dependency]);
 };

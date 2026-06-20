@@ -87,6 +87,10 @@ const Home = () => {
 
   return (
     <div className="home-page page-transition">
+      {/* Ambient Parallax background shapes (ink nebulas) */}
+      <div className="ambient-glow-1 parallax-bg floating-slow" data-parallax-y="160" />
+      <div className="ambient-glow-2 parallax-bg floating-medium" data-parallax-y="-100" />
+      <div className="ambient-glow-3 parallax-bg floating-slow" data-parallax-y="130" />
       
       {/* Cinematic Hero Section */}
       <section className="cinematic-hero">
