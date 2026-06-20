@@ -1,16 +1,16 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap');
 
 :root {
-  /* Pure Minimalist Palette */
-  --color-bg-primary: #FFFFFF;
-  --color-bg-secondary: #F9F9F9;
-  --color-text-primary: #000000;
-  --color-text-secondary: #555555;
-  --color-gold: #B8860B;
-  --color-gold-hover: #D4AF37;
-  --color-burgundy: #7A1921;
-  --color-border: #EEEEEE;
-  --color-border-hover: #DDDDDD;
+  /* Premium Dark Editorial Palette */
+  --color-bg-primary: #0a0a0c;
+  --color-bg-secondary: #131316;
+  --color-text-primary: #f3f4f6;
+  --color-text-secondary: #9ca3af;
+  --color-gold: #c6a267;
+  --color-gold-hover: #e3c48f;
+  --color-burgundy: #962d35;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-hover: rgba(255, 255, 255, 0.15);
 
   /* Typography */
   --font-heading: 'Cinzel', serif;
@@ -86,11 +86,11 @@ img {
   background: var(--color-bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: #CCCCCC;
+  background: rgba(255, 255, 255, 0.15);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #999999;
+  background: var(--color-gold);
 }
 
 /* Fade in animation */

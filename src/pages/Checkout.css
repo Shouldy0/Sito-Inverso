@@ -273,9 +273,12 @@
 
 .summary-item-image {
   position: relative;
-  border-radius: 8px;
+  border-radius: 6px;
   overflow: hidden;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+  background-color: #fbfbf9;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 3px;
 }
 
 .summary-item-image::after {
@@ -284,13 +287,13 @@
   top: 0; left: 0; right: 0; bottom: 0;
   border: 1px solid rgba(255, 255, 255, 0.1);
   pointer-events: none;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
 .summary-item-image img {
   width: 60px;
   height: 80px;
-  object-fit: cover;
+  object-fit: contain;
   display: block;
 }
 

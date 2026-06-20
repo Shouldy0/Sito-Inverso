@@ -12,6 +12,16 @@ const Admin = () => {
   const [searchQuery, setSearchQuery] = useState('');
   const [filterType, setFilterType] = useState('ALL'); // 'ALL', 'LULU', 'MERCHANT'
 
+  // Forza la modalità chiara per il pannello amministratore e ripristina all'uscita
+  useEffect(() => {
+    document.body.style.backgroundColor = '#fcfbfa';
+    document.body.style.color = '#121212';
+    return () => {
+      document.body.style.backgroundColor = '';
+      document.body.style.color = '';
+    };
+  }, []);
+
   // Prova a recuperare la password salvata in sessione per non doverla digitare a ogni ricaricamento
   useEffect(() => {
     const savedPassword = sessionStorage.getItem('admin_password');
