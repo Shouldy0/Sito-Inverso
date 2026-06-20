@@ -1,4 +1,4 @@
-import { createPayPalOrder } from './_paypalService.js';
+import { createAirwallexPaymentIntent } from './_airwallexService.js';
 
 export default async function handler(req, res) {
   // CORS configuration
@@ -26,13 +26,14 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: 'Importo non valido' });
     }
 
-    const order = await createPayPalOrder(amount);
+    const intent = await createAirwallexPaymentIntent(amount);
     
     res.status(200).json({
-      id: order.id
+      id: intent.id,
+      clientSecret: intent.client_secret
     });
   } catch (error) {
-    console.error('PayPal Order Creation Error:', error);
+    console.error('Airwallex PaymentIntent Creation Error:', error);
     res.status(500).json({ error: error.message });
   }
 }

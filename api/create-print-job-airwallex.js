@@ -1,4 +1,4 @@
-import { capturePayPalOrder } from './_paypalService.js';
+import { retrieveAirwallexPaymentIntent } from './_airwallexService.js';
 import { createPrintJob } from './_luluService.js';
 
 const DEFAULT_SHIPPING_LEVEL = 'MAIL';
@@ -23,29 +23,29 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { orderId, contact, shipping, items } = req.body;
+    const { paymentIntentId, contact, shipping, items } = req.body;
 
-    if (!orderId) {
-      return res.status(400).json({ error: 'ID Ordine PayPal mancante' });
+    if (!paymentIntentId) {
+      return res.status(400).json({ error: 'ID PaymentIntent Airwallex mancante' });
     }
 
     if (!items || items.length === 0) {
       return res.status(400).json({ error: 'Il carrello è vuoto' });
     }
 
-    // 1. Cattura il pagamento su PayPal
-    const captureData = await capturePayPalOrder(orderId);
+    // 1. Verifica lo stato del pagamento su Airwallex
+    const intentData = await retrieveAirwallexPaymentIntent(paymentIntentId);
     
-    // Controlla che lo stato sia COMPLETED o comunque andato a buon fine
-    if (captureData.status !== 'COMPLETED') {
+    // In Airwallex, lo stato di successo è 'SUCCEEDED'
+    const status = intentData.status?.toUpperCase();
+    if (status !== 'SUCCEEDED') {
       return res.status(400).json({ 
-        error: `Il pagamento PayPal non è stato completato (Stato: ${captureData.status})` 
+        error: `Il pagamento Airwallex non è riuscito (Stato attuale: ${intentData.status})` 
       });
     }
 
     // 2. Prepara il payload per Lulu
     const lineItems = items.map(item => {
-      // Se il prodotto usa il Reprint API con un printable_id esistente su Lulu
       if (item.lulu_printable_id) {
         return {
           title: item.title,
@@ -54,7 +54,6 @@ export default async function handler(req, res) {
         };
       }
       
-      // Altrimenti usa il normale flusso di creazione con PDF da URL
       return {
         title: item.title,
         cover: item.cover_url || "http://www.lulu.com/content/static/tutorial/en/API_cover_example.pdf",
@@ -66,7 +65,7 @@ export default async function handler(req, res) {
 
     const luluOrderPayload = {
       contact_email: contact?.email || shipping?.email || "cliente@inverso.com",
-      external_id: `INVERSO-PAYPAL-${Date.now()}`,
+      external_id: `INVERSO-AIRWALLEX-${Date.now()}`,
       line_items: lineItems,
       shipping_address: {
         name: `${shipping.firstName} ${shipping.lastName}`,
@@ -86,11 +85,11 @@ export default async function handler(req, res) {
       success: true,
       job_id: result.id,
       status: result.status,
-      message: 'Pagamento completato e ordine di stampa inviato con successo a Lulu.com'
+      message: 'Pagamento verificato e ordine di stampa inviato con successo a Lulu.com'
     });
 
   } catch (error) {
-    console.error('PayPal Capture/Lulu Error:', error);
+    console.error('Airwallex Lulu Order Error:', error);
     res.status(500).json({ 
       success: false, 
       error: error.message 
