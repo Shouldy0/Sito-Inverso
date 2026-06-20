@@ -1,42 +1,56 @@
-/* Admin Page Base Styling */
+/* Admin Page Base Styling (Light Theme) */
 .admin-login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 80vh;
   padding: 2rem;
+  background: #fcfbfa;
 }
 
 .login-card {
   width: 100%;
   max-width: 420px;
-  background: linear-gradient(135deg, rgba(20, 20, 22, 0.7) 0%, rgba(30, 30, 35, 0.7) 100%);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: #ffffff;
   padding: 3rem;
   border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
   text-align: center;
 }
 
 .login-card h2 {
   font-family: 'Playfair Display', serif;
   font-size: 2rem;
-  color: #fff;
+  color: #121212;
   margin-bottom: 0.5rem;
 }
 
 .login-card p {
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.5);
   font-size: 0.95rem;
   margin-bottom: 2rem;
 }
 
+.login-card label {
+  color: #555 !important;
+}
+
+.login-card input {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(0, 0, 0, 0.15) !important;
+  color: #121212 !important;
+}
+
+.login-card input:focus {
+  border-color: var(--accent-color, #c6a267) !important;
+  box-shadow: 0 0 15px rgba(198, 162, 103, 0.15) !important;
+}
+
 .login-error {
-  background: rgba(220, 53, 69, 0.08);
-  border: 1px solid rgba(220, 53, 69, 0.2);
-  color: #ff6b6b;
+  background: rgba(220, 53, 69, 0.05);
+  border: 1px solid rgba(220, 53, 69, 0.15);
+  color: #dc3545;
   padding: 0.8rem;
   border-radius: 8px;
   font-size: 0.9rem;
@@ -47,7 +61,7 @@
 .admin-page {
   padding-top: 4rem;
   padding-bottom: 6rem;
-  color: var(--text-color, #e0e0e0);
+  color: #121212;
 }
 
 .admin-header {
@@ -63,12 +77,12 @@
   font-family: 'Playfair Display', serif;
   font-size: 2.5rem;
   font-weight: 300;
-  color: #fff;
+  color: #121212;
   margin-bottom: 0.5rem;
 }
 
 .admin-header p {
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.5);
   font-size: 1.05rem;
 }
 
@@ -79,11 +93,11 @@
 
 .logout-btn {
   border-color: rgba(220, 53, 69, 0.4) !important;
-  color: #ff6b6b !important;
+  color: #dc3545 !important;
 }
 
 .logout-btn:hover {
-  background: rgba(220, 53, 69, 0.1) !important;
+  background: rgba(220, 53, 69, 0.05) !important;
 }
 
 /* Statistics Grid */
@@ -95,17 +109,17 @@
 }
 
 .stat-card {
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: #ffffff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
   transition: transform 0.3s ease, border-color 0.3s ease;
 }
 
 .stat-card:hover {
   transform: translateY(-3px);
-  border-color: rgba(198, 162, 103, 0.2);
+  border-color: rgba(198, 162, 103, 0.3);
 }
 
 .stat-card h3 {
@@ -113,7 +127,7 @@
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.4);
   margin-bottom: 0.75rem;
 }
 
@@ -127,7 +141,7 @@
 
 .stat-desc {
   font-size: 0.8rem;
-  color: #888;
+  color: rgba(0, 0, 0, 0.4);
 }
 
 /* Search and Filters */
@@ -148,27 +162,32 @@
 .search-bar input {
   width: 100%;
   padding: 0.9rem 1.2rem;
-  background: rgba(10, 10, 12, 0.45);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: #ffffff;
+  border: 1.5px solid rgba(0, 0, 0, 0.12);
   border-radius: 10px;
-  color: #fff;
+  color: #121212;
   font-size: 0.95rem;
   transition: all 0.3s ease;
+}
+
+.search-bar input::placeholder {
+  color: rgba(0, 0, 0, 0.35);
 }
 
 .search-bar input:focus {
   outline: none;
   border-color: var(--accent-color, #c6a267);
-  box-shadow: 0 0 15px rgba(198, 162, 103, 0.1);
+  box-shadow: 0 0 15px rgba(198, 162, 103, 0.15);
 }
 
 .filter-buttons {
   display: flex;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: #ffffff;
   padding: 0.3rem;
   border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
 }
 
 .filter-btn {
@@ -176,7 +195,7 @@
   background: transparent;
   border: none;
   border-radius: 8px;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.5);
   font-size: 0.85rem;
   font-weight: 500;
   cursor: pointer;
@@ -184,23 +203,23 @@
 }
 
 .filter-btn:hover {
-  color: #fff;
+  color: #121212;
 }
 
 .filter-btn.active {
-  background: rgba(198, 162, 103, 0.15);
-  color: var(--accent-color, #c6a267);
+  background: rgba(198, 162, 103, 0.12);
+  color: #b89255;
+  font-weight: 600;
 }
 
 /* Orders Table */
 .table-responsive {
   width: 100%;
   overflow-x: auto;
-  background: rgba(25, 25, 28, 0.4);
-  backdrop-filter: blur(10px);
+  background: #ffffff;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
-  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.03);
 }
 
 .admin-table {
@@ -208,23 +227,26 @@
   border-collapse: collapse;
   text-align: left;
   font-size: 0.95rem;
+  color: #121212;
 }
 
 .admin-table th {
   padding: 1.2rem 1.5rem;
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-muted, #8a8a93);
-  border-bottom: 1.5px solid rgba(255, 255, 255, 0.08);
+  color: rgba(0, 0, 0, 0.45);
+  border-bottom: 1.5px solid rgba(0, 0, 0, 0.08);
+  background: #fbfafa;
 }
 
 .admin-table td {
   padding: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
   vertical-align: middle;
   line-height: 1.4;
+  background: #ffffff;
 }
 
 .admin-table tr:last-child td {
@@ -232,50 +254,50 @@
 }
 
 .admin-table tr:hover td {
-  background: rgba(255, 255, 255, 0.01);
+  background: #fcfbfa;
 }
 
 .date-cell {
-  font-weight: 500;
-  color: #fff;
+  font-weight: 600;
+  color: #121212;
   white-space: nowrap;
 }
 
 .time-sub {
   display: block;
   font-size: 0.75rem;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.4);
   margin-top: 0.2rem;
 }
 
 .contact-sub {
   font-size: 0.8rem;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.5);
   margin-top: 0.1rem;
 }
 
 .address-cell {
   max-width: 250px;
   font-size: 0.85rem;
-  color: #ccc;
+  color: #333333;
 }
 
 .products-cell {
   max-width: 300px;
   font-size: 0.85rem;
-  color: #e0e0e0;
+  color: #121212;
 }
 
 .price-cell {
   font-weight: 600;
-  color: #fff;
+  color: #121212;
 }
 
 .shipping-sub {
   display: block;
   font-weight: 400;
   font-size: 0.75rem;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.4);
   margin-top: 0.2rem;
 }
 
@@ -291,22 +313,23 @@
 }
 
 .badge-lulu {
-  background: rgba(40, 167, 69, 0.08);
-  border: 1px solid rgba(40, 167, 69, 0.25);
-  color: #2ec866;
+  background: rgba(40, 167, 69, 0.06);
+  border: 1px solid rgba(40, 167, 69, 0.15);
+  color: #1e7e34;
 }
 
 .badge-merchant {
-  background: rgba(198, 162, 103, 0.08);
-  border: 1px solid rgba(198, 162, 103, 0.25);
-  color: var(--accent-color, #c6a267);
+  background: rgba(198, 162, 103, 0.06);
+  border: 1px solid rgba(198, 162, 103, 0.15);
+  color: #b89255;
 }
 
 .no-data {
   text-align: center;
   padding: 4rem !important;
-  color: var(--text-muted, #8a8a93);
+  color: rgba(0, 0, 0, 0.4) !important;
   font-style: italic;
+  background: #ffffff;
 }
 
 /* Responsive Table */
