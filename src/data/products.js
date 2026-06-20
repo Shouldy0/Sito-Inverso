@@ -16,6 +16,23 @@ export const allProducts = [
       'Copertina: Opaca (Matte)'
     ]
   },
+  {
+    id: 'b4',
+    title: "Sfiorare il Buio",
+    type: 'Fumetto Cartaceo',
+    category: 'biblioteca',
+    description: 'Un viaggio sussurrato e notturno attraverso 31 pagine di disegni a china e riflessioni intime. “Sfiorare il Buio” è un albo illustrato a inchiostro che scava nell\'inconscio e accarezza le sfumature più sottili della solitudine e della speranza.',
+    price: 18.00,
+    imageUrl: '/assets/sfiorare_il_buio.png',
+    lulu_printable_id: 'gjz885k', // Usiamo l'ID del progetto Lulu
+    details: [
+      'Pagine: 31',
+      'Formato: Comic Book (168 x 260 mm)',
+      'Rilegatura: Spillato (Paperback Saddle Stitch)',
+      'Carta: 70# Bianca Patinata',
+      'Copertina: Opaca (Matte)'
+    ]
+  },
 
 
   {
