@@ -4,10 +4,13 @@ import Navbar from './Navbar';
 import Footer from './Footer';
 import CartDrawer from '../Cart/CartDrawer';
 import { useCart } from '../../context/CartContext';
+import { useAntiGravity } from '../../hooks/useAntiGravity';
 
 const Layout = () => {
   const { isCartOpen, closeCart, toggleCart } = useCart();
   const location = useLocation();
+
+  useAntiGravity(location.pathname);
 
   useEffect(() => {
     window.scrollTo(0, 0);

@@ -12,7 +12,7 @@ const Universo = () => {
 
       <div className="container mt-5">
         <div className="universo-content">
-          <div className="universo-text-block">
+          <div className="universo-text-block reveal-3d">
             <h2>Il Manifesto</h2>
             <p>
               INverso nasce come esplorazione dei confini tra la parola scritta e l'immagine. 
@@ -28,7 +28,7 @@ const Universo = () => {
 
 
 
-          <div className="universo-text-block mt-4">
+          <div className="universo-text-block mt-4 reveal-3d">
             <h2>L'Artista</h2>
             <p>
               Dietro l'universo di INverso c'è la mano e la mente di <strong>Daiana Vaiani</strong>.

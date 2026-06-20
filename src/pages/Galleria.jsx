@@ -21,7 +21,7 @@ const Galleria = () => {
         <p>Stampe artistiche di altissima qualità, per portare frammenti dell'universo INverso sulle tue pareti.</p>
       </div>
 
-      <div className="category-grid">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
         {mockPrints.map(print => (
           <ProductCard 
             key={print.id}

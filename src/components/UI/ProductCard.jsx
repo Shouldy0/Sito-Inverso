@@ -13,7 +13,7 @@ const ProductCard = ({
   onAddToCart
 }) => {
   return (
-    <div className="product-card">
+    <div className="product-card reveal-3d">
       <Link to={`/product/${id}`} className="product-image-wrapper">
         <img src={imageUrl} alt={title} className="product-image" />
         {isUnique && <span className="badge-unique">Pezzo Unico</span>}

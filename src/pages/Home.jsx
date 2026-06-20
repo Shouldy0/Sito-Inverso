@@ -31,10 +31,10 @@ const Home = () => {
       
       {/* Editorial Featured Section */}
       <section className="featured-hero container">
-        <Link to={`/product/${featuredBook.id}`} className="featured-image-wrapper">
+        <Link to={`/product/${featuredBook.id}`} className="featured-image-wrapper floating-slow">
           <img src={featuredBook.imageUrl} alt={featuredBook.title} className="featured-image" />
         </Link>
-        <div className="featured-content">
+        <div className="featured-content reveal-3d">
           <span className="featured-label">{featuredBook.type}</span>
           <Link to={`/product/${featuredBook.id}`} style={{ textDecoration: 'none' }}>
             <h1 className="featured-title">{featuredBook.title}</h1>
@@ -52,12 +52,12 @@ const Home = () => {
       {/* New Arrivals Section */}
       {newArrivals.length > 0 && (
         <section className="new-arrivals container">
-          <div className="section-header">
+          <div className="section-header reveal-3d">
             <h2>Nuovi Arrivi</h2>
             <Link to="/biblioteca" className="view-all-link">Vedi tutta la collezione</Link>
           </div>
           
-          <div className="products-grid">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10 mt-12">
             {newArrivals.map(product => (
               <ProductCard 
                 key={product.id}

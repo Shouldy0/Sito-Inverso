@@ -26,14 +26,14 @@ const ProductDetail = () => {
         
         {/* Left column: Image */}
         <div className="product-detail-image-section">
-          <div className="product-image-large">
+          <div className="product-image-large floating-slow">
             <img src={product.imageUrl} alt={product.title} />
             {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
           </div>
         </div>
 
         {/* Right column: Info */}
-        <div className="product-detail-info-section">
+        <div className="product-detail-info-section reveal-3d">
           <nav className="breadcrumb">
             <button onClick={() => navigate(-1)} className="back-link">
               ← Torna indietro
