@@ -5,7 +5,7 @@ const Universo = () => {
     <div className="universo-page page-transition">
       <div className="universo-hero">
         <div className="container">
-          <h1 className="universo-title">L'Universo INverso</h1>
+          <h1 className="universo-title">L'Universo DAIANA</h1>
           <p className="universo-subtitle">Non è solo arte, è un portale verso un mondo sommerso.</p>
         </div>
       </div>
@@ -15,7 +15,7 @@ const Universo = () => {
           <div className="universo-text-block reveal-3d">
             <h2>Il Manifesto</h2>
             <p>
-              INverso nasce come esplorazione dei confini tra la parola scritta e l'immagine. 
+              DAIANA nasce come esplorazione dei confini tra la parola scritta e l'immagine. 
               Ogni opera d'arte, ogni stampa e ogni libro che esce da questo studio è un frammento 
               di una narrazione molto più grande. Un mondo sommerso fatto di ombre, riflessi e rovine antiche.
             </p>
@@ -31,7 +31,7 @@ const Universo = () => {
           <div className="universo-text-block mt-4 reveal-3d">
             <h2>L'Artista</h2>
             <p>
-              Dietro l'universo di INverso c'è la mano e la mente di <strong>Daiana Vaiani</strong>.
+              Dietro l'universo di DAIANA c'è la mano e la mente di <strong>Daiana Vaiani</strong>.
               Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità 
               attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.
             </p>
@@ -50,7 +50,7 @@ const Universo = () => {
         <div className="universo-narrative-header reveal-3d text-center">
           <h2>Frammenti dell'Abisso</h2>
           <p>
-            Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo INverso.
+            Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo DAIANA.
           </p>
         </div>
 

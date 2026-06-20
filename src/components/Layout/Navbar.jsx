@@ -15,7 +15,7 @@ const Navbar = ({ toggleCart }) => {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link to="/" onClick={closeMobileMenu}>INverso</Link>
+          <Link to="/" onClick={closeMobileMenu}>DAIANA</Link>
         </div>
 
         {/* Desktop Menu */}

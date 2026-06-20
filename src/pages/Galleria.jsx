@@ -18,7 +18,7 @@ const Galleria = () => {
     <div className="category-page page-transition">
       <div className="category-header">
         <h1>Galleria</h1>
-        <p>Stampe artistiche di altissima qualità, per portare frammenti dell'universo INverso sulle tue pareti.</p>
+        <p>Stampe artistiche di altissima qualità, per portare frammenti dell'universo DAIANA sulle tue pareti.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

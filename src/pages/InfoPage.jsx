@@ -20,10 +20,10 @@ const infoData = {
     content: (
       <>
         <h3>Condizioni di Vendita</h3>
-        <p>Acquistando sul nostro sito, accetti i nostri termini di servizio. I prezzi indicati sono comprensivi di IVA. INverso si riserva il diritto di modificare i prezzi in qualsiasi momento, ma i prodotti verranno fatturati in base alle tariffe in vigore al momento della conferma dell'ordine.</p>
+        <p>Acquistando sul nostro sito, accetti i nostri termini di servizio. I prezzi indicati sono comprensivi di IVA. DAIANA si riserva il diritto di modificare i prezzi in qualsiasi momento, ma i prodotti verranno fatturati in base alle tariffe in vigore al momento della conferma dell'ordine.</p>
         
         <h3>Proprietà Intellettuale</h3>
-        <p>Tutte le immagini, i testi e le opere presenti su questo sito sono di proprietà esclusiva di INverso. La riproduzione, anche parziale, senza consenso scritto è severamente vietata e perseguibile a norma di legge.</p>
+        <p>Tutte le immagini, i testi e le opere presenti su questo sito sono di proprietà esclusiva di DAIANA. La riproduzione, anche parziale, senza consenso scritto è severamente vietata e perseguibile a norma di legge.</p>
       </>
     )
   },

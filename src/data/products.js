@@ -52,7 +52,7 @@ export const allProducts = [
     title: "Radici dell'Inconscio",
     type: 'Stampa Artistica',
     category: 'galleria',
-    description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Un intreccio oscuro e profondo che scava nelle paure ataviche dell\'uomo. Le linee incisive esaltano il contrasto netto tra bianco e nero, evocando l\'universo sommerso di INverso.',
+    description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Un intreccio oscuro e profondo che scava nelle paure ataviche dell\'uomo. Le linee incisive esaltano il contrasto netto tra bianco e nero, evocando l\'universo sommerso di DAIANA.',
     price: 12.00,
     imageUrl: '/assets/opera-2.png',
     details: [
@@ -94,7 +94,7 @@ export const allProducts = [
     title: "Architettura dell'Anima",
     type: 'Stampa Artistica',
     category: 'galleria',
-    description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Strutture impossibili, organiche e geometriche si fondono in un paesaggio mentale oscuro e affascinante. Questa stampa A4 cattura il senso di vertigine e solitudine tipico del mondo di INverso.',
+    description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Strutture impossibili, organiche e geometriche si fondono in un paesaggio mentale oscuro e affascinante. Questa stampa A4 cattura il senso di vertigine e solitudine tipico del mondo di DAIANA.',
     price: 12.00,
     imageUrl: '/assets/opera-5.png',
     details: [

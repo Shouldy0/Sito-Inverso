@@ -101,7 +101,7 @@ const Home = () => {
           ))}
         </div>
         <div className="hero-center-content">
-          <h1 className="hero-logo-title">INverso</h1>
+          <h1 className="hero-logo-title">DAIANA</h1>
           <p className="hero-blur-subtitle">
             Frammenti di inchiostro, ombre e coscienza.
           </p>
