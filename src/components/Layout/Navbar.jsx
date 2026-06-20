@@ -20,6 +20,7 @@ const Navbar = ({ toggleCart }) => {
 
         {/* Desktop Menu */}
         <div className="navbar-links">
+          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
           <Link to="/biblioteca" className={location.pathname === '/biblioteca' ? 'active' : ''}>Libri</Link>
           <Link to="/galleria" className={location.pathname === '/galleria' ? 'active' : ''}>Stampe</Link>
           <Link to="/originali" className={location.pathname === '/originali' ? 'active' : ''}>Originali</Link>
@@ -45,6 +46,7 @@ const Navbar = ({ toggleCart }) => {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
+        <Link to="/" onClick={closeMobileMenu}>Home</Link>
         <Link to="/biblioteca" onClick={closeMobileMenu}>Libri</Link>
         <Link to="/galleria" onClick={closeMobileMenu}>Stampe</Link>
         <Link to="/originali" onClick={closeMobileMenu}>Originali</Link>
