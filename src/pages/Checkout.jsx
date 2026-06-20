@@ -232,7 +232,23 @@ const Checkout = () => {
               <p>Verifica che la chiave segreta (<strong>STRIPE_SECRET_KEY</strong>) inserita su Vercel sia corretta e corrisponda alla chiave pubblica.</p>
             </div>
           ) : clientSecret ? (
-            <Elements options={{ clientSecret }} stripe={stripePromise}>
+            <Elements 
+              options={{ 
+                clientSecret,
+                appearance: {
+                  theme: 'night',
+                  variables: {
+                    colorPrimary: '#c6a267',
+                    colorBackground: '#121215',
+                    colorText: '#e0e0e0',
+                    colorDanger: '#ff6b6b',
+                    fontFamily: 'Outfit, Inter, sans-serif',
+                    borderRadius: '10px',
+                  }
+                }
+              }} 
+              stripe={stripePromise}
+            >
               <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
             </Elements>
           ) : (
