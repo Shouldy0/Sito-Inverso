@@ -10,8 +10,10 @@ import './Home.css';
 const Home = () => {
   const { addToCart } = useCart();
 
-  // Seleziona i prodotti in evidenza reali dal catalogo
-  const featuredBook = allProducts.find(p => p.id === 'b3');
+  // Seleziona il libro in risalto (l'ultimo aggiunto, id 'b4')
+  const featuredBook = allProducts.find(p => p.id === 'b4');
+  // Seleziona tutti i libri per la sezione della biblioteca nella homepage
+  const allBooks = allProducts.filter(p => p.category === 'biblioteca');
   const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
 
   useEffect(() => {
@@ -140,6 +142,26 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Books Showcase Section */}
+      {allBooks.length > 0 && (
+        <section className="books-showcase container">
+          <div className="section-header reveal-3d">
+            <h2>La Biblioteca</h2>
+            <Link to="/biblioteca" className="view-all-link">Vedi tutti i libri</Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 max-w-4xl mx-auto">
+            {allBooks.map(product => (
+              <ProductCard 
+                key={product.id}
+                {...product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* Prints Showcase Section */}
       {featuredPrints.length > 0 && (
