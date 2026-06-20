@@ -1,18 +1,27 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import Button from '../components/UI/Button';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './Checkout.css';
 
-const Checkout = () => {
-  const { cartItems, cartTotal } = useCart();
+// Caricamento sicuro di Stripe (evita la pagina bianca se la chiave è sbagliata)
+let stripePromise = null;
+const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx';
+
+if (stripeKey.startsWith('pk_') || stripeKey.startsWith('rk_')) {
+  stripePromise = loadStripe(stripeKey).catch(err => console.error("Errore loadStripe:", err));
+}
+
+const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
+  const stripe = useStripe();
+  const elements = useElements();
   const navigate = useNavigate();
   
-  const [sdkLoaded, setSdkLoaded] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [error, setError] = useState(null);
-  
+
   const [formData, setFormData] = useState({
     email: '',
     firstName: '',
@@ -24,167 +33,173 @@ const Checkout = () => {
     phone: ''
   });
 
-  const dropInRef = useRef(null);
-
-  // 1. Carica lo script di Airwallex all'avvio
-  useEffect(() => {
-    const scriptId = 'airwallex-components-sdk-script';
-    let script = document.getElementById(scriptId);
-
-    if (!script) {
-      script = document.createElement('script');
-      script.id = scriptId;
-      script.src = 'https://static.airwallex.com/components/sdk/v1/index.js';
-      script.async = true;
-      script.onload = () => {
-        setSdkLoaded(true);
-      };
-      script.onerror = () => {
-        setError('Impossibile caricare il modulo di pagamento Airwallex. Controlla la connessione internet.');
-      };
-      document.body.appendChild(script);
-    } else {
-      setSdkLoaded(true);
-    }
-
-    // Cleanup: distrugge l'elemento se l'utente esce dalla pagina
-    return () => {
-      if (dropInRef.current) {
-        try {
-          dropInRef.current.destroy();
-        } catch (e) {
-          console.error('Error destroying Airwallex dropIn:', e);
-        }
-      }
-    };
-  }, []);
-
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validateForm = () => {
-    const requiredFields = ['email', 'firstName', 'lastName', 'address', 'city', 'zipcode', 'phone'];
-    for (const field of requiredFields) {
-      if (!formData[field] || formData[field].trim() === '') {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  // 2. Chiamato quando l'utente clicca su "Procedi al pagamento"
-  const handleProceedToPayment = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setError(null);
-
-    if (!validateForm()) {
-      setError('Per favore, compila tutti i campi di spedizione obbligatori prima di procedere.');
-      return;
-    }
-
-    if (!sdkLoaded || !window.AirwallexComponentsSDK) {
-      setError('Il sistema di pagamento non è ancora pronto. Riprova tra qualche istante.');
-      return;
-    }
+    if (!stripe || !elements) return;
 
     setIsProcessing(true);
+    setError(null);
 
     try {
-      // a. Crea il PaymentIntent sul nostro server
-      const response = await fetch('/api/create-airwallex-intent', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: cartTotal }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Errore durante la creazione del pagamento su Airwallex');
-      }
-
-      const { id: intentId, clientSecret } = data;
-
-      // b. Inizializza l'SDK di Airwallex
-      const env = import.meta.env.VITE_AIRWALLEX_ENV || 'demo';
-      await window.AirwallexComponentsSDK.init({
-        env: env,
-        enabledElements: ['payments'],
-      });
-
-      // c. Se c'è un elemento precedente, lo distruggiamo per sicurezza
-      if (dropInRef.current) {
-        dropInRef.current.destroy();
-      }
-
-      // d. Crea il componente Drop-in
-      const dropIn = window.AirwallexComponentsSDK.createElement('dropIn', {
-        intent_id: intentId,
-        client_secret: clientSecret,
-        currency: 'EUR',
-      });
-
-      dropInRef.current = dropIn;
-
-      // e. Mostra la sezione del pagamento ed esegui il mount
-      setIsSubmitted(true);
-      
-      // Ritardo millimetrico per permettere al div di diventare visibile
-      setTimeout(() => {
-        dropIn.mount('airwallex-dropin-container');
-
-        // Ascolta l'evento di successo del pagamento
-        dropIn.on('success', async (event) => {
-          setIsProcessing(true);
-          setError(null);
-          
-          try {
-            // Invia l'ordine a Lulu dopo che il pagamento è stato effettuato
-            const printResponse = await fetch('/api/create-print-job-airwallex', {
-              method: 'POST',
-              headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({
-                paymentIntentId: intentId,
-                contact: { email: formData.email },
-                shipping: formData,
-                items: cartItems
-              }),
-            });
-
-            const printData = await printResponse.json();
-
-            if (!printResponse.ok) {
-              throw new Error(printData.error || 'Errore durante l\'invio dell\'ordine di stampa');
+      // 1. Conferma il pagamento con Stripe
+      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        confirmParams: {
+          return_url: window.location.origin + '/success',
+          payment_method_data: {
+            billing_details: {
+              name: `${formData.firstName} ${formData.lastName}`,
+              email: formData.email,
+              phone: formData.phone,
+              address: {
+                city: formData.city,
+                country: formData.countryCode,
+                line1: formData.address,
+                postal_code: formData.zipcode
+              }
             }
-
-            if (printData.success) {
-              navigate('/success');
-            } else {
-              throw new Error('Pagamento completato, ma errore nell\'invio a Lulu: ' + (printData.error || 'Errore sconosciuto'));
-            }
-          } catch (err) {
-            console.error('Lulu submit error:', err);
-            setError(err.message);
-            setIsProcessing(false);
           }
+        },
+        redirect: 'if_required', // Gestiamo il redirect manualmente
+      });
+
+      if (stripeError) {
+        throw new Error(stripeError.message);
+      }
+
+      if (paymentIntent && paymentIntent.status === 'succeeded') {
+        // 2. Pagamento riuscito! Ora diciamo a Lulu di stampare
+        const luluResponse = await fetch('/api/create-print-job', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            contact: { email: formData.email },
+            shipping: formData,
+            items: cartItems,
+            paymentIntentId: paymentIntent.id // Passiamo l'ID di Stripe al nostro server per verifica!
+          }),
         });
 
-        // Ascolta eventuali errori di pagamento
-        dropIn.on('error', (event) => {
-          const { error: paymentErr } = event.detail || {};
-          console.error('Airwallex payment error:', paymentErr);
-          setError(paymentErr?.message || 'Si è verificato un errore durante la transazione. Per favore riprova.');
-        });
-      }, 50);
+        const luluData = await luluResponse.json();
 
+        if (luluData.success) {
+          navigate('/success');
+        } else {
+          throw new Error('Pagamento effettuato, ma errore nell\'ordine di stampa: ' + (luluData.error || 'Errore sconosciuto'));
+        }
+      } else {
+        throw new Error('Lo stato del pagamento non è confermato. Riprova.');
+      }
     } catch (err) {
-      console.error(err);
       setError(err.message);
     } finally {
       setIsProcessing(false);
     }
   };
+
+  return (
+    <form onSubmit={handleSubmit} className="checkout-form">
+      <div className="form-section">
+        <h2>1. Informazioni di Contatto e Spedizione</h2>
+        <div className="form-group">
+          <label>Email</label>
+          <input type="email" name="email" required value={formData.email} onChange={handleChange} placeholder="tu@email.com" />
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Nome</label>
+            <input type="text" name="firstName" required value={formData.firstName} onChange={handleChange} placeholder="Mario" />
+          </div>
+          <div className="form-group half">
+            <label>Cognome</label>
+            <input type="text" name="lastName" required value={formData.lastName} onChange={handleChange} placeholder="Rossi" />
+          </div>
+        </div>
+        <div className="form-group">
+          <label>Indirizzo di Spedizione</label>
+          <input type="text" name="address" required value={formData.address} onChange={handleChange} placeholder="Via Roma, 123" />
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Città</label>
+            <input type="text" name="city" required value={formData.city} onChange={handleChange} placeholder="Roma" />
+          </div>
+          <div className="form-group half">
+            <label>CAP</label>
+            <input type="text" name="zipcode" required value={formData.zipcode} onChange={handleChange} placeholder="00100" />
+          </div>
+        </div>
+        <div className="form-row">
+          <div className="form-group half">
+            <label>Paese (Codice 2 lettere)</label>
+            <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
+          </div>
+          <div className="form-group half">
+            <label>Telefono</label>
+            <input type="text" name="phone" required value={formData.phone} onChange={handleChange} placeholder="+39 333 1234567" />
+          </div>
+        </div>
+      </div>
+
+      <div className="form-section stripe-section">
+        <h2>2. Pagamento Sicuro</h2>
+        <div className="stripe-element-container">
+          <PaymentElement />
+        </div>
+        {error && <div className="checkout-error">{error}</div>}
+      </div>
+
+      <Button 
+        variant="primary" 
+        type="submit" 
+        className="w-full submit-btn" 
+        disabled={isProcessing || !stripe || !elements}
+      >
+        {isProcessing ? 'Elaborazione in corso...' : `Paga €${cartTotal.toFixed(2)}`}
+      </Button>
+    </form>
+  );
+};
+
+const Checkout = () => {
+  const { cartItems, cartTotal } = useCart();
+  const navigate = useNavigate();
+  const [clientSecret, setClientSecret] = useState('');
+  const [loadingError, setLoadingError] = useState('');
+
+  useEffect(() => {
+    if (cartTotal > 0) {
+      // Crea il PaymentIntent non appena il componente viene caricato
+      fetch('/api/create-payment-intent', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount: cartTotal }),
+      })
+        .then((res) => {
+          if (!res.ok) {
+            return res.json().then(data => {
+              throw new Error(data.error || 'Errore del server');
+            });
+          }
+          return res.json();
+        })
+        .then((data) => {
+          if(data.clientSecret) {
+            setClientSecret(data.clientSecret);
+          } else {
+            throw new Error('Nessun clientSecret ricevuto dal server');
+          }
+        })
+        .catch(err => {
+          console.error("Errore recupero PaymentIntent:", err);
+          setLoadingError(err.message);
+        });
+    }
+  }, [cartTotal]);
 
   if (cartItems.length === 0) {
     return (
@@ -201,173 +216,28 @@ const Checkout = () => {
         
         <div className="checkout-form-section">
           <h1>Checkout</h1>
-          <p className="checkout-subtitle">Paga in sicurezza con Airwallex (Carte di Credito/Debito) e ricevi il libro a casa.</p>
+          <p className="checkout-subtitle">Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
 
-          {error && <div className="checkout-error" style={{ marginBottom: '1.5rem' }}>{error}</div>}
-
-          {isProcessing && (
-            <div className="loading-payment" style={{ marginBottom: '1.5rem' }}>
-              Elaborazione in corso... Per favore non chiudere o ricaricare la pagina.
+          {!stripePromise ? (
+            <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
+              <h3>⚠️ Errore di Configurazione Stripe</h3>
+              <p>La chiave pubblica inserita in Vercel non è valida.</p>
+              <p>Assicurati di inserire la <strong>Publishable key</strong> che inizia con <code>pk_live_...</code> (NON apikey_...).</p>
             </div>
+          ) : loadingError ? (
+            <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
+              <h3>⚠️ Errore di Configurazione Stripe</h3>
+              <p>Non è stato possibile caricare il modulo di pagamento:</p>
+              <p style={{ color: '#ff6b6b', margin: '1rem 0', fontWeight: 'bold' }}>{loadingError}</p>
+              <p>Verifica che la chiave segreta (<strong>STRIPE_SECRET_KEY</strong>) inserita su Vercel sia corretta e corrisponda alla chiave pubblica.</p>
+            </div>
+          ) : clientSecret ? (
+            <Elements options={{ clientSecret }} stripe={stripePromise}>
+              <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
+            </Elements>
+          ) : (
+            <div className="loading-payment">Caricamento modulo di pagamento...</div>
           )}
-
-          <form onSubmit={handleProceedToPayment} className="checkout-form">
-            <div className="form-section">
-              <h2>1. Informazioni di Contatto e Spedizione</h2>
-              <div className="form-group">
-                <label>Email</label>
-                <input 
-                  type="email" 
-                  name="email" 
-                  required 
-                  disabled={isSubmitted}
-                  value={formData.email} 
-                  onChange={handleChange} 
-                  placeholder="tu@email.com" 
-                />
-              </div>
-              <div className="form-row">
-                <div className="form-group half">
-                  <label>Nome</label>
-                  <input 
-                    type="text" 
-                    name="firstName" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.firstName} 
-                    onChange={handleChange} 
-                    placeholder="Mario" 
-                  />
-                </div>
-                <div className="form-group half">
-                  <label>Cognome</label>
-                  <input 
-                    type="text" 
-                    name="lastName" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.lastName} 
-                    onChange={handleChange} 
-                    placeholder="Rossi" 
-                  />
-                </div>
-              </div>
-              <div className="form-group">
-                <label>Indirizzo di Spedizione</label>
-                <input 
-                  type="text" 
-                  name="address" 
-                  required 
-                  disabled={isSubmitted}
-                  value={formData.address} 
-                  onChange={handleChange} 
-                  placeholder="Via Roma, 123" 
-                />
-              </div>
-              <div className="form-row">
-                <div className="form-group half">
-                  <label>Città</label>
-                  <input 
-                    type="text" 
-                    name="city" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.city} 
-                    onChange={handleChange} 
-                    placeholder="Roma" 
-                  />
-                </div>
-                <div className="form-group half">
-                  <label>CAP</label>
-                  <input 
-                    type="text" 
-                    name="zipcode" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.zipcode} 
-                    onChange={handleChange} 
-                    placeholder="00100" 
-                  />
-                </div>
-              </div>
-              <div className="form-row">
-                <div className="form-group half">
-                  <label>Paese (Codice 2 lettere)</label>
-                  <input 
-                    type="text" 
-                    name="countryCode" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.countryCode} 
-                    onChange={handleChange} 
-                    placeholder="IT" 
-                    maxLength={2} 
-                  />
-                </div>
-                <div className="form-group half">
-                  <label>Telefono</label>
-                  <input 
-                    type="text" 
-                    name="phone" 
-                    required 
-                    disabled={isSubmitted}
-                    value={formData.phone} 
-                    onChange={handleChange} 
-                    placeholder="+39 333 1234567" 
-                  />
-                </div>
-              </div>
-
-              {!isSubmitted && (
-                <Button 
-                  variant="primary" 
-                  type="submit" 
-                  className="w-full submit-btn" 
-                  disabled={isProcessing || !sdkLoaded}
-                >
-                  Procedi al Pagamento
-                </Button>
-              )}
-            </div>
-          </form>
-
-          {/* Sezione del modulo di pagamento Airwallex */}
-          <div 
-            className="form-section airwallex-section" 
-            style={{ 
-              display: isSubmitted ? 'block' : 'none',
-              marginTop: '2rem',
-              padding: '1.5rem',
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '8px'
-            }}
-          >
-            <h2>2. Pagamento Sicuro con Carta</h2>
-            
-            {/* Contenitore in cui verrà montato l'iframe di Airwallex */}
-            <div 
-              id="airwallex-dropin-container" 
-              style={{ 
-                marginTop: '1.5rem',
-                minHeight: '200px'
-              }}
-            ></div>
-
-            <Button 
-              variant="outline" 
-              className="mt-4" 
-              onClick={() => {
-                setIsSubmitted(false);
-                if (dropInRef.current) {
-                  dropInRef.current.destroy();
-                  dropInRef.current = null;
-                }
-              }}
-              disabled={isProcessing}
-            >
-              Modifica Dati Spedizione
-            </Button>
-          </div>
         </div>
 
         <div className="checkout-summary-section">
