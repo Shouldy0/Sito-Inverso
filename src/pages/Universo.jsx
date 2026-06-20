@@ -34,7 +34,7 @@ const Universo = () => {
           <div className="universo-text-block mt-4">
             <h2>L'Artista</h2>
             <p>
-              Dietro l'universo di INverso c'è la mano e la mente di <strong>Daiana Vaiani</strong> (Kelin Daiana Vaiani Belleggia).
+              Dietro l'universo di INverso c'è la mano e la mente di <strong>Daiana Vaiani</strong>.
               Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità 
               attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.
             </p>
