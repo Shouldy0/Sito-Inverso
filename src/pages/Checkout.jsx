@@ -6,7 +6,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useStripe, useElements } from '@stripe/react-stripe-js';
 import './Checkout.css';
 
-// Caricamento sicuro di Stripe (evita la pagina bianca se la chiave è sbagliata)
+// Caricamento sicuro di Stripe
 let stripePromise = null;
 const stripeKey = import.meta.env.VITE_STRIPE_PUBLIC_KEY || 'pk_test_TYooMQauvdEDq54NiTphI7jx';
 
@@ -14,28 +14,30 @@ if (stripeKey.startsWith('pk_') || stripeKey.startsWith('rk_')) {
   stripePromise = loadStripe(stripeKey).catch(err => console.error("Errore loadStripe:", err));
 }
 
-const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
+// Calcolo della spedizione: gratis per libri, calcolata per stampe in base al paese
+const getShippingCost = (countryCode, hasPrints) => {
+  if (!hasPrints) return 0.00; // Spedizione inclusa per i libri
+  if (!countryCode || countryCode.trim().length !== 2) return 5.00; // Default Italia durante la digitazione
+  
+  const code = countryCode.trim().toUpperCase();
+  if (code === 'IT') return 5.00;
+  
+  const euCountries = [
+    'AT', 'BE', 'BG', 'CY', 'CZ', 'DE', 'DK', 'EE', 'ES', 'FI', 'FR', 'GR', 'HR', 'HU', 
+    'IE', 'LT', 'LU', 'LV', 'MT', 'NL', 'PL', 'PT', 'RO', 'SE', 'SI', 'SK', 'GB', 'CH', 'NO'
+  ];
+  if (euCountries.includes(code)) return 10.00;
+  
+  return 15.00; // Resto del mondo
+};
+
+const CheckoutForm = ({ cartItems, cartTotal, formData, handleChange, shippingCost, orderTotal }) => {
   const stripe = useStripe();
   const elements = useElements();
   const navigate = useNavigate();
   
   const [isProcessing, setIsProcessing] = useState(false);
   const [error, setError] = useState(null);
-
-  const [formData, setFormData] = useState({
-    email: '',
-    firstName: '',
-    lastName: '',
-    address: '',
-    city: '',
-    zipcode: '',
-    countryCode: 'IT',
-    phone: ''
-  });
-
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -64,7 +66,7 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
             }
           }
         },
-        redirect: 'if_required', // Gestiamo il redirect manualmente
+        redirect: 'if_required',
       });
 
       if (stripeError) {
@@ -72,24 +74,27 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
       }
 
       if (paymentIntent && paymentIntent.status === 'succeeded') {
-        // 2. Pagamento riuscito! Ora diciamo a Lulu di stampare
-        const luluResponse = await fetch('/api/create-print-job', {
+        // 2. Pagamento riuscito! Chiamiamo il nostro server per inviare l'ordine (Lulu per libri + CSV locale/GitHub)
+        const response = await fetch('/api/create-print-job', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             contact: { email: formData.email },
-            shipping: formData,
+            shipping: { 
+              ...formData, 
+              shippingCost: shippingCost.toFixed(2) 
+            },
             items: cartItems,
-            paymentIntentId: paymentIntent.id // Passiamo l'ID di Stripe al nostro server per verifica!
+            paymentIntentId: paymentIntent.id
           }),
         });
 
-        const luluData = await luluResponse.json();
+        const resData = await response.json();
 
-        if (luluData.success) {
+        if (resData.success) {
           navigate('/success');
         } else {
-          throw new Error('Pagamento effettuato, ma errore nell\'ordine di stampa: ' + (luluData.error || 'Errore sconosciuto'));
+          throw new Error('Pagamento effettuato, ma errore nella registrazione dell\'ordine: ' + (resData.error || 'Errore sconosciuto'));
         }
       } else {
         throw new Error('Lo stato del pagamento non è confermato. Riprova.');
@@ -135,7 +140,7 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
         </div>
         <div className="form-row">
           <div className="form-group half">
-            <label>Paese (Codice 2 lettere)</label>
+            <label>Paese (Codice 2 lettere, es: IT, FR, US)</label>
             <input type="text" name="countryCode" required value={formData.countryCode} onChange={handleChange} placeholder="IT" maxLength={2} />
           </div>
           <div className="form-group half">
@@ -150,7 +155,7 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
         <div className="stripe-element-container">
           <PaymentElement />
         </div>
-        {error && <div className="checkout-error">{error}</div>}
+        {error && <div className="checkout-error" style={{ marginTop: '1.5rem' }}>{error}</div>}
       </div>
 
       <Button 
@@ -159,7 +164,7 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
         className="w-full submit-btn" 
         disabled={isProcessing || !stripe || !elements}
       >
-        {isProcessing ? 'Elaborazione in corso...' : `Paga €${cartTotal.toFixed(2)}`}
+        {isProcessing ? 'Elaborazione in corso...' : `Paga €${orderTotal.toFixed(2)}`}
       </Button>
     </form>
   );
@@ -168,16 +173,42 @@ const CheckoutForm = ({ clientSecret, cartItems, cartTotal }) => {
 const Checkout = () => {
   const { cartItems, cartTotal } = useCart();
   const navigate = useNavigate();
+  
   const [clientSecret, setClientSecret] = useState('');
   const [loadingError, setLoadingError] = useState('');
+  
+  const [formData, setFormData] = useState({
+    email: '',
+    firstName: '',
+    lastName: '',
+    address: '',
+    city: '',
+    zipcode: '',
+    countryCode: 'IT',
+    phone: ''
+  });
 
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const hasPrints = cartItems.some(item => item.category === 'galleria');
+  const shippingCost = getShippingCost(formData.countryCode, hasPrints);
+  const orderTotal = cartTotal + shippingCost;
+
+  // Crea o aggiorna il PaymentIntent ogni volta che l'importo totale (incluso spedizione) cambia
   useEffect(() => {
-    if (cartTotal > 0) {
-      // Crea il PaymentIntent non appena il componente viene caricato
+    if (orderTotal > 0) {
+      setClientSecret('');
+      setLoadingError('');
+      
+      const controller = new AbortController();
+
       fetch('/api/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount: cartTotal }),
+        body: JSON.stringify({ amount: orderTotal }),
+        signal: controller.signal
       })
         .then((res) => {
           if (!res.ok) {
@@ -195,11 +226,15 @@ const Checkout = () => {
           }
         })
         .catch(err => {
-          console.error("Errore recupero PaymentIntent:", err);
-          setLoadingError(err.message);
+          if (err.name !== 'AbortError') {
+            console.error("Errore recupero PaymentIntent:", err);
+            setLoadingError(err.message);
+          }
         });
+
+      return () => controller.abort();
     }
-  }, [cartTotal]);
+  }, [orderTotal]);
 
   if (cartItems.length === 0) {
     return (
@@ -249,7 +284,14 @@ const Checkout = () => {
               }} 
               stripe={stripePromise}
             >
-              <CheckoutForm clientSecret={clientSecret} cartItems={cartItems} cartTotal={cartTotal} />
+              <CheckoutForm 
+                cartItems={cartItems} 
+                cartTotal={cartTotal} 
+                formData={formData} 
+                handleChange={handleChange} 
+                shippingCost={shippingCost}
+                orderTotal={orderTotal}
+              />
             </Elements>
           ) : (
             <div className="loading-payment">Caricamento modulo di pagamento...</div>
@@ -282,12 +324,12 @@ const Checkout = () => {
                 <span>€{cartTotal.toFixed(2)}</span>
               </div>
               <div className="summary-row">
-                <span>Spedizione (Lulu)</span>
-                <span>Inclusa</span>
+                <span>Spedizione {hasPrints ? '(Disegni)' : '(Lulu)'}</span>
+                <span>{shippingCost > 0 ? `€${shippingCost.toFixed(2)}` : 'Inclusa'}</span>
               </div>
               <div className="summary-row total">
                 <span>Totale Da Pagare</span>
-                <span>€{cartTotal.toFixed(2)}</span>
+                <span>€{orderTotal.toFixed(2)}</span>
               </div>
             </div>
           </div>
