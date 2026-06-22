@@ -43,6 +43,7 @@ export const allProducts = [
     imageUrl: '/assets/noi_siamo_persona.png',
     isPreorder: true,
     releaseDate: '15 Settembre 2026',
+    lulu_printable_id: '2mnjnrd', // ID del progetto Lulu in bozza
     details: [
       'Pagine: 36',
       'Formato: Comic Book (168 x 260 mm)',
