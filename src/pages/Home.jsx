@@ -137,7 +137,7 @@ const Home = () => {
           <div className="featured-actions">
             <span className="featured-price">€{featuredBook.price.toFixed(2)}</span>
             <Button variant="primary" onClick={() => handleAddToCart(featuredBook.id)}>
-              Aggiungi al Carrello
+              {featuredBook.isPreorder ? 'Pre-ordina ora' : 'Aggiungi al Carrello'}
             </Button>
           </div>
         </div>
