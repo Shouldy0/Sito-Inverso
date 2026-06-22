@@ -29,6 +29,7 @@ const ProductDetail = () => {
           <div className="product-image-large floating-slow">
             <img src={product.imageUrl} alt={product.title} />
             {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
+            {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
           </div>
         </div>
 
@@ -46,7 +47,7 @@ const ProductDetail = () => {
 
           <div className="product-detail-actions">
             <Button variant="primary" onClick={() => addToCart(product)} className="w-full">
-              Aggiungi al Carrello
+              {product.isPreorder ? 'Pre-ordina ora' : 'Aggiungi al Carrello'}
             </Button>
           </div>
 
@@ -67,7 +68,13 @@ const ProductDetail = () => {
           )}
 
           <div className="shipping-info">
-            <p><strong>Spedizione:</strong> Calcolata al momento del checkout.</p>
+            {product.isPreorder ? (
+              <p className="text-gold" style={{ fontWeight: '600' }}>
+                Pre-ordine: Questo albo verrà stampato e spedito a partire dal {product.releaseDate}.
+              </p>
+            ) : (
+              <p><strong>Spedizione:</strong> Calcolata al momento del checkout.</p>
+            )}
             {product.isUnique && (
               <p className="text-burgundy">Spedizione assicurata con corriere speciale per opere d'arte.</p>
             )}

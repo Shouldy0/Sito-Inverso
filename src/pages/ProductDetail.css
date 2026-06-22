@@ -163,3 +163,32 @@
   color: var(--color-burgundy);
   font-weight: 500;
 }
+
+.badge-unique {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--color-burgundy);
+  color: #FFFFFF;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.8rem;
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.badge-preorder {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: var(--color-gold);
+  color: #131316;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.4rem 0.8rem;
+  z-index: 2;
+  font-weight: 600;
+  border-radius: 4px;
+}

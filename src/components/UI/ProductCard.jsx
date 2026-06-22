@@ -10,6 +10,7 @@ const ProductCard = ({
   price, 
   imageUrl, 
   isUnique = false,
+  isPreorder = false,
   onAddToCart
 }) => {
   return (
@@ -17,6 +18,7 @@ const ProductCard = ({
       <Link to={`/product/${id}`} className="product-image-wrapper">
         <img src={imageUrl} alt={title} className="product-image" />
         {isUnique && <span className="badge-unique">Pezzo Unico</span>}
+        {isPreorder && <span className="badge-preorder">Pre-ordine</span>}
       </Link>
       
       <div className="product-info">
@@ -28,7 +30,7 @@ const ProductCard = ({
         <div className="product-footer">
           <span className="product-price">€{price.toFixed(2)}</span>
           <Button variant="outline" onClick={() => onAddToCart(id)}>
-            Acquista
+            {isPreorder ? 'Pre-ordina' : 'Acquista'}
           </Button>
         </div>
       </div>

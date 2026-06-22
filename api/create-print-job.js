@@ -52,23 +52,30 @@ export default async function handler(req, res) {
 
     const totalAmount = paymentIntent.amount / 100;
 
-    // 1. Dividiamo gli articoli tra Libri (Lulu) e Stampe (Spedite dal venditore)
-    const bookItems = items.filter(item => item.category === 'biblioteca');
+    // 1. Dividiamo gli articoli tra Libri standard (Lulu immediato), Libri in Pre-ordine e Stampe (Merchant)
+    const immediateBookItems = items.filter(item => item.category === 'biblioteca' && !item.isPreorder);
+    const preorderBookItems = items.filter(item => item.category === 'biblioteca' && item.isPreorder === true);
     const printItems = items.filter(item => item.category === 'galleria');
 
     let luluJobId = null;
     let luluStatus = 'SKIPPED';
-    let fulfillmentType = 'Merchant'; // Default: spedito da te
+    let fulfillmentType = 'Merchant'; // Default
 
-    if (bookItems.length > 0 && printItems.length > 0) {
-      fulfillmentType = 'Lulu + Merchant';
-    } else if (bookItems.length > 0) {
-      fulfillmentType = 'Lulu';
-    }
+    // Determina il tipo di spedizione per il tracciamento
+    const hasImmediateLulu = immediateBookItems.length > 0;
+    const hasPreorder = preorderBookItems.length > 0;
+    const hasMerchant = printItems.length > 0;
 
-    // 2. Se ci sono dei libri nel carrello, ordiniamo la stampa su Lulu
-    if (bookItems.length > 0) {
-      const lineItems = bookItems.map(item => {
+    const fulfillmentParts = [];
+    if (hasImmediateLulu) fulfillmentParts.push('Lulu');
+    if (hasPreorder) fulfillmentParts.push('Lulu (Pre-order)');
+    if (hasMerchant) fulfillmentParts.push('Merchant');
+
+    fulfillmentType = fulfillmentParts.join(' + ') || 'Merchant';
+
+    // 2. Se ci sono dei libri standard (non in pre-ordine) nel carrello, ordiniamo la stampa su Lulu immediata
+    if (immediateBookItems.length > 0) {
+      const lineItems = immediateBookItems.map(item => {
         // Se il prodotto usa il Reprint API con un printable_id esistente su Lulu
         if (item.lulu_printable_id) {
           return {
@@ -119,14 +126,25 @@ export default async function handler(req, res) {
       fulfillmentType
     });
 
+    let successMessage = '';
+    if (hasImmediateLulu && hasMerchant) {
+      successMessage = 'Pagamento verificato. Ordine di stampa inviato a Lulu per i libri immediati. Le stampe verranno gestite a parte.';
+    } else if (hasImmediateLulu) {
+      successMessage = 'Pagamento verificato. Ordine di stampa inviato a Lulu per i libri immediati.';
+    } else {
+      successMessage = 'Pagamento verificato. L\'ordine verrà gestito manualmente dal venditore.';
+    }
+    
+    if (hasPreorder) {
+      successMessage += ' Gli articoli in pre-ordine verranno stampati e spediti alla data di uscita.';
+    }
+
     res.status(200).json({
       success: true,
       job_id: luluJobId,
       status: luluStatus,
       fulfillmentType,
-      message: bookItems.length > 0 
-        ? 'Pagamento verificato. Ordine di stampa inviato a Lulu per i libri. Le stampe verranno spedite manualmente dal venditore.'
-        : 'Pagamento verificato. L\'ordine delle stampe verrà gestito e spedito manualmente dal venditore.'
+      message: successMessage
     });
 
   } catch (error) {
