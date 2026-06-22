@@ -38,7 +38,19 @@ export const allProducts = [
     title: "Noi siamo persona",
     type: 'Fumetto Cartaceo',
     category: 'biblioteca',
-    description: 'Un\'indagine intima sulla natura dell\'identità e del contatto umano. Attraverso illustrazioni evocative e testi poetici in bianco e nero, “Noi siamo persona” esplora le barriere invisibili che ci dividono e i fili sottili che ci uniscono nel profondo.',
+    description: `“Cosa succede alla tua mente quando vive un trauma troppo grande per essere sopportato? Si frammenta. Per sopravvivere, ci dividiamo.”
+
+I Fili dell'Io è un viaggio visivo ed emotivo crudo, poetico e profondamente intimo all'interno del Disturbo Dissociativo dell'Identità (DDI). Non è solo una storia, è la mappa di una mente che lotta per ritrovare se stessa.
+
+Quando un trauma indescrivibile spacca il mondo interiore creando una Voragine oscura e apparentemente insuperabile, l'Io si divide in due. Da una parte Chiara, una bambina chiara ed empatica che custodisce la fragilità del cuore. Dall'altra Omino, un bambino fatto di sola ombra, rigido e razionale, custode della mente.
+
+Risvegliatisi isolati sui bordi opposti del baratro, Chiara e Omino dovranno intraprendere una discesa nelle profondità della propria psiche. In un mondo disegnato con tratti a matita graffiati e malinconici, i due protagonisti dovranno affrontare, ascoltare e placare oltre trenta "Parti" frammentate del loro Sistema: dalla gelida Difesa alla Paura, dalla fiammata della Rabbia fino al fragile Bambino Interiore e al misterioso Custode delle Crepe.
+
+L'unica speranza per non perdersi per sempre è tessere dei luminosi fili colorati — connessioni magiche che legano la Testa (Blu), il Cuore (Rosso) e la Pancia (Giallo).
+
+I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un racconto in cui imparare che le maschere di porcellana prima o poi si spezzano, ma che le cicatrici possono essere ricucite per costruire un ponte luminoso sopra l'abisso. Perché negare una tempesta, quando ti ha insegnato a nuotare?
+
+"Quando la terra smette di tremare, l'Io torna a fiorire. Noi siamo persona."`,
     price: 18.00,
     imageUrl: '/assets/noi_siamo_persona.jpg',
     isPreorder: true,

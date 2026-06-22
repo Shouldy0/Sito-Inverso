@@ -122,6 +122,7 @@
 .product-description-block p {
   color: var(--color-text-secondary);
   line-height: 1.8;
+  white-space: pre-line;
 }
 
 .product-details-list ul {
