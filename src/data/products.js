@@ -40,7 +40,7 @@ export const allProducts = [
     category: 'biblioteca',
     description: 'Un\'indagine intima sulla natura dell\'identità e del contatto umano. Attraverso illustrazioni evocative e testi poetici in bianco e nero, “Noi siamo persona” esplora le barriere invisibili che ci dividono e i fili sottili che ci uniscono nel profondo.',
     price: 18.00,
-    imageUrl: '/assets/noi_siamo_persona.png',
+    imageUrl: '/assets/noi_siamo_persona.jpg',
     isPreorder: true,
     releaseDate: '15 Settembre 2026',
     lulu_printable_id: '2mnjnrd', // ID del progetto Lulu in bozza
