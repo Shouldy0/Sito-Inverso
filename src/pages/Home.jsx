@@ -10,8 +10,8 @@ import './Home.css';
 const Home = () => {
   const { addToCart } = useCart();
 
-  // Seleziona il libro in risalto (l'ultimo aggiunto, id 'b4')
-  const featuredBook = allProducts.find(p => p.id === 'b4');
+  // Seleziona il libro in risalto (il nuovo in pre-ordine, id 'b5')
+  const featuredBook = allProducts.find(p => p.id === 'b5');
   // Seleziona tutti i libri per la sezione della biblioteca nella homepage
   const allBooks = allProducts.filter(p => p.category === 'biblioteca');
   const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
