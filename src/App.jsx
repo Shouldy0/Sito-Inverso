@@ -10,6 +10,7 @@ import Universo from './pages/Universo';
 import InfoPage from './pages/InfoPage';
 import Checkout from './pages/Checkout';
 import Admin from './pages/Admin';
+import Links from './pages/Links';
 import { CartProvider } from './context/CartContext';
 import { Analytics } from '@vercel/analytics/react';
 import './index.css';
@@ -19,6 +20,10 @@ function App() {
     <CartProvider>
       <Router>
         <Routes>
+          {/* Standalone Link-in-Bio page for social media traffic */}
+          <Route path="/links" element={<Links />} />
+          
+          {/* Standard layout pages */}
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="biblioteca" element={<Biblioteca />} />

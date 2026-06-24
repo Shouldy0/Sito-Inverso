@@ -1,0 +1,186 @@
+<div class="universo-page page-transition" data-section-id="{{ section.id }}">
+  <div class="universo-hero">
+    <div class="container">
+      <h1 class="universo-title">{{ section.settings.hero_title }}</h1>
+      <p class="universo-subtitle">{{ section.settings.hero_subtitle }}</p>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="universo-content">
+      <div class="universo-text-block reveal-3d">
+        <h2>{{ section.settings.manifesto_title }}</h2>
+        <div class="universo-text-body">
+          {{ section.settings.manifesto_text }}
+        </div>
+      </div>
+
+      <div class="universo-text-block mt-4 reveal-3d">
+        <h2>{{ section.settings.artist_title }}</h2>
+        <div class="universo-text-body">
+          {{ section.settings.artist_text }}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Narrative Fragments Section -->
+  <div class="container mt-12 mb-16">
+    <div class="universo-narrative-header reveal-3d text-center">
+      <h2>{{ section.settings.narrative_title }}</h2>
+      <p>{{ section.settings.narrative_subtitle }}</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'narrative_card' -%}
+            {%- assign float_class = 'floating-slow' -%}
+            {%- if block.settings.float_speed == 'medium' -%}
+              {%- assign float_class = 'floating-medium' -%}
+            {%- endif -%}
+            <div class="narrative-card {{ float_class }} reveal-3d" {{ block.shopify_attributes }}>
+              <span class="narrative-tag">{{ block.settings.tag | escape }}</span>
+              <h3 class="narrative-title">{{ block.settings.title | escape }}</h3>
+              <p class="narrative-text">{{ block.settings.text | escape }}</p>
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Universo DAIANA",
+  "settings": [
+    {
+      "type": "text",
+      "id": "hero_title",
+      "label": "Titolo Hero",
+      "default": "L'Universo DAIANA"
+    },
+    {
+      "type": "text",
+      "id": "hero_subtitle",
+      "label": "Sottotitolo Hero",
+      "default": "Non è solo arte, è un portale verso un mondo sommerso."
+    },
+    {
+      "type": "text",
+      "id": "manifesto_title",
+      "label": "Titolo Manifesto",
+      "default": "Il Manifesto"
+    },
+    {
+      "type": "richtext",
+      "id": "manifesto_text",
+      "label": "Testo Manifesto",
+      "default": "<p>DAIANA nasce come esplorazione dei confini tra la parola scritta e l'immagine. Ogni opera d'arte, ogni stampa e ogni libro che esce da questo studio è un frammento di una narrazione molto più grande. Un mondo sommerso fatto di ombre, riflessi e rovine antiche.</p><p>La nostra missione è creare <strong>artefatti fisici</strong> in un'era digitale. Libri da sfogliare, carte pesanti da toccare, inchiostri che riflettono la luce. Crediamo nel valore dell'oggetto libro e dell'opera d'arte tangibile.</p>"
+    },
+    {
+      "type": "text",
+      "id": "artist_title",
+      "label": "Titolo Sezione Artista",
+      "default": "L'Artista"
+    },
+    {
+      "type": "richtext",
+      "id": "artist_text",
+      "label": "Testo Sezione Artista",
+      "default": "<p>Dietro l'universo di DAIANA c'è la mano e la mente di <strong>Daiana Vaiani</strong>.</p><p>Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.</p><p>Con un percorso di studi che unisce il diploma al Liceo Artistico alla passione per la Psicologia, Daiana riversa nelle sue opere un profondo bisogno di 'tirar fuori' e dare forma a pensieri ed emozioni intime. La sua scrittura poetica, già presente in diverse pubblicazioni collettive e raccolte personali (come la sua opera <em>Pensieri dispersi</em>), si fonde con le sue illustrazioni in bianco e nero in un legame indissolubile, creando opere sospese tra l'ombra, il sogno e l'inconscio.</p>"
+    },
+    {
+      "type": "text",
+      "id": "narrative_title",
+      "label": "Titolo Frammenti",
+      "default": "Frammenti dell'Abisso"
+    },
+    {
+      "type": "text",
+      "id": "narrative_subtitle",
+      "label": "Sottotitolo Frammenti",
+      "default": "Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo DAIANA."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "narrative_card",
+      "name": "Scheda Narrativa",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tag",
+          "label": "Tag",
+          "default": "Frammento 01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo",
+          "default": "L'Ombra del Tempo"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Contenuto",
+          "default": "Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine."
+        },
+        {
+          "type": "select",
+          "id": "float_speed",
+          "label": "Velocità Oscillazione",
+          "options": [
+            { "value": "slow", "label": "Lenta" },
+            { "value": "medium", "label": "Media" }
+          ],
+          "default": "slow"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Universo DAIANA",
+      "blocks": [
+        {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Frammento 01",
+            "title": "L'Ombra del Tempo",
+            "text": "Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine.",
+            "float_speed": "slow"
+          }
+        },
+        {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Personaggio",
+            "title": "Il Custode",
+            "text": "Colui che abita tra i risvolti delle pagine. Non parla se non attraverso il fruscio della carta cotone, indicando strade incise nella china.",
+            "float_speed": "medium"
+          }
+        },
+        {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Archivi",
+            "title": "La Stanza Vetrificata",
+            "text": "Un luogo sospeso dove la musica del pianoforte si solidifica in riflessi dorati. Chi vi entra, dimentica il proprio nome ma ritrova la propria ombra.",
+            "float_speed": "medium"
+          }
+        },
+        {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Poesia",
+            "title": "Pensieri Dispersi",
+            "text": "Oltre la nebbia del giorno, dove la coscienza si incrina e lascia filtrare una luce silenziosa. Scrivere è raccogliere i cocci del mattino.",
+            "float_speed": "slow"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

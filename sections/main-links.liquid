@@ -1,0 +1,265 @@
+{% layout 'theme.links' %}
+
+<div class="links-page" data-section-id="{{ section.id }}">
+  <div class="links-glow-1"></div>
+  <div class="links-glow-2"></div>
+
+  <div class="links-container">
+    <!-- Profile Header -->
+    <header class="links-header">
+      <div class="links-avatar">
+        {%- if section.settings.avatar_image != blank -%}
+          <img src="{{ section.settings.avatar_image | image_url: width: 240, height: 240, crop: 'center' }}" alt="{{ section.settings.title | escape }}" />
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag }}
+        {%- endif -%}
+      </div>
+      <h1 class="links-title">{{ section.settings.title | default: shop.name }}</h1>
+      <p class="links-subtitle">{{ section.settings.subtitle }}</p>
+    </header>
+
+    <!-- Links List -->
+    <main class="links-list">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when 'link_item' -%}
+            <a href="{{ block.settings.url }}" class="link-item {% if block.settings.is_featured %}featured-link pulse-animation{% endif %}" {{ block.shopify_attributes }}>
+              <span class="link-icon">
+                {%- if block.settings.icon == 'book' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path></svg>
+                {%- elsif block.settings.icon == 'image' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
+                {%- elsif block.settings.icon == 'heart' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
+                {%- elsif block.settings.icon == 'star' -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                {%- else -%}
+                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                {%- endif -%}
+              </span>
+              
+              <div class="link-content">
+                <span class="link-label">{{ block.settings.title | escape }}</span>
+                {%- if block.settings.subtitle != blank -%}
+                  <span class="link-sub">{{ block.settings.subtitle | escape }}</span>
+                {%- endif -%}
+              </div>
+              
+              <span class="link-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+              </span>
+            </a>
+        {%- endcase -%}
+      {%- endfor -%}
+    </main>
+
+    <!-- Newsletter signup block -->
+    {%- if section.settings.show_newsletter -%}
+      <section class="links-newsletter">
+        <h3>{{ section.settings.newsletter_title }}</h3>
+        <p>{{ section.settings.newsletter_text }}</p>
+
+        {% form 'customer', class: 'links-newsletter-form' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="La tua email..."
+            required
+            class="links-input"
+          />
+          <button type="submit" class="links-submit-btn">
+            Iscriviti
+          </button>
+          
+          {%- if form.posted_successfully? -%}
+            <div class="links-newsletter-success" style="width: 100%; margin-top: 0.8rem;">
+              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round" style="color: var(--color-gold);"><polyline points="20 6 9 17 4 12"></polyline></svg>
+              <span>Iscrizione avvenuta con successo!</span>
+            </div>
+          {%- endif -%}
+          {%- if form.errors -%}
+            <div class="links-newsletter-error" style="width: 100%; margin-top: 0.5rem; color: #ef4444; font-size: 0.75rem;">
+              <span>Email non valida o già registrata.</span>
+            </div>
+          {%- endif -%}
+        {% endform %}
+      </section>
+    {%- endif -%}
+
+    <!-- Social links footer -->
+    <footer class="links-footer">
+      <div>
+        {%- if section.settings.instagram_url != blank -%}
+          <a href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+        {%- endif -%}
+        
+        {%- if section.settings.tiktok_url != blank -%}
+          <a href="{{ section.settings.tiktok_url }}" target="_blank" rel="noopener noreferrer" aria-label="TikTok" class="tiktok-icon">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5" />
+            </svg>
+          </a>
+        {%- endif -%}
+        
+        {%- if section.settings.email_address != blank -%}
+          <a href="mailto:{{ section.settings.email_address }}" aria-label="Email">
+            <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </a>
+        {%- endif -%}
+      </div>
+      <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+    </footer>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Social Links Page",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "avatar_image",
+      "label": "Foto Profilo"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nome Profilo",
+      "default": "DAIANA"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sottotitolo / Bio",
+      "default": "Frammenti di inchiostro, ombre e coscienza."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_newsletter",
+      "label": "Mostra modulo Newsletter",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "newsletter_title",
+      "label": "Titolo Newsletter",
+      "default": "Unisciti alle Lettere dall'Ombra"
+    },
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Descrizione Newsletter",
+      "default": "Ricevi estratti gratuiti e aggiornamenti sui dietro le quinte."
+    },
+    {
+      "type": "header",
+      "content": "Link Social"
+    },
+    {
+      "type": "text",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "text",
+      "id": "tiktok_url",
+      "label": "TikTok URL"
+    },
+    {
+      "type": "text",
+      "id": "email_address",
+      "label": "Indirizzo Email",
+      "default": "info@daianavaiani.it"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "link_item",
+      "name": "Link Bottone",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titolo Link",
+          "default": "Pre-ordina \"Noi siamo persona\""
+        },
+        {
+          "type": "text",
+          "id": "subtitle",
+          "label": "Sottotitolo Link",
+          "default": "Il nuovo fumetto sul Disturbo Dissociativo dell'Identità"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "Indirizzo Link (URL)"
+        },
+        {
+          "type": "checkbox",
+          "id": "is_featured",
+          "label": "Metti in Evidenza (Effetto Giallo Pulsante)",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icona Bottone",
+          "options": [
+            { "value": "arrow", "label": "Freccia (Default)" },
+            { "value": "book", "label": "Libro" },
+            { "value": "image", "label": "Immagine" },
+            { "value": "heart", "label": "Cuore / Originale" },
+            { "value": "star", "label": "Stella" }
+          ],
+          "default": "arrow"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Social Links Page",
+      "blocks": [
+        {
+          "type": "link_item",
+          "settings": {
+            "title": "Pre-ordina \"Noi siamo persona\"",
+            "subtitle": "Il nuovo fumetto sul Disturbo Dissociativo dell'Identità",
+            "is_featured": true,
+            "icon": "book"
+          }
+        },
+        {
+          "type": "link_item",
+          "settings": {
+            "title": "La Biblioteca",
+            "subtitle": "Tutti i fumetti e gli albi illustrati",
+            "is_featured": false,
+            "icon": "book"
+          }
+        },
+        {
+          "type": "link_item",
+          "settings": {
+            "title": "Stampe Fine Art",
+            "subtitle": "Esplora la Galleria di illustrazioni a china",
+            "is_featured": false,
+            "icon": "image"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

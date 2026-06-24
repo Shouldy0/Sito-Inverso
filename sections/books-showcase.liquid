@@ -1,0 +1,75 @@
+{%- assign collection = collections[section.settings.collection] -%}
+
+<section class="books-showcase container" data-section-id="{{ section.id }}">
+  <div class="section-header reveal-3d">
+    <h2>{{ section.settings.title | escape }}</h2>
+    {%- if collection != blank -%}
+      <a href="{{ collection.url }}" class="view-all-link">{{ section.settings.link_text | escape }}</a>
+    {%- endif -%}
+  </div>
+  
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 max-w-4xl mx-auto">
+    {%- if collection != blank and collection.products.size > 0 -%}
+      {%- for product in collection.products limit: section.settings.products_to_show -%}
+        {%- render 'product-card', product: product -%}
+      {%- endfor -%}
+    {%- else -%}
+      <!-- Placeholders for Shopify Editor -->
+      {%- for i in (1..2) -%}
+        <div class="product-card">
+          <div class="product-image-wrapper">
+            {{ 'product-' | append: i | placeholder_svg_tag: 'product-image placeholder-svg' }}
+          </div>
+          <div class="product-info">
+            <span class="product-type">Fumetto Cartaceo</span>
+            <h3 class="product-title">Libro Demo {{ i }}</h3>
+            <p class="product-desc">Questa è una descrizione dimostrativa. Verrà sostituita dalla descrizione del prodotto inserito su Shopify.</p>
+            <div class="product-footer">
+              <span class="product-price">€18.00</span>
+              <button class="btn btn-outline" disabled><span class="btn-content">Dettagli</span></button>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Biblioteca Showcase",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo Sezione",
+      "default": "La Biblioteca"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione Libri"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Prodotti massimi da mostrare",
+      "min": 2,
+      "max": 6,
+      "step": 2,
+      "default": 2
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Testo Link Archivio",
+      "default": "Vedi tutti i libri"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Biblioteca Showcase"
+    }
+  ]
+}
+{% endschema %}

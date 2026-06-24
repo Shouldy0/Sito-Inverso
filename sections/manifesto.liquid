@@ -1,0 +1,31 @@
+<section class="manifesto-quote container reveal-3d" data-section-id="{{ section.id }}">
+  <p class="quote-text">
+    {{ section.settings.quote | escape }}
+  </p>
+  <span class="quote-author">— {{ section.settings.author | escape }}</span>
+</section>
+
+{% schema %}
+{
+  "name": "Manifesto Quote",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Testo Citazione",
+      "default": "“L'inchiostro è la mia voce quando il silenzio si fa troppo grande. Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.”"
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Autore",
+      "default": "Daiana Vaiani"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Manifesto Quote"
+    }
+  ]
+}
+{% endschema %}

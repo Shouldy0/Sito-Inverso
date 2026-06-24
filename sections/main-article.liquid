@@ -1,0 +1,31 @@
+<article class="container mt-12 mb-16" style="max-width: 800px;" data-section-id="{{ section.id }}">
+  <header style="margin-bottom: 3rem; text-align: center;">
+    <div style="margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-gold); text-transform: uppercase; letter-spacing: 0.1em;">
+      <span>{{ article.published_at | date: "%d %B %Y" }}</span>
+    </div>
+    <h1 style="font-family: var(--font-heading); font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.2;">{{ article.title }}</h1>
+  </header>
+
+  {%- if article.image -%}
+    <div style="margin-bottom: 3rem; border-radius: 12px; overflow: hidden; border: 1px solid var(--color-border); max-height: 500px; display: flex; align-items: center; justify-content: center; background-color: var(--color-bg-secondary);">
+      <img src="{{ article.image | image_url: width: 1200 }}" alt="{{ article.image.alt | escape }}" style="width: 100%; height: auto; object-fit: cover;">
+    </div>
+  {%- endif -%}
+
+  <div class="article-content" style="color: var(--color-text-secondary); line-height: 1.9; font-size: 1.05rem;">
+    {{ article.content }}
+  </div>
+
+  <div style="margin-top: 4rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
+    <a href="{{ blog.url }}" style="color: var(--color-gold); font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; display: inline-flex; align-items: center; gap: 0.5rem;">
+      ← Torna al Diario
+    </a>
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Articolo Principale",
+  "settings": []
+}
+{% endschema %}

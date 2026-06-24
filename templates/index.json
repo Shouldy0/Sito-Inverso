@@ -1,0 +1,47 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "DAIANA",
+        "subtitle": "Frammenti di inchiostro, ombre e coscienza.",
+        "scroll_text": "Scorri per esplorare",
+        "particle_count": 14
+      }
+    },
+    "manifesto": {
+      "type": "manifesto",
+      "settings": {
+        "quote": "“L'inchiostro è la mia voce quando il silenzio si fa troppo grande. Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.”",
+        "author": "Daiana Vaiani"
+      }
+    },
+    "featured_product": {
+      "type": "featured-product",
+      "settings": {}
+    },
+    "books_showcase": {
+      "type": "books-showcase",
+      "settings": {
+        "title": "La Biblioteca",
+        "products_to_show": 2,
+        "link_text": "Vedi tutti i libri"
+      }
+    },
+    "prints_showcase": {
+      "type": "prints-showcase",
+      "settings": {
+        "title": "Stampe Fine Art",
+        "products_to_show": 3,
+        "link_text": "Esplora la Galleria"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "manifesto",
+    "featured_product",
+    "books_showcase",
+    "prints_showcase"
+  ]
+}

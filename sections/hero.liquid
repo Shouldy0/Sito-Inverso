@@ -1,0 +1,57 @@
+<section class="cinematic-hero" data-section-id="{{ section.id }}">
+  <div class="particles-container">
+    {%- for i in (1..section.settings.particle_count) -%}
+      <div class="particle"></div>
+    {%- endfor -%}
+  </div>
+  <div class="hero-center-content">
+    <h1 class="hero-logo-title">{{ section.settings.title | default: shop.name }}</h1>
+    <p class="hero-blur-subtitle">
+      {{ section.settings.subtitle }}
+    </p>
+    <div class="scroll-indicator">
+      <span class="scroll-text">{{ section.settings.scroll_text }}</span>
+      <span class="scroll-arrow">↓</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Cinematic Hero",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo Principale",
+      "default": "DAIANA"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Frammenti di inchiostro, ombre e coscienza."
+    },
+    {
+      "type": "text",
+      "id": "scroll_text",
+      "label": "Testo Scorri",
+      "default": "Scorri per esplorare"
+    },
+    {
+      "type": "range",
+      "id": "particle_count",
+      "label": "Numero Particelle",
+      "min": 5,
+      "max": 30,
+      "step": 1,
+      "default": 14
+    }
+  ],
+  "presets": [
+    {
+      "name": "Cinematic Hero"
+    }
+  ]
+}
+{% endschema %}

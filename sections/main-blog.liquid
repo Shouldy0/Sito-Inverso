@@ -1,0 +1,50 @@
+<div class="diario-page page-transition" data-section-id="{{ section.id }}">
+  <div class="diario-header">
+    <div class="container">
+      <h1 class="diario-title">{{ blog.title }}</h1>
+      <p class="diario-subtitle">{{ section.settings.subtitle }}</p>
+    </div>
+  </div>
+
+  <div class="container mt-5">
+    <div class="blog-grid">
+      {%- for article in blog.articles -%}
+        <article class="blog-card reveal-3d">
+          <div class="blog-card-meta">
+            {%- if article.tags.size > 0 -%}
+              <span class="blog-category">{{ article.tags.first }}</span>
+            {%- endif -%}
+            <span class="blog-date">{{ article.published_at | date: "%d %B %Y" }}</span>
+          </div>
+          <h2 class="blog-card-title">{{ article.title }}</h2>
+          <p class="blog-card-excerpt">
+            {%- if article.excerpt.size > 0 -%}
+              {{ article.excerpt | strip_html }}
+            {%- else -%}
+              {{ article.content | strip_html | truncatewords: 35 }}
+            {%- endif -%}
+          </p>
+          <a href="{{ article.url }}" class="blog-read-more">Leggi l'articolo</a>
+        </article>
+      {%- else -%}
+        <p style="text-align: center; color: var(--color-text-secondary); padding: 4rem 0;">
+          Nessun articolo pubblicato nel diario al momento.
+        </p>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Diario Blog",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sottotitolo Diario",
+      "default": "Appunti, retroscena e cronache dalla scrivania dell'artista."
+    }
+  ]
+}
+{% endschema %}

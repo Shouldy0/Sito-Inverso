@@ -1,0 +1,108 @@
+<div class="product-detail-page page-transition" data-section-id="{{ section.id }}">
+  <div class="product-detail-container">
+    
+    <!-- Left column: Media Gallery -->
+    <div class="product-detail-image-section">
+      <div class="product-image-large floating-slow">
+        {%- if product.featured_image != blank -%}
+          <img src="{{ product.featured_image | image_url: width: 1200 }}" alt="{{ product.featured_image.alt | escape }}" />
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+        {%- endif -%}
+        
+        {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
+          <span class="badge-preorder">Pre-ordine</span>
+        {%- elsif product.tags contains 'pezzo-unico' or product.type == 'Opera Originale' -%}
+          <span class="badge-unique">Pezzo Unico</span>
+        {%- endif -%}
+      </div>
+    </div>
+
+    <!-- Right column: Product Info & Purchase Form -->
+    <div class="product-detail-info-section reveal-3d">
+      <nav class="breadcrumb">
+        <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="back-link">
+          ← Torna al catalogo
+        </a>
+      </nav>
+
+      <span class="product-type-label">{{ product.type }}</span>
+      <h1 class="product-detail-title">{{ product.title }}</h1>
+      <p class="product-detail-price">{{ product.price | money }}</p>
+
+      {%- form 'product', product, id: 'product-form', class: 'product-detail-actions-form' -%}
+        <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+        
+        <div class="product-detail-actions">
+          <button type="submit" class="btn btn-primary w-full" {% unless product.available %}disabled{% endunless %}>
+            <span class="btn-content">
+              {%- if product.available -%}
+                {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
+                  Pre-ordina ora
+                {%- else -%}
+                  Aggiungi al Carrello
+                {%- endif -%}
+              {%- else -%}
+                Esaurito
+              {%- endif -%}
+            </span>
+          </button>
+        </div>
+      {%- endform -%}
+
+      <div class="product-description-block">
+        <h3>Descrizione</h3>
+        <p>{{ product.description }}</p>
+      </div>
+
+      <!-- Specs list using Shopify Metafields (Online Store 2.0 specs) -->
+      {%- if product.metafields.custom.pages != blank or product.metafields.custom.format != blank or product.metafields.custom.binding != blank or product.metafields.custom.paper != blank or product.metafields.custom.cover != blank -%}
+        <div class="product-details-list">
+          <h3>Dettagli</h3>
+          <ul>
+            {%- if product.metafields.custom.pages != blank -%}
+              <li>Pagine: {{ product.metafields.custom.pages }}</li>
+            {%- endif -%}
+            {%- if product.metafields.custom.format != blank -%}
+              <li>Formato: {{ product.metafields.custom.format }}</li>
+            {%- endif -%}
+            {%- if product.metafields.custom.binding != blank -%}
+              <li>Rilegatura: {{ product.metafields.custom.binding }}</li>
+            {%- endif -%}
+            {%- if product.metafields.custom.paper != blank -%}
+              <li>Carta: {{ product.metafields.custom.paper }}</li>
+            {%- endif -%}
+            {%- if product.metafields.custom.cover != blank -%}
+              <li>Copertina: {{ product.metafields.custom.cover }}</li>
+            {%- endif -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      <!-- Dynamic shipping notes -->
+      <div class="shipping-info">
+        {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
+          <p class="text-gold" style="font-weight: 600;">
+            Pre-ordine: Questo albo verrà stampato e spedito a partire dalla data di rilascio pubblicata.
+          </p>
+        {%- else -%}
+          <p><strong>Spedizione:</strong> Calcolata al momento del checkout.</p>
+        {%- endif -%}
+        
+        {%- if product.tags contains 'pezzo-unico' or product.type == 'Opera Originale' -%}
+          <p class="text-burgundy" style="font-weight: 600; margin-top: 0.5rem;">
+            Spedizione assicurata con corriere speciale per opere d'arte.
+          </p>
+        {%- endif -%}
+      </div>
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Dettaglio Prodotto",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,36 @@
+{% comment %}
+  Renders a product card
+  Usage:
+  {% render 'product-card', product: product %}
+{% endcomment %}
+
+<div class="product-card">
+  <a href="{{ product.url }}" class="product-image-wrapper">
+    {%- if product.featured_image != blank -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" class="product-image" loading="lazy" />
+    {%- else -%}
+      {{ 'product-1' | placeholder_svg_tag: 'product-image placeholder-svg' }}
+    {%- endif -%}
+
+    {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
+      <span class="badge-preorder">Pre-ordine</span>
+    {%- elsif product.tags contains 'pezzo-unico' or product.tags contains 'originale' or product.type == 'Opera Originale' -%}
+      <span class="badge-unique">Pezzo Unico</span>
+    {%- endif -%}
+  </a>
+
+  <div class="product-info">
+    <span class="product-type">{{ product.type }}</span>
+    <h3 class="product-title">
+      <a href="{{ product.url }}">{{ product.title }}</a>
+    </h3>
+    <p class="product-desc">{{ product.description | strip_html | truncatewords: 22 }}</p>
+    
+    <div class="product-footer">
+      <span class="product-price">{{ product.price | money }}</span>
+      <a href="{{ product.url }}" class="btn btn-outline">
+        <span class="btn-content">Dettagli</span>
+      </a>
+    </div>
+  </div>
+</div>

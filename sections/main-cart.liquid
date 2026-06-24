@@ -1,0 +1,74 @@
+<div class="container mt-12 mb-16" style="max-width: 800px;">
+  <h1 style="margin-bottom: 2rem;">Il tuo Carrello</h1>
+
+  {%- if cart.item_count > 0 -%}
+    <form action="{{ routes.cart_url }}" method="post" id="cart">
+      <div style="display: flex; flex-direction: column; gap: 2rem; margin-bottom: 3rem;">
+        {%- for item in cart.items -%}
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--color-border); padding-bottom: 1.5rem; gap: 2rem;">
+            <!-- Product Image -->
+            <div style="width: 80px; height: 100px; overflow: hidden; border-radius: 6px; border: 1px solid var(--color-border); background-color: #fbfbf9; padding: 0.5rem; display: flex; align-items: center; justify-content: center;">
+              {%- if item.image != blank -%}
+                <img src="{{ item.image | image_url: width: 160 }}" alt="{{ item.product.title | escape }}" style="max-width: 100%; max-height: 100%; object-fit: contain;">
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag }}
+              {%- endif -%}
+            </div>
+            
+            <!-- Product Title & Actions -->
+            <div style="flex: 1;">
+              <h3 style="font-size: 1.1rem; margin-bottom: 0.2rem; font-family: var(--font-heading);"><a href="{{ item.url }}">{{ item.product.title }}</a></h3>
+              {%- if item.variant.title != 'Default Title' -%}
+                <p style="color: var(--color-text-secondary); font-size: 0.9rem; margin-bottom: 0.5rem;">{{ item.variant.title }}</p>
+              {%- endif -%}
+              <a href="/cart/change?line={{ forloop.index }}&quantity=0" style="color: var(--color-gold); font-size: 0.8rem; text-decoration: underline;">Rimuovi</a>
+            </div>
+
+            <!-- Quantity Input -->
+            <div style="display: flex; align-items: center; gap: 1rem;">
+              <input 
+                type="number" 
+                name="updates[]" 
+                id="updates_{{ item.key }}" 
+                value="{{ item.quantity }}" 
+                min="0" 
+                style="width: 60px; background-color: var(--color-bg-secondary); border: 1px solid var(--color-border); padding: 0.4rem; color: #fff; border-radius: 4px; text-align: center; outline: none;"
+              >
+            </div>
+
+            <!-- Price -->
+            <div style="font-size: 1.1rem; font-weight: 500; font-family: var(--font-heading);">
+              {{ item.final_line_price | money }}
+            </div>
+          </div>
+        {%- endfor -%}
+      </div>
+
+      <!-- Checkout Footer -->
+      <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 1.5rem; border-top: 1px solid var(--color-border); padding-top: 2rem;">
+        <div style="display: flex; justify-content: space-between; width: 100%; max-width: 350px; font-size: 1.2rem; font-family: var(--font-heading);">
+          <span>Subtotale:</span>
+          <span style="font-weight: 600; color: var(--color-gold);">{{ cart.total_price | money }}</span>
+        </div>
+        <p style="color: var(--color-text-secondary); font-size: 0.85rem;">Tasse e spedizione calcolate al momento del checkout.</p>
+        
+        <div style="display: flex; gap: 1rem;">
+          <button type="submit" name="update" class="btn btn-secondary">Aggiorna Carrello</button>
+          <button type="submit" name="checkout" class="btn btn-primary"><span class="btn-content">Procedi al Pagamento</span></button>
+        </div>
+      </div>
+    </form>
+  {%- else -%}
+    <div style="text-align: center; padding: 6rem 0;">
+      <p style="color: var(--color-text-secondary); margin-bottom: 2rem;">Il tuo carrello è vuoto al momento.</p>
+      <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="btn btn-primary"><span class="btn-content">Torna allo Store</span></a>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Carrello Principale",
+  "settings": []
+}
+{% endschema %}
