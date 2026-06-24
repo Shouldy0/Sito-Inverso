@@ -1,0 +1,131 @@
+<div class="about-section" data-section-id="{{ section.id }}" data-section-type="about">
+  <div class="container">
+    <div class="about-inner">
+
+      <!-- Immagine / Foto autrice -->
+      <div class="about-image-col">
+        <div class="about-image-frame">
+          {%- if section.settings.author_image != blank -%}
+            <img
+              src="{{ section.settings.author_image | image_url: width: 760 }}"
+              alt="{{ section.settings.author_name | default: shop.name }}"
+              width="760"
+              loading="lazy"
+            >
+          {%- else -%}
+            <div class="about-image-placeholder">
+              <span class="placeholder-icon">✦</span>
+              <span style="font-size:0.85rem; opacity:0.5;">Aggiungi foto in Admin</span>
+            </div>
+          {%- endif -%}
+        </div>
+        <div class="about-accent-line"></div>
+      </div>
+
+      <!-- Testo -->
+      <div class="about-text-col">
+        <span class="about-label">{{ section.settings.label | default: 'Chi sono' }}</span>
+
+        <h2 class="about-title">
+          {{ section.settings.title | default: 'Daiana Vaiani' }}
+        </h2>
+
+        {%- if section.settings.bio != blank -%}
+          <p class="about-bio">{{ section.settings.bio }}</p>
+        {%- else -%}
+          <p class="about-bio">Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande.</p>
+        {%- endif -%}
+
+        {%- if section.settings.quote != blank -%}
+          <blockquote class="about-quote">
+            {{ section.settings.quote }}
+          </blockquote>
+        {%- endif -%}
+
+        <div class="about-actions">
+          {%- if section.settings.cta_url != blank -%}
+            <a href="{{ section.settings.cta_url }}" class="btn btn-primary">
+              <span class="btn-content">{{ section.settings.cta_label | default: "Scopri l'universo" }}</span>
+            </a>
+          {%- else -%}
+            <a href="/pages/universo" class="btn btn-primary">
+              <span class="btn-content">Scopri l'Universo</span>
+            </a>
+          {%- endif -%}
+
+          {%- if section.settings.social_instagram != blank -%}
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" class="btn btn-outline" style="gap:0.5rem;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              Instagram
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Chi Sono",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta sopra titolo",
+      "default": "Chi sono"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nome / Titolo",
+      "default": "Daiana Vaiani"
+    },
+    {
+      "type": "textarea",
+      "id": "bio",
+      "label": "Biografia",
+      "default": "Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande."
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Citazione (opzionale)",
+      "default": "\"Ogni storia è una soglia. Ogni pagina è un passo oltre il confine del visibile.\""
+    },
+    {
+      "type": "image_picker",
+      "id": "author_image",
+      "label": "Foto autrice"
+    },
+    {
+      "type": "text",
+      "id": "author_name",
+      "label": "Alt text immagine",
+      "default": "Daiana Vaiani"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Link pulsante principale"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Testo pulsante",
+      "default": "Scopri l'Universo"
+    },
+    {
+      "type": "url",
+      "id": "social_instagram",
+      "label": "Link Instagram"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Chi Sono"
+    }
+  ]
+}
+{% endschema %}

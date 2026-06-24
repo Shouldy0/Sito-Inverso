@@ -9,8 +9,13 @@
   {%- if product.featured_media -%}
     <meta property="og:image" content="http:{{ product.featured_media | image_url: width: 1200 }}">
     <meta property="og:image:secure_url" content="https:{{ product.featured_media | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+    <meta name="twitter:image" content="https:{{ product.featured_media | image_url: width: 1200 }}">
+  {%- elsif settings.share_image -%}
+    <meta property="og:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
+    <meta name="twitter:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
   {%- endif -%}
-  <meta property="og:description" content="{{ product.description | strip_html | escape }}">
+  <meta property="og:description" content="{{ product.description | strip_html | truncate: 155 | escape }}">
   <meta property="og:price:amount" content="{{ product.price | money_without_currency | strip_html | escape }}">
   <meta property="og:price:currency" content="{{ cart.currency.iso_code }}">
 {%- elsif request.page_type == 'article' -%}
@@ -20,19 +25,28 @@
   {%- if article.image -%}
     <meta property="og:image" content="http:{{ article.image | image_url: width: 1200 }}">
     <meta property="og:image:secure_url" content="https:{{ article.image | image_url: width: 1200 }}">
+    <meta name="twitter:image" content="https:{{ article.image | image_url: width: 1200 }}">
+  {%- elsif settings.share_image -%}
+    <meta property="og:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
+    <meta name="twitter:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
   {%- endif -%}
-  <meta property="og:description" content="{{ article.excerpt_or_content | strip_html | escape }}">
+  <meta property="og:description" content="{{ article.excerpt_or_content | strip_html | truncate: 155 | escape }}">
 {%- else -%}
   <meta property="og:type" content="website">
   <meta property="og:title" content="{{ page_title | escape }}">
   <meta property="og:url" content="{{ canonical_url }}">
   {%- if settings.share_image -%}
-    <meta property="og:image" content="http:{{ settings.share_image | image_url: width: 1200 }}">
+    <meta property="og:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
     <meta property="og:image:secure_url" content="https:{{ settings.share_image | image_url: width: 1200 }}">
+    <meta property="og:image:width" content="1200">
+    <meta name="twitter:image" content="https:{{ settings.share_image | image_url: width: 1200 }}">
   {%- endif -%}
-  <meta property="og:description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+  {%- assign og_desc = page_description | default: shop.description | default: 'Universo creativo di Daiana Vaiani — libri, stampe originali, fumetti e arte.' -%}
+  <meta property="og:description" content="{{ og_desc | escape }}">
 {%- endif -%}
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ page_title | escape }}">
-<meta name="twitter:description" content="{{ page_description | default: shop.description | default: shop.name | escape }}">
+{%- assign twitter_desc = page_description | default: shop.description | default: 'Universo creativo di Daiana Vaiani.' -%}
+<meta name="twitter:description" content="{{ twitter_desc | escape }}">
+<meta name="twitter:site" content="@daianavaiani">

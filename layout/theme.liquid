@@ -1,6 +1,7 @@
 <!doctype html>
-<html class="no-js" lang="{{ request.locale.iso_code }}">
+<html class="no-js" lang="it">
   <head>
+    <script>document.documentElement.classList.remove('no-js');</script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -12,16 +13,30 @@
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
+    {%- assign seo_title = page_title -%}
+    {%- if request.page_type == 'index' -%}
+      {%- assign seo_title = 'Daiana Vaiani — Libri, Stampe e Universo Creativo' -%}
+    {%- endif -%}
     <title>
-      {{ page_title }}
+      {{ seo_title }}
       {%- if current_tags %} &ndash; tagged "{{ current_tags | join: ', ' }}"{% endif -%}
-      {%- if current_page != 1 %} &ndash; Page {{ current_page }}{% endif -%}
-      {%- unless page_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
+      {%- if current_page != 1 %} &ndash; Pagina {{ current_page }}{% endif -%}
+      {%- unless seo_title contains shop.name %} &ndash; {{ shop.name }}{% endunless -%}
     </title>
 
-    {% if page_description %}
-      <meta name="description" content="{{ page_description | escape }}">
-    {% endif %}
+    {%- assign seo_description = page_description -%}
+    {%- if seo_description == blank -%}
+      {%- if request.page_type == 'index' -%}
+        {%- assign seo_description = 'Scopri i libri, le stampe e l\'universo creativo di Daiana Vaiani. Acquista "Noi siamo persona" e i print esclusivi direttamente online.' -%}
+      {%- elsif request.page_type == 'product' -%}
+        {%- assign seo_description = product.description | strip_html | truncate: 155 -%}
+      {%- else -%}
+        {%- assign seo_description = shop.description | default: 'Universo creativo di Daiana Vaiani — libri, stampe originali, fumetti e arte.' -%}
+      {%- endif -%}
+    {%- endif -%}
+    <meta name="description" content="{{ seo_description | escape }}">
+    <meta name="keywords" content="Daiana Vaiani, libri, stampe, fumetti, arte, Noi siamo persona, universo creativo, shop">
+    <meta name="author" content="Daiana Vaiani">
 
     {% render 'meta-tags' %}
 
@@ -42,6 +57,8 @@
     
     <!-- Theme Main Script -->
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+    <!-- Popup Newsletter -->
+    <script src="{{ 'newsletter-popup.js' | asset_url }}" defer="defer"></script>
   </head>
 
   <body>
@@ -49,6 +66,43 @@
     <div class="ambient-glow-1 parallax-bg floating-slow" data-parallax-y="160"></div>
     <div class="ambient-glow-2 parallax-bg floating-medium" data-parallax-y="-100"></div>
     <div class="ambient-glow-3 parallax-bg floating-slow" data-parallax-y="130"></div>
+
+    <!-- Newsletter Popup -->
+    <div id="newsletter-popup" class="newsletter-popup" aria-modal="true" role="dialog" aria-labelledby="popup-title" style="display:none;">
+      <div class="newsletter-popup-overlay" id="popup-overlay"></div>
+      <div class="newsletter-popup-box">
+        <button class="newsletter-popup-close" id="popup-close" aria-label="Chiudi popup">&times;</button>
+        <div class="newsletter-popup-content">
+          <div class="newsletter-popup-icon">✦</div>
+          <h2 class="newsletter-popup-title" id="popup-title">Entra nell'Universo</h2>
+          <p class="newsletter-popup-subtitle">Ricevi lettere dall'ombra — estratti esclusivi, dietro le quinte e accesso prioritario ai nuovi lavori.</p>
+          {% form 'customer', class: 'newsletter-popup-form', id: 'popup-form' %}
+            <input type="hidden" name="contact[tags]" value="newsletter,popup">
+            <div class="newsletter-popup-fields">
+              <input
+                type="email"
+                name="contact[email]"
+                placeholder="La tua email..."
+                class="newsletter-popup-input"
+                value="{{ form.email }}"
+                aria-label="Email"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="newsletter-popup-submit">Iscriviti</button>
+            </div>
+            {%- if form.posted_successfully? -%}
+              <p class="popup-success">✓ Benvenuto nell'universo! A presto.</p>
+              <script>if(window.markPopupDone) window.markPopupDone();</script>
+            {%- endif -%}
+            {%- if form.errors -%}
+              <p class="popup-error">Email non valida o già registrata.</p>
+            {%- endif -%}
+          {% endform %}
+          <button class="newsletter-popup-skip" id="popup-skip">No grazie, continua a leggere</button>
+        </div>
+      </div>
+    </div>
 
     {% section 'header' %}
 
