@@ -11,10 +11,72 @@
   "sections": {
     "main": {
       "type": "main-blog",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "subtitle": "Appunti, retroscena e cronache dalla scrivania dell'artista."
+      }
+    },
+    "universo_ceVWKp": {
+      "type": "universo",
+      "blocks": {
+        "narrative_card_RhRpej": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Frammento 01",
+            "title": "L'Ombra del Tempo",
+            "text": "Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine.",
+            "float_speed": "slow"
+          }
+        },
+        "narrative_card_VTFFhA": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Personaggio",
+            "title": "Il Custode",
+            "text": "Colui che abita tra i risvolti delle pagine. Non parla se non attraverso il fruscio della carta cotone, indicando strade incise nella china.",
+            "float_speed": "medium"
+          }
+        },
+        "narrative_card_E8ace3": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Archivi",
+            "title": "La Stanza Vetrificata",
+            "text": "Un luogo sospeso dove la musica del pianoforte si solidifica in riflessi dorati. Chi vi entra, dimentica il proprio nome ma ritrova la propria ombra.",
+            "float_speed": "medium"
+          }
+        },
+        "narrative_card_KAhUR9": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Poesia",
+            "title": "Pensieri Dispersi",
+            "text": "Oltre la nebbia del giorno, dove la coscienza si incrina e lascia filtrare una luce silenziosa. Scrivere è raccogliere i cocci del mattino.",
+            "float_speed": "slow"
+          }
+        }
+      },
+      "block_order": [
+        "narrative_card_RhRpej",
+        "narrative_card_VTFFhA",
+        "narrative_card_E8ace3",
+        "narrative_card_KAhUR9"
+      ],
+      "name": "Universo DAIANA",
+      "settings": {
+        "hero_title": "L'Universo DAIANA",
+        "hero_subtitle": "Non è solo arte, è un portale verso un mondo sommerso.",
+        "manifesto_title": "Il Manifesto",
+        "manifesto_text": "<p>DAIANA nasce come esplorazione dei confini tra la parola scritta e l'immagine. Ogni opera d'arte, ogni stampa e ogni libro che esce da questo studio è un frammento di una narrazione molto più grande. Un mondo sommerso fatto di ombre, riflessi e rovine antiche.</p><p>La nostra missione è creare <strong>artefatti fisici</strong> in un'era digitale. Libri da sfogliare, carte pesanti da toccare, inchiostri che riflettono la luce. Crediamo nel valore dell'oggetto libro e dell'opera d'arte tangibile.</p>",
+        "artist_title": "L'Artista",
+        "artist_text": "<p>Dietro l'universo di DAIANA c'è la mano e la mente di <strong>Daiana Vaiani</strong>.</p><p>Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.</p><p>Con un percorso di studi che unisce il diploma al Liceo Artistico alla passione per la Psicologia, Daiana riversa nelle sue opere un profondo bisogno di 'tirar fuori' e dare forma a pensieri ed emozioni intime. La sua scrittura poetica, già presente in diverse pubblicazioni collettive e raccolte personali (come la sua opera <em>Pensieri dispersi</em>), si fonde con le sue illustrazioni in bianco e nero in un legame indissolubile, creando opere sospese tra l'ombra, il sogno e l'inconscio.</p>",
+        "narrative_title": "Frammenti dell'Abisso",
+        "narrative_subtitle": "Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo DAIANA."
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "universo_ceVWKp"
   ]
 }
