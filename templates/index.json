@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -18,20 +27,25 @@
     },
     "featured_product": {
       "type": "featured-product",
-      "settings": {}
+      "settings": {
+        "featured_product": "sfiorare-il-buio"
+      }
     },
     "books_showcase": {
       "type": "books-showcase",
       "settings": {
         "title": "La Biblioteca",
+        "collection": "frontpage",
         "products_to_show": 2,
         "link_text": "Vedi tutti i libri"
       }
     },
-    "prints_showcase": {
+    "prints_showcase_TrBcJg": {
       "type": "prints-showcase",
+      "name": "Stampe Fine Art Showcase",
       "settings": {
         "title": "Stampe Fine Art",
+        "collection": "stampe",
         "products_to_show": 3,
         "link_text": "Esplora la Galleria"
       }
@@ -42,6 +56,6 @@
     "manifesto",
     "featured_product",
     "books_showcase",
-    "prints_showcase"
+    "prints_showcase_TrBcJg"
   ]
 }
