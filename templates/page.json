@@ -12,9 +12,62 @@
     "main": {
       "type": "main-page",
       "settings": {}
+    },
+    "main_links_B3QjQH": {
+      "type": "main-links",
+      "blocks": {
+        "link_item_wfjHUc": {
+          "type": "link_item",
+          "settings": {
+            "title": "Pre-ordina \"Noi siamo persona\"",
+            "subtitle": "Il nuovo fumetto sul Disturbo Dissociativo dell'Identità",
+            "url": "",
+            "is_featured": true,
+            "icon": "book"
+          }
+        },
+        "link_item_JjVK7t": {
+          "type": "link_item",
+          "settings": {
+            "title": "La Biblioteca",
+            "subtitle": "Tutti i fumetti e gli albi illustrati",
+            "url": "",
+            "is_featured": false,
+            "icon": "book"
+          }
+        },
+        "link_item_gGHQjy": {
+          "type": "link_item",
+          "settings": {
+            "title": "Stampe Fine Art",
+            "subtitle": "Esplora la Galleria di illustrazioni a china",
+            "url": "",
+            "is_featured": false,
+            "icon": "image"
+          }
+        }
+      },
+      "block_order": [
+        "link_item_wfjHUc",
+        "link_item_JjVK7t",
+        "link_item_gGHQjy"
+      ],
+      "name": "Social Links Page",
+      "settings": {
+        "avatar_image": "shopify://shop_images/favicon.svg",
+        "title": "DAIANA",
+        "subtitle": "Frammenti di inchiostro, ombre e coscienza.",
+        "show_newsletter": true,
+        "newsletter_title": "Unisciti alle Lettere dall'Ombra",
+        "newsletter_text": "Ricevi estratti gratuiti e aggiornamenti sui dietro le quinte.",
+        "instagram_url": "",
+        "tiktok_url": "",
+        "email_address": "info@daianavaiani.it"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "main_links_B3QjQH"
   ]
 }
