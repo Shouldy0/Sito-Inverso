@@ -9,16 +9,31 @@
  */
 {
   "current": {
+    "social_tiktok_link": "https://www.tiktok.com/@daiana_vaiani",
+    "favicon": "shopify://shop_images/favicon.svg",
     "sections": {
       "header": {
         "type": "header",
-        "settings": {}
+        "settings": {
+          "menu": "main-menu",
+          "show_divider": true
+        }
       },
       "footer": {
         "type": "footer",
-        "settings": {}
+        "settings": {
+          "brand_name": "DAIANA",
+          "brand_slogan": "Ogni storia è una soglia.",
+          "menu_1_title": "Esplora",
+          "menu_1": "main-menu",
+          "menu_2_title": "Informazioni",
+          "menu_2": "",
+          "newsletter_title": "Lettere dall'Ombra",
+          "newsletter_text": "Ricevi in anteprima estratti dei nuovi fumetti, aggiornamenti sui dietro le quinte e l'accesso prioritario alle opere originali."
+        }
       }
-    }
+    },
+    "content_for_index": []
   },
   "presets": {}
 }
