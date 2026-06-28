@@ -53,6 +53,12 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
 "Quando la terra smette di tremare, l'Io torna a fiorire. Noi siamo persona."`,
     price: 18.00,
     imageUrl: '/assets/noi_siamo_persona.jpg',
+    images: [
+      '/assets/noi_siamo_persona.jpg',
+      '/assets/noi_siamo_persona_preview_1.png',
+      '/assets/noi_siamo_persona_preview_2.png',
+      '/assets/noi_siamo_persona_preview_3.png'
+    ],
     isPreorder: true,
     releaseDate: '15 Settembre 2026',
     lulu_printable_id: '2mnjnrd', // ID del progetto Lulu in bozza
@@ -86,7 +92,18 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     title: 'Il Volto Cancellato',
     type: 'Stampa Artistica',
     category: 'galleria',
-    description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Quest\'opera esplora l\'assenza di identità attraverso un\'estetica dark fantasy minimale. I dettagli del tratto a inchiostro si fondono con lo sfondo, creando un\'atmosfera sospesa, onirica e misteriosa.',
+    description: `Stampa Fine Art in formato A4 (21 x 29,7 cm). Quest'opera esplora l'assenza di identità attraverso un'estetica dark fantasy minimale. I dettagli del tratto a inchiostro si fondono con lo sfondo, creando un'atmosfera sospesa, onirica e misteriosa.
+
+FAQ (Domande Frequenti relative all'opera)
+
+Qual è il significato dietro questa illustrazione?
+"Volto Cancellato" nasce come una riflessione sull'identità. Rappresenta quel momento di vulnerabilità in cui ci sentiamo indefiniti o nascosti. È un invito a non temere le proprie fragilità, ma a riconoscerle come parte del nostro viaggio.
+
+Come viene protetta la stampa durante il viaggio?
+Ogni opera viene imballata personalmente con cura e delicatezza, utilizzando materiali protettivi affinché arrivi intatta nelle tue mani, pronta per essere accolta nel tuo spazio.
+
+A chi è dedicata questa stampa?
+A chiunque senta il bisogno di un'arte che non chiede di essere perfetti, ma che comprende la fatica e la bellezza del cercare se stessi ogni giorno.`,
     price: 12.00,
     imageUrl: '/assets/opera-1.png',
     details: [

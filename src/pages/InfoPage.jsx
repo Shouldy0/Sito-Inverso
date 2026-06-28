@@ -1,4 +1,6 @@
 import { useParams } from 'react-router-dom';
+import ContactForm from '../components/UI/ContactForm';
+import { Mail, MapPin, Clock } from 'lucide-react';
 import './InfoPage.css';
 
 const infoData = {
@@ -29,21 +31,13 @@ const infoData = {
   },
   contatti: {
     title: "Contattaci",
-    content: (
-      <>
-        <p>Per richieste commerciali, collaborazioni o domande sugli ordini, puoi scriverci direttamente.</p>
-        <div className="contact-info">
-          <p><strong>Email:</strong> info@daianavaiani.it</p>
-          <p><strong>Studio:</strong> (Solo su appuntamento)</p>
-          <p>Rispondiamo solitamente entro 48 ore lavorative.</p>
-        </div>
-      </>
-    )
+    content: null // Custom layout rendered instead
   }
 };
 
-const InfoPage = () => {
-  const { pageId } = useParams();
+const InfoPage = ({ pageId: propPageId }) => {
+  const { pageId: paramPageId } = useParams();
+  const pageId = propPageId || paramPageId;
   const page = infoData[pageId];
 
   if (!page) {
@@ -54,14 +48,64 @@ const InfoPage = () => {
     );
   }
 
+  const isContact = pageId === 'contatti';
+
   return (
     <div className="info-page page-transition">
       <div className="container">
-        <div className="info-content-wrapper">
+        <div className={isContact ? "contact-page-container animate-fade-in" : "info-content-wrapper"}>
           <h1 className="info-title">{page.title}</h1>
-          <div className="info-body">
-            {page.content}
-          </div>
+          
+          {isContact ? (
+            <div className="contact-grid">
+              <div className="contact-details-col">
+                <p className="contact-intro-text">
+                  Per richieste commerciali, collaborazioni o domande sugli ordini, 
+                  compila il modulo a fianco o usa i contatti diretti riportati qui sotto.
+                </p>
+                
+                <div className="contact-cards-list">
+                  <div className="contact-detail-card">
+                    <div className="detail-icon">
+                      <Mail size={20} />
+                    </div>
+                    <div className="detail-text">
+                      <h4>Email</h4>
+                      <a href="mailto:info@daianavaiani.it" className="detail-link">info@daianavaiani.it</a>
+                    </div>
+                  </div>
+
+                  <div className="contact-detail-card">
+                    <div className="detail-icon">
+                      <MapPin size={20} />
+                    </div>
+                    <div className="detail-text">
+                      <h4>Studio Artistico</h4>
+                      <p>Milano, Italia (Solo su appuntamento)</p>
+                    </div>
+                  </div>
+
+                  <div className="contact-detail-card">
+                    <div className="detail-icon">
+                      <Clock size={20} />
+                    </div>
+                    <div className="detail-text">
+                      <h4>Tempi di risposta</h4>
+                      <p>Solitamente rispondiamo entro 48 ore nei giorni lavorativi.</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div className="contact-form-col">
+                <ContactForm />
+              </div>
+            </div>
+          ) : (
+            <div className="info-body">
+              {page.content}
+            </div>
+          )}
         </div>
       </div>
     </div>

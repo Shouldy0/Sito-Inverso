@@ -39,6 +39,7 @@ const Footer = () => {
         
         <div className="footer-links">
           <h4>Esplora</h4>
+          <Link to="/universo">Universo</Link>
           <Link to="/biblioteca">Libri</Link>
           <Link to="/galleria">Stampe</Link>
           <Link to="/originali">Opere Originali</Link>
@@ -48,7 +49,7 @@ const Footer = () => {
           <h4>Informazioni</h4>
           <Link to="/info/spedizioni">Spedizioni e Resi</Link>
           <Link to="/info/termini">Termini e Condizioni</Link>
-          <Link to="/info/contatti">Contatti</Link>
+          <Link to="/contatti">Contatti</Link>
         </div>
 
         <div className="footer-newsletter">
@@ -67,12 +68,15 @@ const Footer = () => {
               <div className="input-group">
                 <input 
                   type="email" 
+                  name="email"
+                  id="newsletter-email"
                   placeholder="La tua email..." 
                   value={email} 
                   onChange={(e) => setEmail(e.target.value)} 
                   required
                   disabled={status === 'loading'}
                   className="newsletter-input"
+                  aria-label="Indirizzo email per newsletter"
                 />
                 <button type="submit" className="newsletter-submit-btn" disabled={status === 'loading'} aria-label="Iscriviti">
                   <Mail size={18} />

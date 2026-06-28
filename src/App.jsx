@@ -11,6 +11,8 @@ import InfoPage from './pages/InfoPage';
 import Checkout from './pages/Checkout';
 import Admin from './pages/Admin';
 import Links from './pages/Links';
+import Termini from './pages/Termini';
+import CookieBanner from './components/UI/CookieBanner';
 import { CartProvider } from './context/CartContext';
 import { Analytics } from '@vercel/analytics/react';
 import './index.css';
@@ -33,11 +35,15 @@ function App() {
             <Route path="diario" element={<Diario />} />
             <Route path="universo" element={<Universo />} />
             <Route path="info/:pageId" element={<InfoPage />} />
+            <Route path="info/termini" element={<Termini />} />
+            <Route path="contatti" element={<InfoPage pageId="contatti" />} />
+            <Route path="contact" element={<InfoPage pageId="contatti" />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="admin" element={<Admin />} />
           </Route>
         </Routes>
       </Router>
+      <CookieBanner />
       <Analytics />
     </CartProvider>
   );

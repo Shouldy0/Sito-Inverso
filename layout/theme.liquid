@@ -11,6 +11,10 @@
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
+    {%- else -%}
+      <link rel="icon" type="image/png" href="{{ 'favicon.png' | asset_url }}">
+      <link rel="apple-touch-icon" href="{{ 'apple-touch-icon.png' | asset_url }}">
     {%- endif -%}
 
     {%- assign seo_title = page_title -%}
@@ -27,7 +31,7 @@
     {%- assign seo_description = page_description -%}
     {%- if seo_description == blank -%}
       {%- if request.page_type == 'index' -%}
-        {%- assign seo_description = 'Scopri i libri, le stampe e l\'universo creativo di Daiana Vaiani. Acquista "Noi siamo persona" e i print esclusivi direttamente online.' -%}
+        {%- assign seo_description = 'Scopri i libri illustrati fatti a mano, stampe fine art in bianco e nero e l\'universo creativo di Daiana Vaiani.' -%}
       {%- elsif request.page_type == 'product' -%}
         {%- assign seo_description = product.description | strip_html | truncate: 155 -%}
       {%- else -%}
@@ -59,6 +63,24 @@
     <script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
     <!-- Popup Newsletter -->
     <script src="{{ 'newsletter-popup.js' | asset_url }}" defer="defer"></script>
+    <!-- Pinterest & Google Verification -->
+    <meta name="p:domain_verify" content="1f469942c389bc213c76020a6e2cce75" />
+    <meta name="google-site-verification" content="duZ6OVtNXaBhRTAGFIczTv-Bpw1Zrp_qs9kz4fXe3YI" />
+
+    {%- if request.page_type == 'index' -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Daiana Vaiani",
+        "url": "{{ shop.url }}",
+        "jobTitle": "Autrice e Illustratrice",
+        "sameAs": [
+          "https://www.instagram.com/daianavaiani"
+        ]
+      }
+      </script>
+    {%- endif -%}
   </head>
 
   <body>
@@ -111,6 +133,8 @@
     </main>
 
     {% section 'footer' %}
+
+    {% render 'cookie-banner' %}
 
     <script>
       window.shopUrl = '{{ request.origin }}';

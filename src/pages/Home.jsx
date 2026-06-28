@@ -90,6 +90,18 @@ const Home = () => {
 
   return (
     <div className="home-page page-transition">
+      <script type="application/ld+json">
+        {JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "Person",
+          "name": "Daiana Vaiani",
+          "url": "https://www.daianavaiani.it",
+          "jobTitle": "Autrice e Illustratrice",
+          "sameAs": [
+            "https://www.instagram.com/daianavaiani"
+          ]
+        })}
+      </script>
       {/* Ambient Parallax background shapes (ink nebulas) */}
       <div className="ambient-glow-1 parallax-bg floating-slow" data-parallax-y="160" />
       <div className="ambient-glow-2 parallax-bg floating-medium" data-parallax-y="-100" />
