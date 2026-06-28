@@ -594,10 +594,10 @@ img {
 
 .product-image {
   position: absolute;
-  top: 8%;
-  left: 8%;
-  width: 84%;
-  height: 84%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
   transition: transform var(--transition-slow);
@@ -1011,7 +1011,7 @@ img {
 .product-image-wrapper {
   background-color: #fbfbf9;
   border: 1px solid rgba(255, 255, 255, 0.05);
-  padding: 4rem;
+  padding: 1.5rem;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2254,10 +2254,10 @@ img {
 }
 
 .catalog-grid--books .product-image {
-  top: 5%;
-  left: 5%;
-  width: 90%;
-  height: 90%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
 }
 
 .catalog-grid--books .product-info {

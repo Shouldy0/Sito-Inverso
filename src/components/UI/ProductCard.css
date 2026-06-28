@@ -29,10 +29,10 @@
 
 .product-image {
   position: absolute;
-  top: 8%;
-  left: 8%;
-  width: 84%;
-  height: 84%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
   filter: drop-shadow(0 4px 10px rgba(0,0,0,0.06));
   transition: transform var(--transition-slow);
