@@ -22,52 +22,14 @@ const ProductDetail = () => {
 
   return (
     <div className="product-detail-page page-transition">
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org/",
-          "@type": "Product",
-          "name": product.title,
-          "image": `https://www.daianavaiani.it${product.imageUrl}`,
-          "description": product.description,
-          "brand": {
-            "@type": "Person",
-            "name": "Daiana Vaiani"
-          },
-          "offers": {
-            "@type": "Offer",
-            "url": `https://www.daianavaiani.it/product/${product.id}`,
-            "priceCurrency": "EUR",
-            "price": product.price,
-            "availability": "https://schema.org/InStock",
-            "itemCondition": "https://schema.org/NewCondition"
-          }
-        })}
-      </script>
       <div className="product-detail-container">
         
         {/* Left column: Image */}
         <div className="product-detail-image-section">
-          <div className="product-images-gallery">
-            {product.images && product.images.length > 0 ? (
-              product.images.map((imgUrl, index) => (
-                <div key={index} className={`product-image-wrapper ${index === 0 ? 'floating-slow' : 'floating-medium'}`}>
-                  <img src={imgUrl} alt={`${product.title} - Visualizzazione ${index + 1}`} />
-                  
-                  {index === 0 && (
-                    <>
-                      {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
-                      {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
-                    </>
-                  )}
-                </div>
-              ))
-            ) : (
-              <div className="product-image-wrapper floating-slow">
-                <img src={product.imageUrl} alt={product.title} />
-                {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
-                {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
-              </div>
-            )}
+          <div className="product-image-large floating-slow">
+            <img src={product.imageUrl} alt={product.title} />
+            {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
+            {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
           </div>
         </div>
 
