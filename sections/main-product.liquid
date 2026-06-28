@@ -33,19 +33,25 @@
     
     <!-- Left column: Media Gallery -->
     <div class="product-detail-image-section">
-      <div class="product-image-large floating-slow">
+      <div class="product-images-gallery">
         {%- if product.images.size > 0 -%}
           {%- for image in product.images -%}
-            <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" style="margin-bottom: 2rem; width: 100%; height: auto; border-radius: var(--radius-md);" />
+            <div class="product-image-wrapper {% if forloop.index == 1 %}floating-slow{% else %}floating-medium{% endif %}">
+              <img src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | escape }}" />
+              
+              {%- if forloop.index == 1 -%}
+                {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
+                  <span class="badge-preorder">Pre-ordine</span>
+                {%- elsif product.tags contains 'pezzo-unico' or product.type == 'Opera Originale' -%}
+                  <span class="badge-unique">Pezzo Unico</span>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
           {%- endfor -%}
         {%- else -%}
-          {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
-        {%- endif -%}
-        
-        {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
-          <span class="badge-preorder">Pre-ordine</span>
-        {%- elsif product.tags contains 'pezzo-unico' or product.type == 'Opera Originale' -%}
-          <span class="badge-unique">Pezzo Unico</span>
+          <div class="product-image-wrapper floating-slow">
+            {{ 'product-1' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
         {%- endif -%}
       </div>
     </div>

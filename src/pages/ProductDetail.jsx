@@ -47,21 +47,27 @@ const ProductDetail = () => {
         
         {/* Left column: Image */}
         <div className="product-detail-image-section">
-          <div className="product-image-large floating-slow">
+          <div className="product-images-gallery">
             {product.images && product.images.length > 0 ? (
               product.images.map((imgUrl, index) => (
-                <img 
-                  key={index} 
-                  src={imgUrl} 
-                  alt={`${product.title} - Visualizzazione ${index + 1}`} 
-                  style={{ marginBottom: index === product.images.length - 1 ? 0 : '2rem', width: '100%', height: 'auto' }}
-                />
+                <div key={index} className={`product-image-wrapper ${index === 0 ? 'floating-slow' : 'floating-medium'}`}>
+                  <img src={imgUrl} alt={`${product.title} - Visualizzazione ${index + 1}`} />
+                  
+                  {index === 0 && (
+                    <>
+                      {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
+                      {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
+                    </>
+                  )}
+                </div>
               ))
             ) : (
-              <img src={product.imageUrl} alt={product.title} />
+              <div className="product-image-wrapper floating-slow">
+                <img src={product.imageUrl} alt={product.title} />
+                {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
+                {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
+              </div>
             )}
-            {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
-            {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
           </div>
         </div>
 
