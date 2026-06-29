@@ -14,9 +14,9 @@
 {%- assign tab_stampe_label = section.settings.tab_stampe_label -%}
 {%- if tab_stampe_label == blank -%}{%- assign tab_stampe_label = 'Stampe Artistiche' -%}{%- endif -%}
 
-{%- comment -%} Separa i prodotti in due array {%- endcomment -%}
-{%- assign libri = '' | split: '' -%}
-{%- assign stampe = '' | split: '' -%}
+{%- comment -%} Calcola il numero di elementi per ciascuna categoria {%- endcomment -%}
+{%- assign libri_count = 0 -%}
+{%- assign stampe_count = 0 -%}
 {%- for p in all_products -%}
   {%- assign is_book = false -%}
   {%- if p.type != blank -%}
@@ -32,10 +32,9 @@
   {%- endif -%}
 
   {%- if is_book -%}
-    {%- assign libri = libri | concat: p -%}
+    {%- assign libri_count = libri_count | plus: 1 -%}
   {%- else -%}
-    {%- comment -%} Qualsiasi altra cosa (stampe, opere originali, quadri) va in Stampe Artistiche per evitare confusione {%- endcomment -%}
-    {%- assign stampe = stampe | concat: p -%}
+    {%- assign stampe_count = stampe_count | plus: 1 -%}
   {%- endif -%}
 {%- endfor -%}
 
@@ -67,8 +66,8 @@
           data-tab="libri"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-          <span>{{ tab_libri_label }}</span>
-          <span class="tab-count">{{ libri.size }}</span>
+           <span>{{ tab_libri_label }}</span>
+          <span class="tab-count">{{ libri_count }}</span>
         </button>
         <button
           class="catalog-tab"
@@ -79,8 +78,8 @@
           data-tab="stampe"
         >
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-          <span>{{ tab_stampe_label }}</span>
-          <span class="tab-count">{{ stampe.size }}</span>
+           <span>{{ tab_stampe_label }}</span>
+          <span class="tab-count">{{ stampe_count }}</span>
         </button>
       </div>
     </div>
@@ -94,15 +93,30 @@
     aria-labelledby="tab-libri"
   >
     <div class="container">
-      {%- if libri.size > 0 -%}
+      {%- if libri_count > 0 -%}
         <div class="catalog-section-intro">
           <p class="catalog-section-label">{{ tab_libri_label }}</p>
           <p class="catalog-section-desc">{{ section.settings.libri_desc | default: 'Storie a fumetti, romanzi visivi e racconti illustrati — ogni volume è un viaggio nei confini della coscienza.' }}</p>
         </div>
 
         <div class="catalog-grid catalog-grid--books">
-          {%- for product in libri -%}
-            {%- render 'product-card', product: product, layout: 'book' -%}
+          {%- for p in all_products -%}
+            {%- assign is_book = false -%}
+            {%- if p.type != blank -%}
+              {%- assign p_type_down = p.type | downcase -%}
+              {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
+                {%- assign is_book = true -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- if is_book == false -%}
+              {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
+                {%- assign is_book = true -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if is_book -%}
+              {%- render 'product-card', product: p, layout: 'book' -%}
+            {%- endif -%}
           {%- endfor -%}
         </div>
       {%- else -%}
@@ -124,7 +138,7 @@
     hidden
   >
     <div class="container">
-      {%- if stampe.size > 0 -%}
+      {%- if stampe_count > 0 -%}
         <div class="catalog-section-intro">
           <p class="catalog-section-label">{{ tab_stampe_label }}</p>
           <p class="catalog-section-desc">{{ section.settings.stampe_desc | default: "Stampe in edizione limitata su carta cotone. Ogni opera è numerata e firmata dall'autrice." }}</p>
@@ -132,8 +146,23 @@
 
         <!-- Layout a griglia sfalsata per le stampe -->
         <div class="catalog-grid catalog-grid--prints">
-          {%- for product in stampe -%}
-            {%- render 'product-card', product: product, layout: 'print' -%}
+          {%- for p in all_products -%}
+            {%- assign is_book = false -%}
+            {%- if p.type != blank -%}
+              {%- assign p_type_down = p.type | downcase -%}
+              {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
+                {%- assign is_book = true -%}
+              {%- endif -%}
+            {%- endif -%}
+            {%- if is_book == false -%}
+              {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
+                {%- assign is_book = true -%}
+              {%- endif -%}
+            {%- endif -%}
+
+            {%- if is_book == false -%}
+              {%- render 'product-card', product: p, layout: 'print' -%}
+            {%- endif -%}
           {%- endfor -%}
         </div>
       {%- else -%}
