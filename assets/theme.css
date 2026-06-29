@@ -2062,12 +2062,7 @@ img {
 
 /* Tab switcher */
 .catalog-tabs-wrapper {
-  position: sticky;
-  top: 65px; /* sotto la navbar */
-  z-index: 50;
-  background: rgba(10, 10, 12, 0.92);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
+  position: relative;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   padding: 0;
 }
