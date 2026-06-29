@@ -19,11 +19,16 @@
 {%- assign stampe = '' | split: '' -%}
 {%- for p in all_products -%}
   {%- assign is_book = false -%}
-  {%- assign p_type_down = p.type | downcase -%}
-  {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
-    {%- assign is_book = true -%}
-  {%- elsif p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
-    {%- assign is_book = true -%}
+  {%- if p.type != blank -%}
+    {%- assign p_type_down = p.type | downcase -%}
+    {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
+      {%- assign is_book = true -%}
+    {%- endif -%}
+  {%- endif -%}
+  {%- if is_book == false -%}
+    {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
+      {%- assign is_book = true -%}
+    {%- endif -%}
   {%- endif -%}
 
   {%- if is_book -%}
