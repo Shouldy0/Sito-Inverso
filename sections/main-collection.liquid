@@ -11,13 +11,11 @@
 {%- assign libri = '' | split: '' -%}
 {%- assign stampe = '' | split: '' -%}
 {%- for p in all_products -%}
-  {%- if p.type == 'Libro' or p.type == 'libro' or p.tags contains 'libro' or p.tags contains 'libri' -%}
+  {%- if p.type == 'Libro' or p.type == 'libro' or p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' -%}
     {%- assign libri = libri | concat: p -%}
-  {%- elsif p.type == 'Stampa' or p.type == 'stampa' or p.type == 'Fine Art Print' or p.type == 'Print' or p.tags contains 'stampa' or p.tags contains 'print' -%}
-    {%- assign stampe = stampe | concat: p -%}
   {%- else -%}
-    {%- comment -%} Non categorizzato: va in libri di default {%- endcomment -%}
-    {%- assign libri = libri | concat: p -%}
+    {%- comment -%} Qualsiasi altra cosa (stampe, opere originali, quadri) va in Stampe Artistiche per evitare confusione {%- endcomment -%}
+    {%- assign stampe = stampe | concat: p -%}
   {%- endif -%}
 {%- endfor -%}
 
