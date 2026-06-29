@@ -17,8 +17,8 @@ const Biblioteca = () => {
   return (
     <div className="category-page page-transition">
       <div className="category-header">
-        <h1>Biblioteca</h1>
-        <p>Tomi e codici stampati on-demand, pronti per arricchire il tuo archivio personale.</p>
+        <h1>Fumetti</h1>
+        <p>Romanzi grafici, storie disegnate e libri illustrati — pronti per arricchire il tuo archivio personale.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">

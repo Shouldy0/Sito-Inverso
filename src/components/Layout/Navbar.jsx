@@ -21,8 +21,8 @@ const Navbar = ({ toggleCart }) => {
         {/* Desktop Menu */}
         <div className="navbar-links">
           <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-          <Link to="/biblioteca" className={location.pathname === '/biblioteca' ? 'active' : ''}>Libri</Link>
-          <Link to="/galleria" className={location.pathname === '/galleria' ? 'active' : ''}>Stampe</Link>
+          <Link to="/biblioteca" className={location.pathname === '/biblioteca' ? 'active' : ''}>Fumetti</Link>
+          <Link to="/galleria" className={location.pathname === '/galleria' ? 'active' : ''}>Stampe Artistiche</Link>
           <span className="navbar-divider">|</span>
           <Link to="/universo" className={location.pathname === '/universo' ? 'active' : ''}>L'Universo</Link>
         </div>
@@ -45,8 +45,8 @@ const Navbar = ({ toggleCart }) => {
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
         <Link to="/" onClick={closeMobileMenu}>Home</Link>
-        <Link to="/biblioteca" onClick={closeMobileMenu}>Libri</Link>
-        <Link to="/galleria" onClick={closeMobileMenu}>Stampe</Link>
+        <Link to="/biblioteca" onClick={closeMobileMenu}>Fumetti</Link>
+        <Link to="/galleria" onClick={closeMobileMenu}>Stampe Artistiche</Link>
         <div className="mobile-divider"></div>
         <Link to="/universo" onClick={closeMobileMenu}>L'Universo</Link>
       </div>
