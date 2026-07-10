@@ -15,6 +15,7 @@ const Home = () => {
   // Seleziona tutti i libri per la sezione della biblioteca nella homepage
   const allBooks = allProducts.filter(p => p.category === 'biblioteca');
   const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
+  const featuredOriginals = allProducts.filter(p => p.category === 'originali').slice(0, 3);
 
   useEffect(() => {
     // 1. Cinematic Title Reveal (expansion & blur-to-clear)
@@ -38,7 +39,7 @@ const Home = () => {
     // 4. Zero-Gravity Particles Levitation
     const particles = document.querySelectorAll('.particle');
     particles.forEach((p, i) => {
-      const colors = ['#c6a267', '#f3f4f6', '#1d1d23', '#4b5563'];
+      const colors = ['#b36a4d', '#6b8268', '#f0e9df', '#c47c5f'];
       const randomColor = colors[Math.floor(Math.random() * colors.length)];
       
       const randomX = Math.random() * 100;
@@ -165,6 +166,26 @@ const Home = () => {
           
           <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 max-w-4xl mx-auto">
             {allBooks.map(product => (
+              <ProductCard 
+                key={product.id}
+                {...product}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* Originals Showcase Section */}
+      {featuredOriginals.length > 0 && (
+        <section className="originals-showcase container" style={{ marginTop: '6rem', marginBottom: '4rem' }}>
+          <div className="section-header reveal-3d">
+            <h2>Disegni Fatti a Mano</h2>
+            <Link to="/originali" className="view-all-link">Scopri le Opere Uniche</Link>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
+            {featuredOriginals.map(product => (
               <ProductCard 
                 key={product.id}
                 {...product}

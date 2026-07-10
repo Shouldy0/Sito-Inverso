@@ -2,16 +2,16 @@
 @import "tailwindcss";
 
 :root {
-  /* Premium Dark Editorial Palette */
-  --color-bg-primary: #0a0a0c;
-  --color-bg-secondary: #131316;
-  --color-text-primary: #f3f4f6;
-  --color-text-secondary: #9ca3af;
-  --color-gold: #c6a267;
-  --color-gold-hover: #e3c48f;
-  --color-burgundy: #962d35;
-  --color-border: rgba(255, 255, 255, 0.08);
-  --color-border-hover: rgba(255, 255, 255, 0.15);
+  /* Bohemian Canvas Palette */
+  --color-bg-primary: #faf6f0;
+  --color-bg-secondary: #f0e9df;
+  --color-text-primary: #2d2a26;
+  --color-text-secondary: #5c554d;
+  --color-gold: #b36a4d;
+  --color-gold-hover: #c47c5f;
+  --color-burgundy: #6b8268;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-border-hover: rgba(0, 0, 0, 0.15);
 
   /* Typography */
   --font-heading: 'Cinzel', serif;
@@ -31,7 +31,7 @@
 body {
   position: relative;
   background-color: var(--color-bg-primary);
-  background-image: radial-gradient(circle at 50% 25%, #15151c 0%, var(--color-bg-primary) 80%);
+  background-image: radial-gradient(circle at 50% 25%, #ffffff 0%, var(--color-bg-primary) 80%);
   background-attachment: fixed;
   color: var(--color-text-primary);
   font-family: var(--font-text);
@@ -104,7 +104,7 @@ img {
   background: var(--color-bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(0, 0, 0, 0.15);
   border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb:hover {

@@ -82,6 +82,36 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     ]
   },
   {
+    id: 'o2',
+    title: 'Frammenti di Coscienza',
+    type: 'Opera Originale',
+    category: 'originali',
+    description: 'Pezzo unico irripetibile. Disegno originale a china su carta ruvida. L\'opera rappresenta la frammentazione del pensiero umano. Spedita con certificato di autenticità.',
+    price: 280.00,
+    imageUrl: '/assets/opera-2.png',
+    isUnique: true,
+    details: [
+      'Tecnica: Inchiostro di china',
+      'Supporto: Carta cotone Fabriano 600g',
+      'Cornice artigianale in legno scuro inclusa'
+    ]
+  },
+  {
+    id: 'o3',
+    title: 'L\'Anima Sospesa',
+    type: 'Opera Originale',
+    category: 'originali',
+    description: 'Pezzo unico irripetibile. Ritratto surreale realizzato con tecnica mista (china e pastelli). Viene spedito con certificato di autenticità firmato a mano.',
+    price: 320.00,
+    imageUrl: '/assets/opera-4.png',
+    isUnique: true,
+    details: [
+      'Tecnica: Inchiostro di china e pastelli',
+      'Supporto: Carta cotone Fabriano 600g',
+      'Cornice museale inclusa'
+    ]
+  },
+  {
     id: 's1',
     title: 'Il Volto Cancellato',
     type: 'Stampa Artistica',
