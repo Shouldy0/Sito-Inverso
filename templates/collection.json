@@ -2,10 +2,11 @@
   "sections": {
     "main": {
       "type": "main-collection",
-      "settings": {}
+      "settings": {
+        "hero_label": "Collezione",
+        "hero_desc": ""
+      }
     }
   },
-  "order": [
-    "main"
-  ]
+  "order": ["main"]
 }

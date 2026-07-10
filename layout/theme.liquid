@@ -6,7 +6,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="#0a0a0c">
+    <meta name="theme-color" content="#0e0d0b">
     <link rel="canonical" href="{{ canonical_url }}">
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
 
@@ -20,7 +20,7 @@
 
     {%- assign seo_title = page_title -%}
     {%- if request.page_type == 'index' -%}
-      {%- assign seo_title = 'Daiana Vaiani — Libri, Stampe e Universo Creativo' -%}
+      {%- assign seo_title = 'INverso — Arte Originale di Daiana Vaiani' -%}
     {%- endif -%}
     <title>
       {{ seo_title }}
@@ -32,16 +32,27 @@
     {%- assign seo_description = page_description -%}
     {%- if seo_description == blank -%}
       {%- if request.page_type == 'index' -%}
-        {%- assign seo_description = 'Scopri i libri illustrati fatti a mano, stampe fine art in bianco e nero e l\'universo creativo di Daiana Vaiani.' -%}
+        {%- assign seo_description = 'Opere d\'arte originali di Daiana Vaiani — disegni a pastello, carboncino, matita e china. Ogni pezzo è unico, firmato e spedito con cura.' -%}
       {%- elsif request.page_type == 'product' -%}
         {%- assign seo_description = product.description | strip_html | truncate: 155 -%}
+      {%- elsif request.page_type == 'collection' -%}
+        {%- assign seo_description = 'Collezione ' | append: collection.title | append: ' — Opere originali di Daiana Vaiani.' -%}
       {%- else -%}
-        {%- assign seo_description = shop.description | default: 'Universo creativo di Daiana Vaiani — libri, stampe originali, fumetti e arte.' -%}
+        {%- assign seo_description = shop.description | default: 'INverso — Galleria d\'arte originale di Daiana Vaiani. Disegni a pastello, carboncino, matita e china.' -%}
       {%- endif -%}
     {%- endif -%}
     <meta name="description" content="{{ seo_description | escape }}">
-    <meta name="keywords" content="Daiana Vaiani, libri, stampe, fumetti, arte, Noi siamo persona, universo creativo, shop">
+    <meta name="keywords" content="INverso, Daiana Vaiani, arte originale, disegno pastello, carboncino, matita, china, opere d'arte, fantasy art, anime art, manga art, pezzo unico, acquisto arte italiana">
     <meta name="author" content="Daiana Vaiani">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="{{ seo_title }}">
+    <meta property="og:description" content="{{ seo_description | escape }}">
+    <meta property="og:type" content="{% if request.page_type == 'product' %}product{% else %}website{% endif %}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    {%- if product.featured_image -%}
+      <meta property="og:image" content="{{ product.featured_image | image_url: width: 1200 }}">
+    {%- endif -%}
 
     {% render 'meta-tags' %}
 
@@ -50,7 +61,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
 
     <!-- CSS -->
     {{ 'theme.css' | asset_url | stylesheet_tag }}
@@ -72,20 +83,46 @@
       <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "Person",
-        "name": "Daiana Vaiani",
+        "@type": "ArtGallery",
+        "name": "INverso",
         "url": "{{ shop.url }}",
-        "jobTitle": "Autrice e Illustratrice",
-        "sameAs": [
-          "https://www.instagram.com/daianavaiani"
-        ]
+        "description": "Galleria d'arte originale di Daiana Vaiani — disegni a pastello, carboncino, matita e china.",
+        "founder": {
+          "@type": "Person",
+          "name": "Daiana Vaiani",
+          "jobTitle": "Artista e Illustratrice",
+          "sameAs": [
+            "https://www.instagram.com/daianavaiani"
+          ]
+        }
+      }
+      </script>
+    {%- endif -%}
+
+    {%- if request.page_type == 'product' -%}
+      <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "VisualArtwork",
+        "name": "{{ product.title | escape }}",
+        "creator": {
+          "@type": "Person",
+          "name": "Daiana Vaiani"
+        },
+        "description": "{{ product.description | strip_html | truncate: 200 | escape }}",
+        "offers": {
+          "@type": "Offer",
+          "price": "{{ product.price | divided_by: 100.0 }}",
+          "priceCurrency": "EUR",
+          "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}"
+        }
       }
       </script>
     {%- endif -%}
   </head>
 
   <body>
-    <!-- Ambient Parallax background shapes (ink nebulas) -->
+    <!-- Ambient Parallax background shapes -->
     <div class="ambient-glow-1 parallax-bg floating-slow" data-parallax-y="160"></div>
     <div class="ambient-glow-2 parallax-bg floating-medium" data-parallax-y="-100"></div>
     <div class="ambient-glow-3 parallax-bg floating-slow" data-parallax-y="130"></div>
@@ -97,8 +134,8 @@
         <button class="newsletter-popup-close" id="popup-close" aria-label="Chiudi popup">&times;</button>
         <div class="newsletter-popup-content">
           <div class="newsletter-popup-icon">✦</div>
-          <h2 class="newsletter-popup-title" id="popup-title">Entra nell'Universo</h2>
-          <p class="newsletter-popup-subtitle">Ricevi lettere dall'ombra — estratti esclusivi, dietro le quinte e accesso prioritario ai nuovi lavori.</p>
+          <h2 class="newsletter-popup-title" id="popup-title">Entra nell'INverso</h2>
+          <p class="newsletter-popup-subtitle">Anteprima delle nuove opere, dietro le quinte dello studio e accesso prioritario alle creazioni di Daiana Vaiani.</p>
           {% form 'customer', class: 'newsletter-popup-form', id: 'popup-form' %}
             <input type="hidden" name="contact[tags]" value="newsletter,popup">
             <div class="newsletter-popup-fields">
@@ -115,14 +152,14 @@
               <button type="submit" class="newsletter-popup-submit">Iscriviti</button>
             </div>
             {%- if form.posted_successfully? -%}
-              <p class="popup-success">✓ Benvenuto nell'universo! A presto.</p>
+              <p class="popup-success">✓ Benvenuto nell'INverso! A presto.</p>
               <script>if(window.markPopupDone) window.markPopupDone();</script>
             {%- endif -%}
             {%- if form.errors -%}
               <p class="popup-error">Email non valida o già registrata.</p>
             {%- endif -%}
           {% endform %}
-          <button class="newsletter-popup-skip" id="popup-skip">No grazie, continua a leggere</button>
+          <button class="newsletter-popup-skip" id="popup-skip">No grazie, continua a esplorare</button>
         </div>
       </div>
     </div>

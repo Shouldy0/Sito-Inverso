@@ -2,29 +2,29 @@
   <div class="container">
     <div class="about-inner">
 
-      <!-- Immagine / Foto autrice -->
+      <!-- Immagine / Foto artista -->
       <div class="about-image-col">
         <div class="about-image-frame">
           {%- if section.settings.author_image != blank -%}
             <img
               src="{{ section.settings.author_image | image_url: width: 760 }}"
-              alt="{{ section.settings.author_name | default: shop.name }}"
+              alt="{{ section.settings.author_name | default: 'Daiana Vaiani' }}"
               width="760"
               loading="lazy"
             >
           {%- else -%}
             <div class="about-image-placeholder">
               <span class="placeholder-icon">✦</span>
-              <span style="font-size:0.85rem; opacity:0.5;">Aggiungi foto in Admin</span>
+              <span style="font-size:0.82rem; opacity:0.4;">Aggiungi foto artista nell'Admin</span>
             </div>
           {%- endif -%}
         </div>
         <div class="about-accent-line"></div>
       </div>
 
-      <!-- Testo -->
+      <!-- Testo bio -->
       <div class="about-text-col">
-        <span class="about-label">{{ section.settings.label | default: 'Chi sono' }}</span>
+        <span class="about-label">{{ section.settings.label | default: "L'Artista" }}</span>
 
         <h2 class="about-title">
           {{ section.settings.title | default: 'Daiana Vaiani' }}
@@ -33,7 +33,7 @@
         {%- if section.settings.bio != blank -%}
           <p class="about-bio">{{ section.settings.bio }}</p>
         {%- else -%}
-          <p class="about-bio">Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande.</p>
+          <p class="about-bio">Artista e illustratrice, Daiana Vaiani crea opere originali a pastello, carboncino, matita e china. Ogni disegno nasce da un'esigenza di dare forma visibile a ciò che non si può dire a parole — emozioni, mondi immaginari, frammenti di un universo tutto suo.</p>
         {%- endif -%}
 
         {%- if section.settings.quote != blank -%}
@@ -44,19 +44,19 @@
 
         <div class="about-actions">
           {%- if section.settings.cta_url != blank -%}
-            <a href="{{ section.settings.cta_url }}" class="btn btn-primary">
-              <span class="btn-content">{{ section.settings.cta_label | default: "Scopri l'universo" }}</span>
+            <a href="{{ section.settings.cta_url }}" class="btn btn-primary" id="about-cta-artista">
+              <span class="btn-content">{{ section.settings.cta_label | default: "Scopri l'Artista" }}</span>
             </a>
           {%- else -%}
-            <a href="/pages/universo" class="btn btn-primary">
-              <span class="btn-content">Scopri l'Universo</span>
+            <a href="/pages/artista" class="btn btn-primary" id="about-cta-artista">
+              <span class="btn-content">Scopri l'Artista</span>
             </a>
           {%- endif -%}
 
           {%- if section.settings.social_instagram != blank -%}
-            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener" class="btn btn-outline" style="gap:0.5rem;">
-              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-              Instagram
+            <a href="{{ section.settings.social_instagram }}" target="_blank" rel="noopener noreferrer" class="btn btn-ghost" id="about-instagram-link" style="gap:0.5rem; display:inline-flex; align-items:center;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+              <span class="btn-content">Instagram</span>
             </a>
           {%- endif -%}
         </div>
@@ -68,13 +68,13 @@
 
 {% schema %}
 {
-  "name": "Chi Sono",
+  "name": "L'Artista — Mini Bio",
   "settings": [
     {
       "type": "text",
       "id": "label",
       "label": "Etichetta sopra titolo",
-      "default": "Chi sono"
+      "default": "L'Artista"
     },
     {
       "type": "text",
@@ -85,25 +85,25 @@
     {
       "type": "textarea",
       "id": "bio",
-      "label": "Biografia",
-      "default": "Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande."
+      "label": "Biografia breve",
+      "default": "Artista e illustratrice, Daiana Vaiani crea opere originali a pastello, carboncino, matita e china. Ogni disegno nasce da un'esigenza di dare forma visibile a ciò che non si può dire a parole — emozioni, mondi immaginari, frammenti di un universo tutto suo."
     },
     {
       "type": "textarea",
       "id": "quote",
       "label": "Citazione (opzionale)",
-      "default": "\"Ogni storia è una soglia. Ogni pagina è un passo oltre il confine del visibile.\""
+      "default": "\"Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.\"\n— Daiana Vaiani"
     },
     {
       "type": "image_picker",
       "id": "author_image",
-      "label": "Foto autrice"
+      "label": "Foto artista"
     },
     {
       "type": "text",
       "id": "author_name",
       "label": "Alt text immagine",
-      "default": "Daiana Vaiani"
+      "default": "Daiana Vaiani — Artista"
     },
     {
       "type": "url",
@@ -114,7 +114,7 @@
       "type": "text",
       "id": "cta_label",
       "label": "Testo pulsante",
-      "default": "Scopri l'Universo"
+      "default": "Scopri l'Artista"
     },
     {
       "type": "url",
@@ -124,7 +124,7 @@
   ],
   "presets": [
     {
-      "name": "Chi Sono"
+      "name": "L'Artista — Mini Bio"
     }
   ]
 }

@@ -1,0 +1,82 @@
+<div class="about-hero container">
+  <div class="about-hero__grid">
+    
+    <div class="about-hero__media">
+      {%- if section.settings.image != blank -%}
+        <img
+          src="{{ section.settings.image | image_url: width: 800 }}"
+          alt="{{ section.settings.image.alt | escape | default: 'Daiana Vaiani' }}"
+          class="about-hero__img"
+          loading="eager"
+          width="800"
+        >
+      {%- else -%}
+        <div class="about-hero__placeholder">
+          {{ 'image' | placeholder_svg_tag }}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="about-hero__content">
+      <p class="about-hero__label">{{ section.settings.label | default: "L'Artista" }}</p>
+      <h1 class="about-hero__title">{{ section.settings.title | default: "Daiana Vaiani" }}</h1>
+      
+      <div class="about-hero__bio">
+        {%- if section.settings.bio != blank -%}
+          {{ section.settings.bio }}
+        {%- else -%}
+          <p>Disegno da sempre. INverso nasce per condividere ogni pezzo unico che esce dal mio tavolo da lavoro. Qui non troverai stampe o riproduzioni digitali in serie: ogni opera è il risultato di ore di lavoro manuale, dalla prima traccia a matita fino all'ultimo dettaglio a china.</p>
+          <p>Credo nel valore dell'imperfezione e del tratto umano, quel segno che rende un'opera irripetibile. Le mie ispirazioni fondono i mondi fantasy e la cultura pop, interpretati attraverso tecniche tradizionali.</p>
+        {%- endif -%}
+      </div>
+
+      {%- if section.settings.show_signature -%}
+        <div class="about-hero__signature">
+          <p>D. Vaiani</p>
+        </div>
+      {%- endif -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Ritratto o foto"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta",
+      "default": "L'Artista"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Nome / Titolo",
+      "default": "Daiana Vaiani"
+    },
+    {
+      "type": "richtext",
+      "id": "bio",
+      "label": "Biografia in prima persona"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_signature",
+      "label": "Mostra firma stilizzata",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Hero"
+    }
+  ]
+}
+{% endschema %}

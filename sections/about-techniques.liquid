@@ -1,0 +1,82 @@
+<div class="about-tech">
+  <div class="container">
+    
+    <div class="about-tech__header">
+      <h2 class="about-tech__title">{{ section.settings.title | default: "Gli Strumenti" }}</h2>
+      <p class="about-tech__desc">{{ section.settings.desc | default: "Ogni tratto è il risultato di un dialogo tra la carta e lo strumento. Prediligo tecniche a secco e inchiostri che permettono un controllo assoluto sui dettagli e sulla texture." }}</p>
+    </div>
+
+    <div class="about-tech__grid">
+      {%- for block in section.blocks -%}
+        <div class="about-tech__item" {{ block.shopify_attributes }}>
+          <div class="about-tech__media">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 600 }}"
+                alt="{{ block.settings.title | escape }}"
+                loading="lazy"
+                class="about-tech__img"
+              >
+            {%- else -%}
+              {{ 'product-1' | placeholder_svg_tag: 'about-tech__placeholder' }}
+            {%- endif -%}
+          </div>
+          <div class="about-tech__info">
+            <h3 class="about-tech__item-title">{{ block.settings.title }}</h3>
+            <p class="about-tech__item-text">{{ block.settings.text }}</p>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Tecniche",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo Sezione",
+      "default": "Le Tecniche"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Descrizione introduttiva"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "technique",
+      "name": "Tecnica",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Foto di dettaglio"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Nome tecnica",
+          "default": "Pastelli su Kraft"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Descrizione",
+          "default": "L'uso dei pastelli secchi su carta kraft grezza crea texture vibranti e contrasti caldi."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Tecniche"
+    }
+  ]
+}
+{% endschema %}

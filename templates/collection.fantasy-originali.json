@@ -1,0 +1,12 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "hero_label": "Collezione",
+        "hero_desc": "Creature, guerrieri e volti nati dall'immaginazione. Ogni opera in questa collezione è un personaggio originale di Daiana Vaiani — nessun riferimento a franchise esistenti, solo visione pura."
+      }
+    }
+  },
+  "order": ["main"]
+}

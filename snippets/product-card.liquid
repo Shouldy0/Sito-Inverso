@@ -1,35 +1,94 @@
 {% comment %}
-  Renders a product card
-  Usage:
-  {% render 'product-card', product: product %}
+  Snippet: product-card
+  Card per opere d'arte originali di Daiana Vaiani.
+  Mostra: immagine, tecnica (dal metafield o tipo), titolo, dimensioni, prezzo, badge.
+  Usage: {% render 'product-card', product: product %}
 {% endcomment %}
 
-<div class="product-card">
-  <a href="{{ product.url }}" class="product-image-wrapper">
+{%- assign is_unique = false -%}
+{%- if product.tags contains 'pezzo-unico' or product.tags contains 'originale' or product.type == 'Opera Originale' or product.type contains 'Originale' -%}
+  {%- assign is_unique = true -%}
+{%- endif -%}
+
+{%- assign is_fanart = false -%}
+{%- if product.tags contains 'fan-art' or product.tags contains 'fanart' or product.tags contains 'anime' or product.tags contains 'manga' -%}
+  {%- assign is_fanart = true -%}
+{%- endif -%}
+
+{%- assign is_sold = false -%}
+{%- if product.available == false -%}
+  {%- assign is_sold = true -%}
+{%- endif -%}
+
+{%- assign tecnica = '' -%}
+{%- if product.metafields.custom.tecnica != blank -%}
+  {%- assign tecnica = product.metafields.custom.tecnica -%}
+{%- elsif product.type != blank -%}
+  {%- assign tecnica = product.type -%}
+{%- endif -%}
+
+{%- assign dimensioni = '' -%}
+{%- if product.metafields.custom.dimensioni != blank -%}
+  {%- assign dimensioni = product.metafields.custom.dimensioni -%}
+{%- endif -%}
+
+<div class="artwork-card">
+  <a href="{{ product.url }}" class="artwork-image-wrapper" aria-label="{{ product.title }}">
     {%- if product.featured_image != blank -%}
-      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" class="product-image" loading="lazy" />
+      <img
+        src="{{ product.featured_image | image_url: width: 700 }}"
+        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+        class="product-image"
+        loading="lazy"
+        width="700"
+      />
     {%- else -%}
       {{ 'product-1' | placeholder_svg_tag: 'product-image placeholder-svg' }}
     {%- endif -%}
 
-    {%- if product.tags contains 'preorder' or product.metafields.custom.preorder -%}
-      <span class="badge-preorder">Pre-ordine</span>
-    {%- elsif product.tags contains 'pezzo-unico' or product.tags contains 'originale' or product.type == 'Opera Originale' -%}
-      <span class="badge-unique">Pezzo Unico</span>
+    <!-- Badges -->
+    {%- if is_sold -%}
+      <span class="artwork-badge artwork-badge--sold">Venduto</span>
+    {%- elsif is_unique -%}
+      <span class="artwork-badge artwork-badge--unique">Pezzo Unico</span>
     {%- endif -%}
+
+    {%- if is_fanart -%}
+      <span class="artwork-badge artwork-badge--fanart">Fan Art</span>
+    {%- endif -%}
+
+    <!-- Hover overlay -->
+    <div class="artwork-overlay">
+      <span class="artwork-overlay-cta">Vedi l'Opera →</span>
+    </div>
   </a>
 
-  <div class="product-info">
-    <span class="product-type">{{ product.type }}</span>
-    <h3 class="product-title">
+  <div class="artwork-info">
+    {%- if tecnica != blank -%}
+      <span class="artwork-technique">
+        <svg xmlns="http://www.w3.org/2000/svg" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 19l7-7 3 3-7 7-3-3z"/><path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"/><path d="M2 2l7.586 7.586"/><circle cx="11" cy="11" r="2"/></svg>
+        {{ tecnica }}
+      </span>
+    {%- endif -%}
+
+    <h3 class="artwork-title">
       <a href="{{ product.url }}">{{ product.title }}</a>
     </h3>
-    <p class="product-desc">{{ product.description | strip_html | truncatewords: 22 }}</p>
-    
-    <div class="product-footer">
-      <span class="product-price">{{ product.price | money }}</span>
-      <a href="{{ product.url }}" class="btn btn-outline">
-        <span class="btn-content">Dettagli</span>
+
+    {%- if dimensioni != blank -%}
+      <p class="artwork-dims">{{ dimensioni }}</p>
+    {%- endif -%}
+
+    <div class="artwork-footer">
+      <span class="artwork-price">
+        {%- if is_sold -%}
+          <span style="color: var(--color-text-muted); font-size: 0.9rem;">Venduto</span>
+        {%- else -%}
+          {{ product.price | money }}
+        {%- endif -%}
+      </span>
+      <a href="{{ product.url }}" class="btn btn-outline" aria-label="Vedi opera {{ product.title }}">
+        Dettagli
       </a>
     </div>
   </div>

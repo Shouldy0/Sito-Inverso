@@ -1,0 +1,52 @@
+{% comment %}
+  SEZIONE INTRO — INverso Homepage
+  Testo breve, centrato, molto spazio negativo.
+  "Ogni opera è un pezzo unico, disegnato a mano."
+{% endcomment %}
+
+<section class="hp-intro" data-section-id="{{ section.id }}">
+  <div class="hp-intro__inner">
+
+    {%- if section.settings.label != blank -%}
+      <p class="hp-intro__label">{{ section.settings.label }}</p>
+    {%- endif -%}
+
+    <p class="hp-intro__text">{{ section.settings.text | default: 'Ogni opera è un pezzo unico, disegnato a mano. Nessuna stampa, nessuna riproduzione: solo l'originale.' }}</p>
+
+    {%- if section.settings.sub_text != blank -%}
+      <p class="hp-intro__sub">{{ section.settings.sub_text }}</p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Intro — Dichiarazione",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta sopra (opzionale)",
+      "default": "INverso"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Testo principale",
+      "default": "Ogni opera è un pezzo unico, disegnato a mano. Nessuna stampa, nessuna riproduzione: solo l'originale."
+    },
+    {
+      "type": "text",
+      "id": "sub_text",
+      "label": "Testo secondario (opzionale)",
+      "default": "Pastello, carboncino, matita, china — firmati da Daiana Vaiani."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Intro — Dichiarazione"
+    }
+  ]
+}
+{% endschema %}

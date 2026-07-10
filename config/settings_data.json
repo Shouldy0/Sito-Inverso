@@ -16,20 +16,20 @@
         "type": "header",
         "settings": {
           "menu": "main-menu",
-          "show_divider": true
+          "show_divider": false
         }
       },
       "footer": {
         "type": "footer",
         "settings": {
-          "brand_name": "DAIANA",
-          "brand_slogan": "Ogni storia è una soglia.",
-          "menu_1_title": "Esplora",
+          "brand_name": "INverso",
+          "brand_slogan": "Opere originali di Daiana Vaiani.",
+          "menu_1_title": "Opere",
           "menu_1": "main-menu",
           "menu_2_title": "Informazioni",
           "menu_2": "",
-          "newsletter_title": "Lettere dall'Ombra",
-          "newsletter_text": "Ricevi in anteprima estratti dei nuovi fumetti, aggiornamenti sui dietro le quinte e l'accesso prioritario alle opere originali."
+          "newsletter_title": "Studio Aperto",
+          "newsletter_text": "Anteprime delle nuove opere, dietro le quinte dello studio e accesso prioritario alle creazioni di Daiana Vaiani."
         }
       }
     },

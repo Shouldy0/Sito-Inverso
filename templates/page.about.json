@@ -1,0 +1,78 @@
+{
+  "sections": {
+    "hero": {
+      "type": "about-hero",
+      "settings": {
+        "label": "L'Artista",
+        "title": "Daiana Vaiani",
+        "bio": "<p>Disegno da sempre. INverso nasce per condividere ogni pezzo unico che esce dal mio tavolo da lavoro. Qui non troverai stampe o riproduzioni digitali in serie: ogni opera è il risultato di ore di lavoro manuale, dalla prima traccia a matita fino all'ultimo dettaglio a china.</p><p>Credo nel valore dell'imperfezione e del tratto umano, quel segno che rende un'opera irripetibile. Le mie ispirazioni fondono i mondi fantasy e la cultura pop, interpretati attraverso tecniche tradizionali.</p>",
+        "show_signature": true
+      }
+    },
+    "techniques": {
+      "type": "about-techniques",
+      "blocks": {
+        "tech-1": {
+          "type": "technique",
+          "settings": {
+            "title": "Pastelli su Kraft",
+            "text": "L'uso dei pastelli secchi su carta kraft grezza crea texture vibranti e contrasti caldi."
+          }
+        },
+        "tech-2": {
+          "type": "technique",
+          "settings": {
+            "title": "Grafite e China",
+            "text": "Il contrasto assoluto del bianco e nero, con campiture a china densa e sfumature sottili a matita."
+          }
+        }
+      },
+      "block_order": [
+        "tech-1",
+        "tech-2"
+      ],
+      "settings": {
+        "title": "Le Tecniche",
+        "desc": "Ogni tratto è il risultato di un dialogo tra la carta e lo strumento. Prediligo tecniche a secco e inchiostri che permettono un controllo assoluto sui dettagli e sulla texture."
+      }
+    },
+    "gallery": {
+      "type": "about-gallery",
+      "blocks": {
+        "img-1": {
+          "type": "image",
+          "settings": {}
+        },
+        "img-2": {
+          "type": "image",
+          "settings": {}
+        },
+        "img-3": {
+          "type": "image",
+          "settings": {}
+        },
+        "img-4": {
+          "type": "image",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "img-1",
+        "img-2",
+        "img-3",
+        "img-4"
+      ],
+      "settings": {
+        "title": "Dietro le Quinte",
+        "desc": "Il tavolo da lavoro, gli schizzi preparatori, la nascita di un'opera dal primo segno al fissativo finale. Seguimi su Instagram per vedere il processo creativo in tempo reale.",
+        "ig_link": "https://instagram.com/daianavaiani.art",
+        "ig_handle": "daianavaiani.art"
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "techniques",
+    "gallery"
+  ]
+}

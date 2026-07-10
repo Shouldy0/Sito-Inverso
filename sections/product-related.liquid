@@ -1,0 +1,134 @@
+{% comment %}
+  ================================================================
+  CROSS-SELL — Altre opere che potrebbero piacerti
+  Mostra prodotti dalla stessa collezione del prodotto corrente,
+  escludendo il prodotto attuale. Max 4 opere.
+  ================================================================
+{% endcomment %}
+
+{%- assign related_collection = product.collections.first -%}
+{%- assign related_limit = section.settings.limit | default: 4 -%}
+{%- assign related_found = 0 -%}
+
+{%- if related_collection != blank and related_collection.products.size > 1 -%}
+
+<section class="pd-related" data-section-id="{{ section.id }}" aria-label="Altre opere correlate">
+  <div class="container">
+
+    <div class="pd-related__header">
+      <p class="pd-related__label">{{ section.settings.label | default: 'Galleria' }}</p>
+      <h2 class="pd-related__title">{{ section.settings.title | default: 'Altre opere che potrebbero piacerti' }}</h2>
+      <a href="{{ related_collection.url }}" class="pd-related__viewall" id="related-viewall">
+        Vedi tutta la collezione
+        <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
+    </div>
+
+    <div class="pd-related__grid">
+      {%- for related in related_collection.products -%}
+        {%- if related.id != product.id and related_found < related_limit -%}
+          {%- assign related_found = related_found | plus: 1 -%}
+
+          {%- assign rel_is_original = false -%}
+          {%- assign rel_is_fanart = false -%}
+
+          {%- if related.metafields.custom.tipo == 'Fan Art' or related.tags contains 'fan-art' or related.tags contains 'anime' or related.tags contains 'manga' -%}
+            {%- assign rel_is_fanart = true -%}
+          {%- else -%}
+            {%- assign rel_is_original = true -%}
+          {%- endif -%}
+
+          {%- assign rel_tecnica = '' -%}
+          {%- if related.metafields.custom.tecnica != blank -%}
+            {%- assign rel_tecnica = related.metafields.custom.tecnica -%}
+          {%- elsif related.type != blank -%}
+            {%- assign rel_tecnica = related.type -%}
+          {%- endif -%}
+
+          <article class="pd-related-card">
+            <a href="{{ related.url }}" class="pd-related-card__link" aria-label="{{ related.title }}">
+
+              <div class="pd-related-card__media">
+                {%- if related.featured_image != blank -%}
+                  <img
+                    src="{{ related.featured_image | image_url: width: 600 }}"
+                    alt="{{ related.featured_image.alt | default: related.title | escape }}"
+                    class="pd-related-card__img"
+                    loading="lazy"
+                    width="600"
+                  >
+                {%- else -%}
+                  {{ 'product-1' | placeholder_svg_tag: 'pd-related-card__placeholder' }}
+                {%- endif -%}
+
+                {%- if rel_is_original -%}
+                  <span class="pd-related-badge pd-related-badge--unique">Pezzo Unico</span>
+                {%- elsif rel_is_fanart -%}
+                  <span class="pd-related-badge pd-related-badge--fanart">Fan Art</span>
+                {%- endif -%}
+
+                <!-- Hover overlay -->
+                <div class="pd-related-card__overlay">
+                  <span class="pd-related-card__cta">Vedi l'opera →</span>
+                </div>
+              </div>
+
+              <div class="pd-related-card__info">
+                {%- if rel_tecnica != blank -%}
+                  <p class="pd-related-card__technique">{{ rel_tecnica }}</p>
+                {%- endif -%}
+                <h3 class="pd-related-card__title">{{ related.title }}</h3>
+                <p class="pd-related-card__price">
+                  {%- if related.available -%}
+                    {{ related.price | money }}
+                  {%- else -%}
+                    <span class="pd-related-sold">Venduto</span>
+                  {%- endif -%}
+                </p>
+              </div>
+
+            </a>
+          </article>
+
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+  </div>
+</section>
+
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Altre Opere Correlate",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta sopra titolo",
+      "default": "Galleria"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo sezione",
+      "default": "Altre opere che potrebbero piacerti"
+    },
+    {
+      "type": "range",
+      "id": "limit",
+      "label": "Numero di opere da mostrare",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4
+    }
+  ],
+  "presets": [
+    {
+      "name": "Altre Opere Correlate"
+    }
+  ]
+}
+{% endschema %}

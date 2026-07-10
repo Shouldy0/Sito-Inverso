@@ -1,56 +1,140 @@
-<section class="cinematic-hero" data-section-id="{{ section.id }}">
-  <div class="particles-container">
-    {%- for i in (1..section.settings.particle_count) -%}
-      <div class="particle"></div>
-    {%- endfor -%}
+{% comment %}
+  HERO — INverso Homepage
+  Immagine full-bleed dell'opera in evidenza (es. Grifone Ribelle)
+  con overlay elegante e CTA minimal.
+{% endcomment %}
+
+<section class="hp-hero" data-section-id="{{ section.id }}">
+
+  <!-- Immagine artwork full-bleed -->
+  <div class="hp-hero__media">
+    {%- if section.settings.hero_image != blank -%}
+      <img
+        src="{{ section.settings.hero_image | image_url: width: 2400 }}"
+        alt="{{ section.settings.hero_image_alt | default: 'Grifone Ribelle — Daiana Vaiani' }}"
+        class="hp-hero__img"
+        width="2400"
+        loading="eager"
+        fetchpriority="high"
+      >
+    {%- else -%}
+      <img
+        src="{{ 'grifone-ribelle.png' | asset_url }}"
+        alt="Grifone Ribelle — Opera originale di Daiana Vaiani"
+        class="hp-hero__img"
+        loading="eager"
+      >
+    {%- endif -%}
+    <div class="hp-hero__overlay"></div>
   </div>
-  <div class="hero-center-content">
-    <h1 class="hero-logo-title">{{ section.settings.title | default: shop.name }}</h1>
-    <p class="hero-blur-subtitle">
-      {{ section.settings.subtitle }}
-    </p>
-    <div class="scroll-indicator">
-      <span class="scroll-text">{{ section.settings.scroll_text }}</span>
-      <span class="scroll-arrow">↓</span>
+
+  <!-- Contenuto testuale -->
+  <div class="hp-hero__content">
+    <div class="hp-hero__inner">
+      <p class="hp-hero__eyebrow">
+        <span class="hp-hero__eyebrow-line"></span>
+        {{ section.settings.eyebrow | default: 'Arte Originale' }}
+        <span class="hp-hero__eyebrow-line"></span>
+      </p>
+
+      <h1 class="hp-hero__title">
+        {%- assign title_parts = section.settings.title | default: 'INverso' | split: '—' -%}
+        {%- if title_parts.size > 1 -%}
+          <span class="hp-hero__title-main">{{ title_parts[0] | strip }}</span>
+          <span class="hp-hero__title-sub">{{ title_parts[1] | strip }}</span>
+        {%- else -%}
+          {{ section.settings.title | default: 'INverso' }}
+        {%- endif -%}
+      </h1>
+
+      <p class="hp-hero__artwork-credit">
+        {{ section.settings.artwork_credit | default: '"Grifone Ribelle" — china su carta, 2025' }}
+      </p>
+
+      <a
+        href="{{ section.settings.cta_url | default: '/collections/all' }}"
+        class="hp-hero__cta"
+        id="hero-cta-main"
+      >
+        {{ section.settings.cta_label | default: 'Scopri le opere' }}
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+      </a>
     </div>
   </div>
+
+  <!-- Scroll hint -->
+  <div class="hp-hero__scroll" aria-hidden="true">
+    <span class="hp-hero__scroll-text">{{ section.settings.scroll_text | default: 'Scorri' }}</span>
+    <span class="hp-hero__scroll-bar"></span>
+  </div>
+
 </section>
 
 {% schema %}
 {
-  "name": "Cinematic Hero",
+  "name": "Hero — Opera in Evidenza",
   "settings": [
     {
-      "type": "text",
-      "id": "title",
-      "label": "Titolo Principale",
-      "default": "DAIANA"
+      "type": "image_picker",
+      "id": "hero_image",
+      "label": "Opera in evidenza (piena larghezza)"
     },
     {
       "type": "text",
-      "id": "subtitle",
-      "label": "Sottotitolo",
-      "default": "Frammenti di inchiostro, ombre e coscienza."
+      "id": "hero_image_alt",
+      "label": "Alt text immagine",
+      "default": "Grifone Ribelle — Opera originale di Daiana Vaiani"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Testo sopra titolo",
+      "default": "Arte Originale"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo hero (usa — per dividere in due righe)",
+      "default": "INverso — Arte originale di Daiana Vaiani"
+    },
+    {
+      "type": "text",
+      "id": "artwork_credit",
+      "label": "Didascalia opera",
+      "default": "\"Grifone Ribelle\" — china su carta, 2025"
+    },
+    {
+      "type": "url",
+      "id": "cta_url",
+      "label": "Link bottone CTA"
+    },
+    {
+      "type": "text",
+      "id": "cta_label",
+      "label": "Etichetta bottone",
+      "default": "Scopri le opere"
     },
     {
       "type": "text",
       "id": "scroll_text",
-      "label": "Testo Scorri",
-      "default": "Scorri per esplorare"
+      "label": "Testo scroll hint",
+      "default": "Scorri"
     },
     {
-      "type": "range",
-      "id": "particle_count",
-      "label": "Numero Particelle",
-      "min": 5,
-      "max": 30,
-      "step": 1,
-      "default": 14
+      "type": "select",
+      "id": "overlay_intensity",
+      "label": "Intensità overlay scuro",
+      "options": [
+        { "value": "light", "label": "Leggero (opera più visibile)" },
+        { "value": "medium", "label": "Medio (bilanciato)" },
+        { "value": "strong", "label": "Forte (testo più leggibile)" }
+      ],
+      "default": "medium"
     }
   ],
   "presets": [
     {
-      "name": "Cinematic Hero"
+      "name": "Hero — Opera in Evidenza"
     }
   ]
 }

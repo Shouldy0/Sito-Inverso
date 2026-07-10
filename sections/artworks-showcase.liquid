@@ -1,0 +1,172 @@
+{% comment %}
+  GRIGLIA OPERE IN EVIDENZA — INverso Homepage
+  Card con hover che rivela titolo + tecnica.
+  Layout: 3 colonne (prima card double-height per varietà visiva).
+{% endcomment %}
+
+{%- assign showcase_collection = collections[section.settings.collection] -%}
+
+<section class="hp-grid" data-section-id="{{ section.id }}" data-section-type="hp-grid">
+  <div class="container">
+
+    <!-- Header -->
+    <div class="hp-grid__header">
+      <div>
+        <p class="hp-grid__label">{{ section.settings.label | default: 'Galleria' }}</p>
+        <h2 class="hp-grid__title">{{ section.settings.title | default: 'Opere in Evidenza' }}</h2>
+      </div>
+      {%- if section.settings.collection != blank -%}
+        <a href="{{ showcase_collection.url | default: '/collections/all' }}" class="hp-grid__viewall" id="grid-viewall-link">
+          {{ section.settings.link_text | default: 'Vedi tutte' }}
+          <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <!-- Griglia opere -->
+    {%- assign products_to_show = section.settings.products_to_show | default: 6 -%}
+
+    {%- if showcase_collection != blank and showcase_collection.products.size > 0 -%}
+      <div class="hp-grid__artworks">
+        {%- for product in showcase_collection.products limit: products_to_show -%}
+
+          {%- assign tecnica = '' -%}
+          {%- if product.metafields.custom.tecnica != blank -%}
+            {%- assign tecnica = product.metafields.custom.tecnica -%}
+          {%- elsif product.type != blank -%}
+            {%- assign tecnica = product.type -%}
+          {%- endif -%}
+
+          {%- assign dimensioni = '' -%}
+          {%- if product.metafields.custom.dimensioni != blank -%}
+            {%- assign dimensioni = product.metafields.custom.dimensioni -%}
+          {%- endif -%}
+
+          {%- assign is_unique = false -%}
+          {%- if product.tags contains 'pezzo-unico' or product.tags contains 'originale' or product.type contains 'Originale' -%}
+            {%- assign is_unique = true -%}
+          {%- endif -%}
+
+          {%- assign is_anime = false -%}
+          {%- if product.tags contains 'anime' or product.tags contains 'manga' or product.tags contains 'fan-art' -%}
+            {%- assign is_anime = true -%}
+          {%- endif -%}
+
+          <article class="hp-artwork-card {% if forloop.index == 1 %}hp-artwork-card--tall{% endif %}" data-index="{{ forloop.index }}">
+            <a href="{{ product.url }}" class="hp-artwork-card__link" aria-label="{{ product.title }}">
+
+              <!-- Immagine -->
+              <div class="hp-artwork-card__media">
+                {%- if product.featured_image != blank -%}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 800 }}"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    class="hp-artwork-card__img"
+                    loading="lazy"
+                    width="800"
+                  >
+                {%- else -%}
+                  {{ 'product-' | append: forloop.index | placeholder_svg_tag: 'hp-artwork-card__placeholder' }}
+                {%- endif -%}
+
+                <!-- Badges -->
+                {%- if is_unique -%}
+                  <span class="hp-artwork-card__badge hp-artwork-card__badge--unique">Pezzo Unico</span>
+                {%- elsif is_anime -%}
+                  <span class="hp-artwork-card__badge hp-artwork-card__badge--fanart">Fan Art</span>
+                {%- endif -%}
+              </div>
+
+              <!-- Overlay reveal on hover -->
+              <div class="hp-artwork-card__reveal" aria-hidden="true">
+                <div class="hp-artwork-card__reveal-inner">
+                  {%- if tecnica != blank -%}
+                    <p class="hp-artwork-card__technique">{{ tecnica }}</p>
+                  {%- endif -%}
+                  <h3 class="hp-artwork-card__name">{{ product.title }}</h3>
+                  {%- if dimensioni != blank -%}
+                    <p class="hp-artwork-card__dims">{{ dimensioni }}</p>
+                  {%- endif -%}
+                  <p class="hp-artwork-card__price">{{ product.price | money }}</p>
+                  <span class="hp-artwork-card__cta">Vedi l'opera →</span>
+                </div>
+              </div>
+
+            </a>
+          </article>
+
+        {%- endfor -%}
+      </div>
+
+    {%- else -%}
+      <!-- Placeholder quando non c'è collezione -->
+      <div class="hp-grid__artworks">
+        {%- for i in (1..6) -%}
+          <article class="hp-artwork-card {% if i == 1 %}hp-artwork-card--tall{% endif %}">
+            <div class="hp-artwork-card__link">
+              <div class="hp-artwork-card__media">
+                {{ 'product-1' | placeholder_svg_tag: 'hp-artwork-card__placeholder' }}
+              </div>
+              <div class="hp-artwork-card__reveal" aria-hidden="true">
+                <div class="hp-artwork-card__reveal-inner">
+                  <p class="hp-artwork-card__technique">China su carta</p>
+                  <h3 class="hp-artwork-card__name">Opera di esempio</h3>
+                  <p class="hp-artwork-card__price">€ 00,00</p>
+                </div>
+              </div>
+            </div>
+          </article>
+        {%- endfor -%}
+      </div>
+      <p style="text-align:center; color: var(--color-text-muted); font-size: 0.82rem; margin-top: 2rem;">
+        Seleziona una collezione nelle impostazioni per mostrare le opere.
+      </p>
+    {%- endif -%}
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Opere in Evidenza",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta sopra titolo",
+      "default": "Galleria"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo sezione",
+      "default": "Opere in Evidenza"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collezione da mostrare"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Numero opere (multipli di 3)",
+      "min": 3,
+      "max": 9,
+      "step": 3,
+      "default": 6
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Testo link Vedi tutte",
+      "default": "Vedi tutte"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Opere in Evidenza"
+    }
+  ]
+}
+{% endschema %}

@@ -1,135 +1,196 @@
 <div class="universo-page page-transition" data-section-id="{{ section.id }}">
+
+  <!-- Hero -->
   <div class="universo-hero">
     <div class="container">
-      <h1 class="universo-title">{{ section.settings.hero_title }}</h1>
-      <p class="universo-subtitle">{{ section.settings.hero_subtitle }}</p>
+      <p class="catalog-hero-label">{{ section.settings.hero_label | default: 'INverso' }}</p>
+      <h1 class="universo-title">{{ section.settings.hero_title | default: "L'Artista" }}</h1>
+      <p class="universo-subtitle">{{ section.settings.hero_subtitle | default: 'Daiana Vaiani — tra inchiostro, ombra e coscienza.' }}</p>
     </div>
   </div>
 
-  <div class="container mt-5">
+  <div class="container">
     <div class="universo-content">
+
+      <!-- Bio artista -->
       <div class="universo-text-block reveal-3d">
-        <h2>{{ section.settings.manifesto_title }}</h2>
+        <h2>{{ section.settings.bio_title | default: "Daiana Vaiani" }}</h2>
         <div class="universo-text-body">
-          {{ section.settings.manifesto_text }}
+          {%- if section.settings.bio_text != blank -%}
+            {{ section.settings.bio_text }}
+          {%- else -%}
+            <p>Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, <strong>Daiana Vaiani</strong> è un'artista autodidatta con un percorso che unisce il diploma al Liceo Artistico alla passione per la Psicologia.</p>
+            <p>Attraverso il disegno a <em>pastello</em>, <em>carboncino</em>, <em>matita</em> e <em>china</em>, Daiana riversa nelle sue opere un profondo bisogno di dare forma visibile a ciò che non si può dire a parole: emozioni intime, mondi immaginari, frammenti di un universo interiore sospeso tra sogno e inconscio.</p>
+            <p>Ogni opera è un pezzo unico, firmato a mano, concepito come artefatto fisico in un'era digitale — qualcosa da toccare, da sentire, da appendere e guardare ogni giorno.</p>
+          {%- endif -%}
         </div>
       </div>
 
+      <!-- Statement artistico / processo -->
       <div class="universo-text-block mt-4 reveal-3d">
-        <h2>{{ section.settings.artist_title }}</h2>
+        <h2>{{ section.settings.process_title | default: "Il Processo Creativo" }}</h2>
         <div class="universo-text-body">
-          {{ section.settings.artist_text }}
+          {%- if section.settings.process_text != blank -%}
+            {{ section.settings.process_text }}
+          {%- else -%}
+            <p>Ogni disegno nasce da un'intuizione — un'immagine mentale, un personaggio che chiede di esistere, un'emozione che non trova parole ma trova linee.</p>
+            <p>La scelta dei materiali non è mai casuale: il <strong>carboncino</strong> per le ombre profonde e la materia densa; la <strong>matita</strong> per il dettaglio e la precisione; il <strong>pastello</strong> per il colore vibrante su carta kraft; la <strong>china</strong> per i tratti definitivi e l'inchiostro che non perdona.</p>
+            <p>Molte opere nascono su carta kraft — la stessa carta grezza e calda che è parte integrante dell'opera, non solo un supporto. Il colore della carta diventa terza tinta, dialogo tra il bianco della luce e il nero dell'ombra.</p>
+          {%- endif -%}
         </div>
+      </div>
+
+      <!-- Statement personale -->
+      {%- if section.settings.statement_title != blank or section.settings.statement_text != blank -%}
+        <div class="universo-text-block mt-4 reveal-3d">
+          <h2>{{ section.settings.statement_title | default: "Statement" }}</h2>
+          <div class="universo-text-body">
+            {{ section.settings.statement_text }}
+          </div>
+        </div>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+  <!-- Frammenti creativi / cards narrative -->
+  {%- if section.blocks.size > 0 -%}
+    <div class="container mt-12 mb-16">
+      <div class="universo-narrative-header reveal-3d text-center">
+        <h2>{{ section.settings.cards_title | default: 'Tecniche & Materiali' }}</h2>
+        <p>{{ section.settings.cards_subtitle | default: 'I linguaggi visivi che compongono il mondo di INverso.' }}</p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'narrative_card' -%}
+              {%- assign float_class = 'floating-slow' -%}
+              {%- if block.settings.float_speed == 'medium' -%}
+                {%- assign float_class = 'floating-medium' -%}
+              {%- endif -%}
+              <div class="narrative-card {{ float_class }} reveal-3d" {{ block.shopify_attributes }}>
+                <span class="narrative-tag">{{ block.settings.tag | escape }}</span>
+                <h3 class="narrative-title">{{ block.settings.title | escape }}</h3>
+                <p class="narrative-text">{{ block.settings.text | escape }}</p>
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <!-- CTA alle collezioni -->
+  <div class="container" style="padding-bottom: 4rem; text-align: center;">
+    <div style="border-top: 1px solid var(--color-border); padding-top: 4rem;">
+      <p class="catalog-hero-label" style="margin-bottom: 1.5rem;">Esplora le opere</p>
+      <div style="display: flex; gap: 1.2rem; justify-content: center; flex-wrap: wrap;">
+        <a href="/collections/fantasy-originali" class="btn btn-primary" id="artista-cta-fantasy">
+          <span class="btn-content">Fantasy Originali</span>
+        </a>
+        <a href="/collections/anime-manga-art" class="btn btn-secondary" id="artista-cta-anime">
+          <span class="btn-content">Anime & Manga Art</span>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- Narrative Fragments Section -->
-  <div class="container mt-12 mb-16">
-    <div class="universo-narrative-header reveal-3d text-center">
-      <h2>{{ section.settings.narrative_title }}</h2>
-      <p>{{ section.settings.narrative_subtitle }}</p>
-    </div>
-
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when 'narrative_card' -%}
-            {%- assign float_class = 'floating-slow' -%}
-            {%- if block.settings.float_speed == 'medium' -%}
-              {%- assign float_class = 'floating-medium' -%}
-            {%- endif -%}
-            <div class="narrative-card {{ float_class }} reveal-3d" {{ block.shopify_attributes }}>
-              <span class="narrative-tag">{{ block.settings.tag | escape }}</span>
-              <h3 class="narrative-title">{{ block.settings.title | escape }}</h3>
-              <p class="narrative-text">{{ block.settings.text | escape }}</p>
-            </div>
-        {%- endcase -%}
-      {%- endfor -%}
-    </div>
-  </div>
 </div>
 
 {% schema %}
 {
-  "name": "Universo DAIANA",
+  "name": "Pagina L'Artista",
   "settings": [
+    {
+      "type": "text",
+      "id": "hero_label",
+      "label": "Label sopra titolo hero",
+      "default": "INverso"
+    },
     {
       "type": "text",
       "id": "hero_title",
       "label": "Titolo Hero",
-      "default": "L'Universo DAIANA"
+      "default": "L'Artista"
     },
     {
       "type": "text",
       "id": "hero_subtitle",
       "label": "Sottotitolo Hero",
-      "default": "Non è solo arte, è un portale verso un mondo sommerso."
+      "default": "Daiana Vaiani — tra inchiostro, ombra e coscienza."
     },
     {
       "type": "text",
-      "id": "manifesto_title",
-      "label": "Titolo Manifesto",
-      "default": "Il Manifesto"
+      "id": "bio_title",
+      "label": "Titolo sezione Bio",
+      "default": "Daiana Vaiani"
     },
     {
       "type": "richtext",
-      "id": "manifesto_text",
-      "label": "Testo Manifesto",
-      "default": "<p>DAIANA nasce come esplorazione dei confini tra la parola scritta e l'immagine. Ogni opera d'arte, ogni stampa e ogni libro che esce da questo studio è un frammento di una narrazione molto più grande. Un mondo sommerso fatto di ombre, riflessi e rovine antiche.</p><p>La nostra missione è creare <strong>artefatti fisici</strong> in un'era digitale. Libri da sfogliare, carte pesanti da toccare, inchiostri che riflettono la luce. Crediamo nel valore dell'oggetto libro e dell'opera d'arte tangibile.</p>"
+      "id": "bio_text",
+      "label": "Testo biografia"
     },
     {
       "type": "text",
-      "id": "artist_title",
-      "label": "Titolo Sezione Artista",
-      "default": "L'Artista"
+      "id": "process_title",
+      "label": "Titolo sezione Processo",
+      "default": "Il Processo Creativo"
     },
     {
       "type": "richtext",
-      "id": "artist_text",
-      "label": "Testo Sezione Artista",
-      "default": "<p>Dietro l'universo di DAIANA c'è la mano e la mente di <strong>Daiana Vaiani</strong>.</p><p>Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.</p><p>Con un percorso di studi che unisce il diploma al Liceo Artistico alla passione per la Psicologia, Daiana riversa nelle sue opere un profondo bisogno di 'tirar fuori' e dare forma a pensieri ed emozioni intime. La sua scrittura poetica, già presente in diverse pubblicazioni collettive e raccolte personali (come la sua opera <em>Pensieri dispersi</em>), si fonde con le sue illustrazioni in bianco e nero in un legame indissolubile, creando opere sospese tra l'ombra, il sogno e l'inconscio.</p>"
+      "id": "process_text",
+      "label": "Testo processo creativo"
     },
     {
       "type": "text",
-      "id": "narrative_title",
-      "label": "Titolo Frammenti",
-      "default": "Frammenti dell'Abisso"
+      "id": "statement_title",
+      "label": "Titolo Statement (opzionale)"
+    },
+    {
+      "type": "richtext",
+      "id": "statement_text",
+      "label": "Statement artistico"
     },
     {
       "type": "text",
-      "id": "narrative_subtitle",
-      "label": "Sottotitolo Frammenti",
-      "default": "Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo DAIANA."
+      "id": "cards_title",
+      "label": "Titolo cards/frammenti",
+      "default": "Tecniche & Materiali"
+    },
+    {
+      "type": "text",
+      "id": "cards_subtitle",
+      "label": "Sottotitolo cards",
+      "default": "I linguaggi visivi che compongono il mondo di INverso."
     }
   ],
   "blocks": [
     {
       "type": "narrative_card",
-      "name": "Scheda Narrativa",
+      "name": "Scheda Tecnica/Narrativa",
       "settings": [
         {
           "type": "text",
           "id": "tag",
-          "label": "Tag",
-          "default": "Frammento 01"
+          "label": "Tag / Tecnica",
+          "default": "Pastello"
         },
         {
           "type": "text",
           "id": "title",
           "label": "Titolo",
-          "default": "L'Ombra del Tempo"
+          "default": "Il Pastello su Carta Kraft"
         },
         {
           "type": "textarea",
           "id": "text",
-          "label": "Contenuto",
-          "default": "Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine."
+          "label": "Descrizione",
+          "default": "Il pastello su carta kraft è la firma visiva più riconoscibile di Daiana Vaiani. Il calore della carta grezza amplifica la vivacità dei pigmenti, creando contrasti unici tra ocra, ruggine e turchese."
         },
         {
           "type": "select",
           "id": "float_speed",
-          "label": "Velocità Oscillazione",
+          "label": "Velocità oscillazione",
           "options": [
             { "value": "slow", "label": "Lenta" },
             { "value": "medium", "label": "Media" }
@@ -141,42 +202,42 @@
   ],
   "presets": [
     {
-      "name": "Universo DAIANA",
+      "name": "Pagina L'Artista",
       "blocks": [
         {
           "type": "narrative_card",
           "settings": {
-            "tag": "Frammento 01",
-            "title": "L'Ombra del Tempo",
-            "text": "Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine.",
+            "tag": "Pastello",
+            "title": "Il Pastello su Carta Kraft",
+            "text": "Il pastello su carta kraft è la firma visiva più riconoscibile. Il calore della carta grezza amplifica la vivacità dei pigmenti, creando contrasti unici tra ocra, ruggine e turchese.",
             "float_speed": "slow"
           }
         },
         {
           "type": "narrative_card",
           "settings": {
-            "tag": "Personaggio",
-            "title": "Il Custode",
-            "text": "Colui che abita tra i risvolti delle pagine. Non parla se non attraverso il fruscio della carta cotone, indicando strade incise nella china.",
+            "tag": "Carboncino",
+            "title": "Le Ombre del Carboncino",
+            "text": "Il carboncino permette transizioni morbide tra la luce più pura e il buio assoluto. Ogni sfumatura è un respiro, ogni traccia una decisione irreversibile sulla carta.",
             "float_speed": "medium"
           }
         },
         {
           "type": "narrative_card",
           "settings": {
-            "tag": "Archivi",
-            "title": "La Stanza Vetrificata",
-            "text": "Un luogo sospeso dove la musica del pianoforte si solidifica in riflessi dorati. Chi vi entra, dimentica il proprio nome ma ritrova la propria ombra.",
-            "float_speed": "medium"
-          }
-        },
-        {
-          "type": "narrative_card",
-          "settings": {
-            "tag": "Poesia",
-            "title": "Pensieri Dispersi",
-            "text": "Oltre la nebbia del giorno, dove la coscienza si incrina e lascia filtrare una luce silenziosa. Scrivere è raccogliere i cocci del mattino.",
+            "tag": "Matita",
+            "title": "La Precisione della Matita",
+            "text": "La matita è lo strumento del controllo e del dettaglio. Capelli, texture, microespressioni — è qui che il realismo si incontra con il sogno.",
             "float_speed": "slow"
+          }
+        },
+        {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "China",
+            "title": "L'Inchiostro della China",
+            "text": "La china non perdona. Ogni linea è definitiva, ogni tratto porta il peso della certezza. È il linguaggio della risoluzione, dell'opera che non torna indietro.",
+            "float_speed": "medium"
           }
         }
       ]

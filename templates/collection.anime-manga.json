@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "hero_label": "Collezione Fan Art",
+        "title": "Anime & Manga Art",
+        "hero_desc": "Disegni realizzati a mano ispirati ai miei personaggi anime e manga preferiti. Sono opere di fan art non ufficiali, create per passione: ogni disegno è un pezzo unico disegnato a mano da Daiana Vaiani, non una stampa o merchandise ufficiale."
+      }
+    }
+  },
+  "order": ["main"]
+}

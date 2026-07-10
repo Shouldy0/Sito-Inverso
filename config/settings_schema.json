@@ -1,9 +1,9 @@
 [
   {
     "name": "theme_info",
-    "theme_name": "DAIANA Premium Dark Theme",
-    "theme_version": "1.0.0",
-    "theme_author": "Antigravity AI",
+    "theme_name": "INverso — Arte Originale",
+    "theme_version": "2.0.0",
+    "theme_author": "Daiana Vaiani / Antigravity AI",
     "theme_documentation_url": "https://github.com/Shouldy0/Sito-Inverso",
     "theme_support_url": "https://github.com/Shouldy0/Sito-Inverso"
   },
@@ -19,6 +19,11 @@
         "type": "text",
         "id": "social_tiktok_link",
         "label": "TikTok URL"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest URL"
       }
     ]
   },
@@ -34,6 +39,17 @@
         "type": "image_picker",
         "id": "share_image",
         "label": "Immagine di condivisione social predefinita"
+      }
+    ]
+  },
+  {
+    "name": "Note Legali",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "fanart_disclaimer",
+        "label": "Testo disclaimer Fan Art (usato nelle pagine Anime & Manga)",
+        "default": "Le opere in questa sezione sono fan art originali create da Daiana Vaiani, non affiliate né approvate dai rispettivi detentori del copyright."
       }
     ]
   }

@@ -1,0 +1,86 @@
+<div class="about-gallery container">
+  <div class="about-gallery__header">
+    <h2 class="about-gallery__title">{{ section.settings.title | default: "Dietro le Quinte" }}</h2>
+    <p class="about-gallery__desc">{{ section.settings.desc | default: "Il tavolo da lavoro, gli schizzi preparatori, la nascita di un'opera dal primo segno al fissativo finale. Seguimi su Instagram per vedere il processo creativo in tempo reale." }}</p>
+    
+    {%- if section.settings.ig_link != blank -%}
+      <a href="{{ section.settings.ig_link }}" class="about-gallery__ig-link" target="_blank" rel="noopener">
+        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+        @{{ section.settings.ig_handle | default: 'daianavaiani' }}
+      </a>
+    {%- endif -%}
+  </div>
+
+  <div class="about-gallery__grid">
+    {%- for block in section.blocks -%}
+      <div class="about-gallery__item" {{ block.shopify_attributes }}>
+        {%- if block.settings.image != blank -%}
+          <img
+            src="{{ block.settings.image | image_url: width: 600 }}"
+            alt="Dietro le quinte"
+            loading="lazy"
+            class="about-gallery__img"
+          >
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'about-gallery__placeholder' }}
+        {%- endif -%}
+        
+        <div class="about-gallery__overlay">
+          <span>Work in progress</span>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <div class="about-gallery__footer">
+    <a href="{{ routes.collections_url }}" class="btn">Scopri tutte le opere</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Dietro le Quinte",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Dietro le Quinte"
+    },
+    {
+      "type": "textarea",
+      "id": "desc",
+      "label": "Descrizione"
+    },
+    {
+      "type": "url",
+      "id": "ig_link",
+      "label": "Link Profilo Instagram"
+    },
+    {
+      "type": "text",
+      "id": "ig_handle",
+      "label": "Username Instagram (senza @)",
+      "default": "daianavaiani.art"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Foto WIP",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Foto dal tavolo"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Dietro le Quinte"
+    }
+  ]
+}
+{% endschema %}

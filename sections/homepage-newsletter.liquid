@@ -1,0 +1,97 @@
+{% comment %}
+  SEZIONE NEWSLETTER — Homepage INverso
+  Signup minimale, senza rumore. Solo l'essenziale.
+{% endcomment %}
+
+<section class="hp-newsletter" data-section-id="{{ section.id }}">
+  <div class="hp-newsletter__inner">
+
+    <div class="hp-newsletter__text">
+      <p class="hp-newsletter__label">{{ section.settings.label | default: 'Studio aperto' }}</p>
+      <h2 class="hp-newsletter__title">{{ section.settings.title | default: 'Ricevi in anteprima le nuove opere' }}</h2>
+      <p class="hp-newsletter__sub">{{ section.settings.subtitle | default: 'Nessuno spam. Solo un messaggio quando nasce qualcosa di nuovo.' }}</p>
+    </div>
+
+    <div class="hp-newsletter__form-col">
+      {% form 'customer', class: 'hp-newsletter__form', id: 'hp-newsletter-form' %}
+        <input type="hidden" name="contact[tags]" value="newsletter,homepage">
+        <div class="hp-newsletter__fields">
+          <input
+            type="email"
+            name="contact[email]"
+            placeholder="{{ section.settings.placeholder | default: 'La tua email' }}"
+            class="hp-newsletter__input"
+            value="{{ form.email }}"
+            aria-label="Iscriviti alla newsletter di INverso"
+            autocomplete="email"
+            required
+          >
+          <button type="submit" class="hp-newsletter__btn" id="newsletter-submit-btn">
+            {{ section.settings.btn_label | default: 'Iscriviti' }}
+          </button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="hp-newsletter__success">
+            ✦ Benvenuto nell'INverso. Ti scriveremo presto.
+          </p>
+        {%- endif -%}
+        {%- if form.errors -%}
+          <p class="hp-newsletter__error">Email non valida o già registrata.</p>
+        {%- endif -%}
+      {% endform %}
+      <p class="hp-newsletter__privacy">
+        {{ section.settings.privacy_text | default: 'Nessuna condivisione con terze parti. Cancellazione con un click.' }}
+      </p>
+    </div>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Newsletter — Homepage",
+  "settings": [
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Etichetta sopra titolo",
+      "default": "Studio aperto"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Titolo",
+      "default": "Ricevi in anteprima le nuove opere"
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Sottotitolo",
+      "default": "Nessuno spam. Solo un messaggio quando nasce qualcosa di nuovo."
+    },
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder input email",
+      "default": "La tua email"
+    },
+    {
+      "type": "text",
+      "id": "btn_label",
+      "label": "Etichetta bottone",
+      "default": "Iscriviti"
+    },
+    {
+      "type": "text",
+      "id": "privacy_text",
+      "label": "Nota privacy",
+      "default": "Nessuna condivisione con terze parti. Cancellazione con un click."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Newsletter — Homepage"
+    }
+  ]
+}
+{% endschema %}

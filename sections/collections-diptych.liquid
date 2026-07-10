@@ -1,0 +1,201 @@
+{% comment %}
+  SEZIONE "DUE MONDI" — INverso Homepage
+  Due box affiancati: Fantasy Originali / Anime & Manga Art
+  Immagine di sfondo per ciascuno, overlay elegante, testo e CTA.
+{% endcomment %}
+
+<section class="hp-diptych" data-section-id="{{ section.id }}">
+
+  {%- if section.settings.section_label != blank -%}
+    <div class="hp-diptych__header container">
+      <p class="hp-diptych__label">{{ section.settings.section_label }}</p>
+    </div>
+  {%- endif -%}
+
+  <div class="hp-diptych__grid">
+
+    <!-- Box sinistro: Fantasy Originali -->
+    <a
+      href="{{ section.settings.left_url | default: '/collections/fantasy-originali' }}"
+      class="hp-diptych__box hp-diptych__box--left"
+      id="diptych-fantasy"
+      aria-label="{{ section.settings.left_title | default: 'Fantasy Originali' }}"
+    >
+      <div class="hp-diptych__media">
+        {%- if section.settings.left_image != blank -%}
+          <img
+            src="{{ section.settings.left_image | image_url: width: 1200 }}"
+            alt="{{ section.settings.left_image_alt | default: 'Fantasy Originali' }}"
+            class="hp-diptych__img"
+            loading="lazy"
+            width="1200"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'fantasy-elfo-druido.png' | asset_url }}"
+            alt="Elfo Druido — Fantasy Originali"
+            class="hp-diptych__img"
+            loading="lazy"
+          >
+        {%- endif -%}
+        <div class="hp-diptych__overlay hp-diptych__overlay--left"></div>
+      </div>
+
+      <div class="hp-diptych__content">
+        <p class="hp-diptych__eyebrow">{{ section.settings.left_eyebrow | default: 'Personaggi inventati' }}</p>
+        <h2 class="hp-diptych__title">{{ section.settings.left_title | default: 'Fantasy Originali' }}</h2>
+        <p class="hp-diptych__desc">{{ section.settings.left_desc | default: 'Creature, eroi e mondi nati dal tratto di Daiana. Ogni opera è unica.' }}</p>
+        <span class="hp-diptych__cta">
+          {{ section.settings.left_cta | default: 'Esplora la collezione' }}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+    <!-- Box destro: Anime & Manga -->
+    <a
+      href="{{ section.settings.right_url | default: '/collections/anime-manga-art' }}"
+      class="hp-diptych__box hp-diptych__box--right"
+      id="diptych-anime"
+      aria-label="{{ section.settings.right_title | default: 'Anime & Manga Art' }}"
+    >
+      <div class="hp-diptych__media">
+        {%- if section.settings.right_image != blank -%}
+          <img
+            src="{{ section.settings.right_image | image_url: width: 1200 }}"
+            alt="{{ section.settings.right_image_alt | default: 'Anime & Manga Art' }}"
+            class="hp-diptych__img"
+            loading="lazy"
+            width="1200"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'naruto-sketch.png' | asset_url }}"
+            alt="Naruto — Anime & Manga Art Fan Art"
+            class="hp-diptych__img"
+            loading="lazy"
+          >
+        {%- endif -%}
+        <div class="hp-diptych__overlay hp-diptych__overlay--right"></div>
+      </div>
+
+      <div class="hp-diptych__content">
+        <p class="hp-diptych__eyebrow">{{ section.settings.right_eyebrow | default: 'Fan Art dichiarata' }}</p>
+        <h2 class="hp-diptych__title">{{ section.settings.right_title | default: 'Anime & Manga Art' }}</h2>
+        <p class="hp-diptych__desc">{{ section.settings.right_desc | default: 'Naruto, Dragon Ball, Jujutsu Kaisen — disegnati a mano, non stampati.' }}</p>
+        <span class="hp-diptych__cta">
+          {{ section.settings.right_cta | default: 'Esplora la collezione' }}
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Due Mondi — Collezioni",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_label",
+      "label": "Etichetta sezione",
+      "default": "Due collezioni"
+    },
+    {
+      "type": "header",
+      "content": "Box Sinistro — Fantasy Originali"
+    },
+    {
+      "type": "image_picker",
+      "id": "left_image",
+      "label": "Immagine Fantasy (elfo, druido…)"
+    },
+    {
+      "type": "text",
+      "id": "left_image_alt",
+      "label": "Alt text immagine sinistra",
+      "default": "Fantasy Originali — Daiana Vaiani"
+    },
+    {
+      "type": "text",
+      "id": "left_eyebrow",
+      "label": "Etichetta piccola",
+      "default": "Personaggi inventati"
+    },
+    {
+      "type": "text",
+      "id": "left_title",
+      "label": "Titolo",
+      "default": "Fantasy Originali"
+    },
+    {
+      "type": "textarea",
+      "id": "left_desc",
+      "label": "Descrizione breve",
+      "default": "Creature, eroi e mondi nati dal tratto di Daiana. Ogni opera è unica."
+    },
+    {
+      "type": "url",
+      "id": "left_url",
+      "label": "Link collezione"
+    },
+    {
+      "type": "text",
+      "id": "left_cta",
+      "label": "Testo CTA",
+      "default": "Esplora la collezione"
+    },
+    {
+      "type": "header",
+      "content": "Box Destro — Anime & Manga"
+    },
+    {
+      "type": "image_picker",
+      "id": "right_image",
+      "label": "Immagine Anime (Naruto, Dragon Ball…)"
+    },
+    {
+      "type": "text",
+      "id": "right_image_alt",
+      "label": "Alt text immagine destra",
+      "default": "Anime & Manga Art — Fan Art di Daiana Vaiani"
+    },
+    {
+      "type": "text",
+      "id": "right_eyebrow",
+      "label": "Etichetta piccola",
+      "default": "Fan Art dichiarata"
+    },
+    {
+      "type": "text",
+      "id": "right_title",
+      "label": "Titolo",
+      "default": "Anime & Manga Art"
+    },
+    {
+      "type": "textarea",
+      "id": "right_desc",
+      "label": "Descrizione breve",
+      "default": "Naruto, Dragon Ball, Jujutsu Kaisen — disegnati a mano, non stampati."
+    },
+    {
+      "type": "url",
+      "id": "right_url",
+      "label": "Link collezione"
+    },
+    {
+      "type": "text",
+      "id": "right_cta",
+      "label": "Testo CTA",
+      "default": "Esplora la collezione"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Due Mondi — Collezioni"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,57 @@
+{
+  "sections": {
+    "main": {
+      "type": "universo",
+      "settings": {
+        "hero_label": "INverso",
+        "hero_title": "L'Artista",
+        "hero_subtitle": "Daiana Vaiani \u2014 tra inchiostro, ombra e coscienza.",
+        "bio_title": "Daiana Vaiani",
+        "process_title": "Il Processo Creativo",
+        "statement_title": "",
+        "cards_title": "Tecniche & Materiali",
+        "cards_subtitle": "I linguaggi visivi che compongono il mondo di INverso."
+      },
+      "blocks": {
+        "pastello": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Pastello",
+            "title": "Il Pastello su Carta Kraft",
+            "text": "Il pastello su carta kraft \u00e8 la firma visiva pi\u00f9 riconoscibile di Daiana Vaiani. Il calore della carta grezza amplifica la vivacit\u00e0 dei pigmenti, creando contrasti unici tra ocra, ruggine e turchese.",
+            "float_speed": "slow"
+          }
+        },
+        "carboncino": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Carboncino",
+            "title": "Le Ombre del Carboncino",
+            "text": "Il carboncino permette transizioni morbide tra la luce pi\u00f9 pura e il buio assoluto. Ogni sfumatura \u00e8 un respiro, ogni traccia una decisione irreversibile sulla carta.",
+            "float_speed": "medium"
+          }
+        },
+        "matita": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "Matita",
+            "title": "La Precisione della Matita",
+            "text": "La matita \u00e8 lo strumento del controllo e del dettaglio. Capelli, texture, microespressioni \u2014 \u00e8 qui che il realismo si incontra con il sogno.",
+            "float_speed": "slow"
+          }
+        },
+        "china": {
+          "type": "narrative_card",
+          "settings": {
+            "tag": "China",
+            "title": "L\u2019Inchiostro della China",
+            "text": "La china non perdona. Ogni linea \u00e8 definitiva, ogni tratto porta il peso della certezza. \u00c8 il linguaggio della risoluzione, dell\u2019opera che non torna indietro.",
+            "float_speed": "medium"
+          }
+        }
+      },
+      "blocks_order": ["pastello", "carboncino", "matita", "china"]
+    }
+  },
+  "order": ["main"]
+}

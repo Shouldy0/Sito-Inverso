@@ -1,271 +1,549 @@
-{%- comment -%}
-  Pagina catalogo con tab Libri / Stampe separati.
-  Usa product.type oppure tags per distinguere:
-    - Libri: product.type == 'Libro' OR tag 'libro'
-    - Stampe: product.type == 'Stampa' OR product.type == 'Fine Art Print' OR tag 'stampa'
-{%- endcomment -%}
+{% comment %}
+  ================================================================
+  PAGINA COLLEZIONE — INverso
+  Layout: sidebar filtri (tecnica + soggetto) + griglia 3col
+  
+  Filtri client-side via data-attribute su ogni card.
+  Tags Shopify attesi per i filtri:
+    Tecnica:  tecnica-pastello | tecnica-grafite | tecnica-carboncino
+    Soggetto: soggetto-creature | soggetto-ritratti | soggetto-natura
+  
+  Il filtro funziona pure senza metafields —
+  basta taggare correttamente i prodotti in Shopify Admin.
+  ================================================================
+{% endcomment %}
 
 {%- assign all_products = collection.products -%}
+{%- assign total_count  = all_products.size -%}
 
-{%- comment -%} Definizione etichette con fallback robusto per evitare valori vuoti da Shopify Customizer {%- endcomment -%}
-{%- assign tab_libri_label = section.settings.tab_libri_label -%}
-{%- if tab_libri_label == blank -%}{%- assign tab_libri_label = 'Fumetti' -%}{%- endif -%}
+<div
+  class="col-page"
+  data-section-id="{{ section.id }}"
+  data-section-type="col-page"
+>
 
-{%- assign tab_stampe_label = section.settings.tab_stampe_label -%}
-{%- if tab_stampe_label == blank -%}{%- assign tab_stampe_label = 'Stampe Artistiche' -%}{%- endif -%}
-
-{%- comment -%} Calcola il numero di elementi per ciascuna categoria {%- endcomment -%}
-{%- assign libri_count = 0 -%}
-{%- assign stampe_count = 0 -%}
-{%- for p in all_products -%}
-  {%- assign is_book = false -%}
-  {%- if p.type != blank -%}
-    {%- assign p_type_down = p.type | downcase -%}
-    {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
-      {%- assign is_book = true -%}
+  <!-- ── HERO COLLEZIONE ──────────────────────────────────── -->
+  <header class="col-hero">
+    {%- if section.settings.hero_bg_image != blank -%}
+      <div class="col-hero__bg">
+        <img
+          src="{{ section.settings.hero_bg_image | image_url: width: 1800 }}"
+          alt=""
+          loading="eager"
+          aria-hidden="true"
+          width="1800"
+        >
+        <div class="col-hero__bg-overlay"></div>
+      </div>
     {%- endif -%}
-  {%- endif -%}
-  {%- if is_book == false -%}
-    {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
-      {%- assign is_book = true -%}
-    {%- endif -%}
-  {%- endif -%}
 
-  {%- if is_book -%}
-    {%- assign libri_count = libri_count | plus: 1 -%}
-  {%- else -%}
-    {%- assign stampe_count = stampe_count | plus: 1 -%}
-  {%- endif -%}
-{%- endfor -%}
-
-<div class="catalog-page" data-section-id="{{ section.id }}">
-
-  <!-- Hero intestazione catalogo -->
-  <div class="catalog-hero">
-    <div class="container">
-      <p class="catalog-hero-label">{{ section.settings.label | default: 'Catalogo' }}</p>
-      <h1 class="catalog-hero-title">{{ collection.title | default: section.settings.title | default: 'Tutto il Catalogo' }}</h1>
+    <div class="container col-hero__content">
+      <p class="col-hero__label">{{ section.settings.hero_label | default: 'Collezione' }}</p>
+      <h1 class="col-hero__title">{{ collection.title | default: section.settings.title | default: 'Fantasy Originali' }}</h1>
       {%- if collection.description != blank -%}
-        <p class="catalog-hero-desc">{{ collection.description | strip_html }}</p>
-      {%- elsif section.settings.subtitle != blank -%}
-        <p class="catalog-hero-desc">{{ section.settings.subtitle }}</p>
+        <p class="col-hero__desc">{{ collection.description | strip_html }}</p>
+      {%- elsif section.settings.hero_desc != blank -%}
+        <p class="col-hero__desc">{{ section.settings.hero_desc }}</p>
       {%- endif -%}
-    </div>
-  </div>
 
-  <!-- Tab switcher -->
-  <div class="catalog-tabs-wrapper">
-    <div class="container">
-      <div class="catalog-tabs" role="tablist" aria-label="Categorie catalogo">
-        <button
-          class="catalog-tab active"
-          id="tab-libri"
-          role="tab"
-          aria-selected="true"
-          aria-controls="panel-libri"
-          data-tab="libri"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-           <span>{{ tab_libri_label }}</span>
-          <span class="tab-count">{{ libri_count }}</span>
-        </button>
-        <button
-          class="catalog-tab"
-          id="tab-stampe"
-          role="tab"
-          aria-selected="false"
-          aria-controls="panel-stampe"
-          data-tab="stampe"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
-           <span>{{ tab_stampe_label }}</span>
-          <span class="tab-count">{{ stampe_count }}</span>
-        </button>
+      <div class="col-hero__meta">
+        <span class="col-hero__count">{{ total_count }} {% if total_count == 1 %}opera{% else %}opere{% endif %}</span>
+        <span class="col-hero__sep" aria-hidden="true">·</span>
+        <span class="col-hero__unique">Tutte le opere sono pezzi unici originali</span>
       </div>
     </div>
-  </div>
+  </header>
 
-  <!-- Panel LIBRI -->
-  <div
-    class="catalog-panel active"
-    id="panel-libri"
-    role="tabpanel"
-    aria-labelledby="tab-libri"
-  >
-    <div class="container">
-      {%- if libri_count > 0 -%}
-        <div class="catalog-section-intro">
-          <p class="catalog-section-label">{{ tab_libri_label }}</p>
-          <p class="catalog-section-desc">{{ section.settings.libri_desc | default: 'Storie a fumetti, romanzi visivi e racconti illustrati — ogni volume è un viaggio nei confini della coscienza.' }}</p>
+  <!-- ── LAYOUT: Sidebar + Griglia ────────────────────────── -->
+  <div class="col-layout container">
+
+    <!-- ── SIDEBAR FILTRI ────────────────────────────────── -->
+    <aside class="col-sidebar" aria-label="Filtri collezione" id="col-filters">
+
+      <!-- Toggle mobile -->
+      <button
+        class="col-sidebar__toggle"
+        id="col-filter-toggle"
+        aria-expanded="false"
+        aria-controls="col-filter-panel"
+        type="button"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="6" x2="20" y2="6"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
+        <span>Filtra</span>
+        <span class="col-filter-badge" id="col-filter-count" aria-live="polite" hidden>0</span>
+      </button>
+
+      <div class="col-filter-panel" id="col-filter-panel">
+
+        <!-- Filtro TECNICA -->
+        <div class="col-filter-group" id="filter-tecnica">
+          <button
+            class="col-filter-group__header"
+            aria-expanded="true"
+            aria-controls="filter-tecnica-body"
+            type="button"
+          >
+            <span>Tecnica</span>
+            <svg class="col-filter-chevron" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="col-filter-group__body" id="filter-tecnica-body">
+            {%- assign tecnica_filters = 'Pastello|tecnica-pastello,Grafite|tecnica-grafite,Carboncino|tecnica-carboncino,China|tecnica-china,Matita|tecnica-matita' | split: ',' -%}
+            {%- for f in tecnica_filters -%}
+              {%- assign parts = f | split: '|' -%}
+              <label class="col-filter-option" id="filter-{{ parts[1] }}">
+                <input
+                  type="checkbox"
+                  class="col-filter-checkbox"
+                  data-filter-group="tecnica"
+                  data-filter-value="{{ parts[1] }}"
+                  aria-label="Filtra per tecnica: {{ parts[0] }}"
+                >
+                <span class="col-filter-check-ui" aria-hidden="true"></span>
+                <span class="col-filter-label">{{ parts[0] }}</span>
+                <span class="col-filter-count-badge" data-count-for="{{ parts[1] }}">0</span>
+              </label>
+            {%- endfor -%}
+          </div>
         </div>
 
-        <div class="catalog-grid catalog-grid--books">
-          {%- for p in all_products -%}
-            {%- assign is_book = false -%}
-            {%- if p.type != blank -%}
-              {%- assign p_type_down = p.type | downcase -%}
-              {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
-                {%- assign is_book = true -%}
-              {%- endif -%}
-            {%- endif -%}
-            {%- if is_book == false -%}
-              {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
-                {%- assign is_book = true -%}
-              {%- endif -%}
+        <!-- Divisore -->
+        <div class="col-filter-divider" role="separator" aria-hidden="true"></div>
+
+        <!-- Filtro SOGGETTO -->
+        <div class="col-filter-group" id="filter-soggetto">
+          <button
+            class="col-filter-group__header"
+            aria-expanded="true"
+            aria-controls="filter-soggetto-body"
+            type="button"
+          >
+            <span>Soggetto</span>
+            <svg class="col-filter-chevron" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="col-filter-group__body" id="filter-soggetto-body">
+            {%- assign soggetto_filters = 'Creature|soggetto-creature,Ritratti|soggetto-ritratti,Natura|soggetto-natura,Guerrieri|soggetto-guerrieri,Demoni|soggetto-demoni' | split: ',' -%}
+            {%- for f in soggetto_filters -%}
+              {%- assign parts = f | split: '|' -%}
+              <label class="col-filter-option" id="filter-{{ parts[1] }}">
+                <input
+                  type="checkbox"
+                  class="col-filter-checkbox"
+                  data-filter-group="soggetto"
+                  data-filter-value="{{ parts[1] }}"
+                  aria-label="Filtra per soggetto: {{ parts[0] }}"
+                >
+                <span class="col-filter-check-ui" aria-hidden="true"></span>
+                <span class="col-filter-label">{{ parts[0] }}</span>
+                <span class="col-filter-count-badge" data-count-for="{{ parts[1] }}">0</span>
+              </label>
+            {%- endfor -%}
+          </div>
+        </div>
+
+        <!-- Filtro DISPONIBILITÀ -->
+        <div class="col-filter-divider" role="separator" aria-hidden="true"></div>
+
+        <div class="col-filter-group">
+          <button
+            class="col-filter-group__header"
+            aria-expanded="true"
+            aria-controls="filter-disp-body"
+            type="button"
+          >
+            <span>Disponibilità</span>
+            <svg class="col-filter-chevron" xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+          <div class="col-filter-group__body" id="filter-disp-body">
+            <label class="col-filter-option">
+              <input type="checkbox" class="col-filter-checkbox" data-filter-group="disponibilita" data-filter-value="disponibile" aria-label="Mostra solo opere disponibili">
+              <span class="col-filter-check-ui" aria-hidden="true"></span>
+              <span class="col-filter-label">Solo disponibili</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Reset -->
+        <button class="col-filter-reset" id="col-filter-reset" type="button" aria-label="Rimuovi tutti i filtri" hidden>
+          Rimuovi filtri
+        </button>
+
+      </div>
+    </aside>
+
+    <!-- ── GRIGLIA OPERE ──────────────────────────────────── -->
+    <div class="col-main">
+
+      <!-- Barra risultati + filtri attivi -->
+      <div class="col-results-bar" id="col-results-bar">
+        <p class="col-results-count" id="col-results-count" aria-live="polite">
+          <span id="col-visible-count">{{ total_count }}</span> opere
+        </p>
+
+        <!-- Pillole filtri attivi -->
+        <div class="col-active-filters" id="col-active-filters" aria-label="Filtri attivi" aria-live="polite"></div>
+      </div>
+
+      <!-- Empty state (nascosta di default) -->
+      <div class="col-empty" id="col-empty" hidden aria-live="polite">
+        <p class="col-empty__icon">✦</p>
+        <p class="col-empty__title">Nessuna opera corrisponde ai filtri selezionati</p>
+        <p class="col-empty__sub">Prova a rimuovere uno o più filtri.</p>
+        <button class="col-empty__reset" type="button" id="col-empty-reset">Rimuovi tutti i filtri</button>
+      </div>
+
+      <!-- Griglia prodotti -->
+      {%- if total_count > 0 -%}
+        <div class="col-grid" id="col-grid" role="list" aria-label="Opere della collezione">
+          {%- for product in all_products -%}
+
+            {%- comment -%} Raccolta tag per filtri {%- endcomment -%}
+            {%- assign p_tags_str = product.tags | join: ' ' | downcase -%}
+
+            {%- assign p_tecnica = '' -%}
+            {%- if p_tags_str contains 'tecnica-pastello' -%}{%- assign p_tecnica = 'tecnica-pastello' -%}
+            {%- elsif p_tags_str contains 'tecnica-grafite' -%}{%- assign p_tecnica = 'tecnica-grafite' -%}
+            {%- elsif p_tags_str contains 'tecnica-carboncino' -%}{%- assign p_tecnica = 'tecnica-carboncino' -%}
+            {%- elsif p_tags_str contains 'tecnica-china' -%}{%- assign p_tecnica = 'tecnica-china' -%}
+            {%- elsif p_tags_str contains 'tecnica-matita' -%}{%- assign p_tecnica = 'tecnica-matita' -%}
             {%- endif -%}
 
-            {%- if is_book -%}
-              {%- render 'product-card', product: p, layout: 'book' -%}
+            {%- assign p_soggetto = '' -%}
+            {%- if p_tags_str contains 'soggetto-creature' -%}{%- assign p_soggetto = 'soggetto-creature' -%}
+            {%- elsif p_tags_str contains 'soggetto-ritratti' -%}{%- assign p_soggetto = 'soggetto-ritratti' -%}
+            {%- elsif p_tags_str contains 'soggetto-natura' -%}{%- assign p_soggetto = 'soggetto-natura' -%}
+            {%- elsif p_tags_str contains 'soggetto-guerrieri' -%}{%- assign p_soggetto = 'soggetto-guerrieri' -%}
+            {%- elsif p_tags_str contains 'soggetto-demoni' -%}{%- assign p_soggetto = 'soggetto-demoni' -%}
             {%- endif -%}
+
+            {%- assign p_avail = 'disponibile' -%}
+            {%- unless product.available -%}{%- assign p_avail = 'venduto' -%}{%- endunless -%}
+
+            {%- comment -%} Metafields {%- endcomment -%}
+            {%- assign mf_tecnica    = product.metafields.custom.tecnica -%}
+            {%- assign mf_dimensioni = product.metafields.custom.dimensioni -%}
+            {%- assign mf_anno       = product.metafields.custom.anno -%}
+
+            <article
+              class="col-card"
+              role="listitem"
+              data-tecnica="{{ p_tecnica }}"
+              data-soggetto="{{ p_soggetto }}"
+              data-disponibilita="{{ p_avail }}"
+              data-product-id="{{ product.id }}"
+            >
+              <a href="{{ product.url }}" class="col-card__link" aria-label="{{ product.title }}">
+
+                <!-- Immagine -->
+                <div class="col-card__media">
+                  {%- if product.featured_image != blank -%}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 750 }}"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      class="col-card__img"
+                      loading="lazy"
+                      width="750"
+                    >
+                  {%- else -%}
+                    {{ 'product-1' | placeholder_svg_tag: 'col-card__placeholder' }}
+                  {%- endif -%}
+
+                  <!-- Badge Pezzo Unico / Fan Art -->
+                  {%- assign p_is_fanart = false -%}
+                  {%- if product.metafields.custom.tipo == 'Fan Art' or product.metafields.custom.tipo == 'fan-art' or product.tags contains 'fan-art' or product.tags contains 'anime' or product.tags contains 'manga' -%}
+                    {%- assign p_is_fanart = true -%}
+                  {%- endif -%}
+
+                  {%- if p_is_fanart -%}
+                    <span class="col-card__badge col-card__badge--fanart">
+                      Fan Art
+                    </span>
+                  {%- else -%}
+                    <span class="col-card__badge col-card__badge--unique">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                      Pezzo Unico
+                    </span>
+                  {%- endif -%}
+
+                  {%- unless product.available -%}
+                    <span class="col-card__sold-overlay" aria-label="Opera venduta">Venduto</span>
+                  {%- endunless -%}
+
+                  <!-- Hover overlay con info rapide -->
+                  <div class="col-card__hover" aria-hidden="true">
+                    <div class="col-card__hover-inner">
+                      {%- if mf_tecnica != blank -%}
+                        <p class="col-card__hover-tech">{{ mf_tecnica }}</p>
+                      {%- endif -%}
+                      <p class="col-card__hover-cta">Vedi l'opera →</p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Info sotto l'immagine -->
+                <div class="col-card__info">
+                  {%- if mf_tecnica != blank -%}
+                    <p class="col-card__tech">{{ mf_tecnica }}</p>
+                  {%- elsif p_tecnica != blank -%}
+                    <p class="col-card__tech">{{ p_tecnica | replace: 'tecnica-', '' | capitalize }}</p>
+                  {%- elsif product.type != blank -%}
+                    <p class="col-card__tech">{{ product.type }}</p>
+                  {%- endif -%}
+
+                  <h2 class="col-card__title">{{ product.title }}</h2>
+
+                  {%- if mf_dimensioni != blank -%}
+                    <p class="col-card__dims">{{ mf_dimensioni }}</p>
+                  {%- endif -%}
+
+                  <div class="col-card__footer">
+                    <span class="col-card__price">
+                      {%- if product.available -%}
+                        {{ product.price | money }}
+                      {%- else -%}
+                        <span class="col-card__sold-text">Venduto</span>
+                      {%- endif -%}
+                    </span>
+                    {%- if product.available -%}
+                      <span class="col-card__avail">
+                        <span class="col-card__avail-dot"></span>
+                        Disponibile
+                      </span>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              </a>
+            </article>
+
           {%- endfor -%}
         </div>
+
       {%- else -%}
-        <div class="catalog-empty">
-          <div class="catalog-empty-icon">✦</div>
-          <p class="catalog-empty-title">Nessun libro disponibile al momento</p>
-          <p class="catalog-empty-sub">Torna presto — nuovi titoli in arrivo.</p>
+        <div class="col-empty" aria-live="polite">
+          <p class="col-empty__icon">✦</p>
+          <p class="col-empty__title">Nessuna opera in questa collezione</p>
+          <p class="col-empty__sub">Torna presto — nuove creazioni in arrivo.</p>
         </div>
       {%- endif -%}
+
     </div>
+    <!-- /col-main -->
+
   </div>
-
-  <!-- Panel STAMPE -->
-  <div
-    class="catalog-panel"
-    id="panel-stampe"
-    role="tabpanel"
-    aria-labelledby="tab-stampe"
-    hidden
-  >
-    <div class="container">
-      {%- if stampe_count > 0 -%}
-        <div class="catalog-section-intro">
-          <p class="catalog-section-label">{{ tab_stampe_label }}</p>
-          <p class="catalog-section-desc">{{ section.settings.stampe_desc | default: "Stampe in edizione limitata su carta cotone. Ogni opera è numerata e firmata dall'autrice." }}</p>
-        </div>
-
-        <!-- Layout a griglia sfalsata per le stampe -->
-        <div class="catalog-grid catalog-grid--prints">
-          {%- for p in all_products -%}
-            {%- assign is_book = false -%}
-            {%- if p.type != blank -%}
-              {%- assign p_type_down = p.type | downcase -%}
-              {%- if p_type_down contains 'libro' or p_type_down contains 'fumetto' or p_type_down contains 'albo' or p_type_down contains 'comic' or p_type_down contains 'book' -%}
-                {%- assign is_book = true -%}
-              {%- endif -%}
-            {%- endif -%}
-            {%- if is_book == false -%}
-              {%- if p.tags contains 'libro' or p.tags contains 'libri' or p.tags contains 'fumetto' or p.tags contains 'fumetti' or p.tags contains 'book' or p.tags contains 'books' -%}
-                {%- assign is_book = true -%}
-              {%- endif -%}
-            {%- endif -%}
-
-            {%- if is_book == false -%}
-              {%- render 'product-card', product: p, layout: 'print' -%}
-            {%- endif -%}
-          {%- endfor -%}
-        </div>
-      {%- else -%}
-        <div class="catalog-empty">
-          <div class="catalog-empty-icon">✦</div>
-          <p class="catalog-empty-title">Nessuna stampa disponibile al momento</p>
-          <p class="catalog-empty-sub">Torna presto — nuove opere in arrivo.</p>
-        </div>
-      {%- endif -%}
-    </div>
-  </div>
+  <!-- /col-layout -->
 
 </div>
 
+<!-- ── JAVASCRIPT FILTRI ─────────────────────────────────── -->
 <script>
 (function () {
-  const tabs = document.querySelectorAll('.catalog-tab');
-  const panels = document.querySelectorAll('.catalog-panel');
+  'use strict';
 
-  tabs.forEach(function (tab) {
-    tab.addEventListener('click', function () {
-      const target = tab.getAttribute('data-tab');
+  // ── Stato filtri ────────────────────────────────────────
+  var activeFilters = { tecnica: [], soggetto: [], disponibilita: [] };
 
-      // Aggiorna tab
-      tabs.forEach(function (t) {
-        t.classList.remove('active');
-        t.setAttribute('aria-selected', 'false');
-      });
-      tab.classList.add('active');
-      tab.setAttribute('aria-selected', 'true');
+  var grid       = document.getElementById('col-grid');
+  var emptyState = document.getElementById('col-empty');
+  var countEl    = document.getElementById('col-visible-count');
+  var resetBtn   = document.getElementById('col-filter-reset');
+  var emptyReset = document.getElementById('col-empty-reset');
+  var activePill = document.getElementById('col-active-filters');
+  var filterBadge= document.getElementById('col-filter-count');
+  var allCards   = grid ? Array.from(grid.querySelectorAll('.col-card')) : [];
 
-      // Aggiorna panel
-      panels.forEach(function (panel) {
-        if (panel.id === 'panel-' + target) {
-          panel.classList.add('active');
-          panel.removeAttribute('hidden');
-        } else {
-          panel.classList.remove('active');
-          panel.setAttribute('hidden', '');
+  // Conta per ogni valore di filtro
+  function updateCountBadges() {
+    var counts = {};
+    allCards.forEach(function (card) {
+      ['tecnica', 'soggetto', 'disponibilita'].forEach(function (group) {
+        var val = card.getAttribute('data-' + group);
+        if (val) {
+          counts[val] = (counts[val] || 0) + 1;
         }
       });
+    });
+    document.querySelectorAll('[data-count-for]').forEach(function (el) {
+      var key = el.getAttribute('data-count-for');
+      el.textContent = counts[key] || 0;
+      el.hidden = !counts[key];
+    });
+  }
 
-      // Salva la tab attiva nell'URL senza ricaricare
-      const url = new URL(window.location);
-      url.searchParams.set('tab', target);
-      window.history.replaceState({}, '', url);
+  // ── Applica filtri ──────────────────────────────────────
+  function applyFilters() {
+    var hasAny = false;
+    Object.keys(activeFilters).forEach(function (g) {
+      if (activeFilters[g].length > 0) hasAny = true;
+    });
+
+    var visible = 0;
+
+    allCards.forEach(function (card) {
+      var show = true;
+
+      Object.keys(activeFilters).forEach(function (group) {
+        if (activeFilters[group].length === 0) return;
+        var cardVal = card.getAttribute('data-' + group) || '';
+        var match = activeFilters[group].some(function (f) {
+          return cardVal === f;
+        });
+        if (!match) show = false;
+      });
+
+      card.hidden = !show;
+      if (show) visible++;
+    });
+
+    // Count
+    if (countEl) countEl.textContent = visible;
+
+    // Empty state
+    if (emptyState) {
+      emptyState.hidden = (visible > 0);
+    }
+
+    // Reset btn
+    var totalActive = Object.values(activeFilters).reduce(function(a,b){return a+b.length;}, 0);
+    if (resetBtn) resetBtn.hidden = !hasAny;
+    if (filterBadge) {
+      filterBadge.textContent = totalActive;
+      filterBadge.hidden = totalActive === 0;
+    }
+
+    // Pills filtri attivi
+    renderActivePills();
+  }
+
+  // ── Pillole filtri attivi ────────────────────────────────
+  var filterLabels = {
+    'tecnica-pastello':    'Pastello',
+    'tecnica-grafite':     'Grafite',
+    'tecnica-carboncino':  'Carboncino',
+    'tecnica-china':       'China',
+    'tecnica-matita':      'Matita',
+    'soggetto-creature':   'Creature',
+    'soggetto-ritratti':   'Ritratti',
+    'soggetto-natura':     'Natura',
+    'soggetto-guerrieri':  'Guerrieri',
+    'soggetto-demoni':     'Demoni',
+    'disponibile':         'Solo disponibili'
+  };
+
+  function renderActivePills() {
+    if (!activePill) return;
+    activePill.innerHTML = '';
+
+    Object.keys(activeFilters).forEach(function (group) {
+      activeFilters[group].forEach(function (val) {
+        var pill = document.createElement('button');
+        pill.className = 'col-active-pill';
+        pill.type = 'button';
+        pill.setAttribute('aria-label', 'Rimuovi filtro: ' + (filterLabels[val] || val));
+        pill.innerHTML =
+          '<span>' + (filterLabels[val] || val) + '</span>' +
+          '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+
+        pill.addEventListener('click', function () {
+          var idx = activeFilters[group].indexOf(val);
+          if (idx > -1) activeFilters[group].splice(idx, 1);
+          var cb = document.querySelector(
+            '.col-filter-checkbox[data-filter-group="' + group + '"][data-filter-value="' + val + '"]'
+          );
+          if (cb) cb.checked = false;
+          applyFilters();
+        });
+
+        activePill.appendChild(pill);
+      });
+    });
+  }
+
+  // ── Event listeners checkbox ─────────────────────────────
+  document.querySelectorAll('.col-filter-checkbox').forEach(function (cb) {
+    cb.addEventListener('change', function () {
+      var group = cb.getAttribute('data-filter-group');
+      var val   = cb.getAttribute('data-filter-value');
+
+      if (cb.checked) {
+        if (!activeFilters[group].includes(val)) activeFilters[group].push(val);
+      } else {
+        activeFilters[group] = activeFilters[group].filter(function (v) { return v !== val; });
+      }
+      applyFilters();
     });
   });
 
-  // Ripristina tab da URL (es. ?tab=stampe)
-  const urlTab = new URLSearchParams(window.location.search).get('tab');
-  if (urlTab) {
-    const savedTab = document.querySelector('[data-tab="' + urlTab + '"]');
-    if (savedTab) savedTab.click();
+  // ── Reset ────────────────────────────────────────────────
+  function resetAll() {
+    Object.keys(activeFilters).forEach(function (g) { activeFilters[g] = []; });
+    document.querySelectorAll('.col-filter-checkbox').forEach(function (cb) { cb.checked = false; });
+    applyFilters();
   }
+
+  if (resetBtn)   resetBtn.addEventListener('click', resetAll);
+  if (emptyReset) emptyReset.addEventListener('click', resetAll);
+
+  // ── Accordion gruppi filtri ──────────────────────────────
+  document.querySelectorAll('.col-filter-group__header').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var expanded = btn.getAttribute('aria-expanded') === 'true';
+      btn.setAttribute('aria-expanded', (!expanded).toString());
+      var bodyId = btn.getAttribute('aria-controls');
+      var body   = document.getElementById(bodyId);
+      if (body) body.hidden = expanded;
+    });
+  });
+
+  // ── Mobile sidebar toggle ────────────────────────────────
+  var toggleBtn  = document.getElementById('col-filter-toggle');
+  var filterPanel = document.getElementById('col-filter-panel');
+
+  if (toggleBtn && filterPanel) {
+    toggleBtn.addEventListener('click', function () {
+      var open = toggleBtn.getAttribute('aria-expanded') === 'true';
+      toggleBtn.setAttribute('aria-expanded', (!open).toString());
+      filterPanel.hidden = open;
+    });
+
+    // Inizializza mobile
+    if (window.innerWidth < 900) {
+      filterPanel.hidden = true;
+    }
+  }
+
+  // ── Init ─────────────────────────────────────────────────
+  updateCountBadges();
+  applyFilters();
+
 })();
 </script>
 
 {% schema %}
 {
-  "name": "Catalogo con Tab",
+  "name": "Collezione con Filtri",
   "settings": [
     {
       "type": "text",
-      "id": "label",
-      "label": "Etichetta sopra titolo",
-      "default": "Catalogo"
+      "id": "hero_label",
+      "label": "Etichetta hero",
+      "default": "Collezione"
     },
     {
       "type": "text",
       "id": "title",
-      "label": "Titolo (se non c'è collezione)",
-      "default": "Tutto il Catalogo"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "label": "Sottotitolo / descrizione",
-      "default": "Libri e stampe dall'universo di Daiana Vaiani."
+      "label": "Titolo (fallback se non c'è collezione)",
+      "default": "Fantasy Originali"
     },
     {
       "type": "textarea",
-      "id": "libri_desc",
-      "label": "Descrizione sezione Libri",
-      "default": "Storie a fumetti, romanzi visivi e racconti illustrati — ogni volume è un viaggio nei confini della coscienza."
+      "id": "hero_desc",
+      "label": "Descrizione collezione (fallback)",
+      "default": "Creature, guerrieri e volti nati dall'immaginazione. Ogni opera è un personaggio originale di Daiana Vaiani."
     },
     {
-      "type": "textarea",
-      "id": "stampe_desc",
-      "label": "Descrizione sezione Stampe",
-      "default": "Stampe in edizione limitata su carta cotone. Ogni opera è numerata e firmata dall'autrice."
-    },
-    {
-      "type": "text",
-      "id": "tab_libri_label",
-      "label": "Etichetta Tab Libri/Fumetti",
-      "default": "Fumetti"
-    },
-    {
-      "type": "text",
-      "id": "tab_stampe_label",
-      "label": "Etichetta Tab Stampe",
-      "default": "Stampe Artistiche"
+      "type": "image_picker",
+      "id": "hero_bg_image",
+      "label": "Immagine di sfondo hero (opzionale)"
     }
   ]
 }
