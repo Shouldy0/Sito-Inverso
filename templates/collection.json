@@ -1,12 +1,38 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-collection",
       "settings": {
         "hero_label": "Collezione",
+        "title": "Fantasy Originali",
         "hero_desc": ""
       }
+    },
+    "17840332362b79d319": {
+      "type": "apps",
+      "blocks": {
+        "arki_view_counter_view_counter_product_settings_rEWR4M": {
+          "type": "shopify://apps/arki-view-counter/blocks/view_counter_product_settings/0199b947-9ffb-72a2-b4ab-0a2db9aad5d2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "arki_view_counter_view_counter_product_settings_rEWR4M"
+      ],
+      "settings": {}
     }
   },
-  "order": ["main"]
+  "order": [
+    "main",
+    "17840332362b79d319"
+  ]
 }
