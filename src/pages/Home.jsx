@@ -1,6 +1,5 @@
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import Button from '../components/UI/Button';
 import ProductCard from '../components/UI/ProductCard';
 import { useCart } from '../context/CartContext';
 import { allProducts } from '../data/products';
@@ -9,213 +8,86 @@ import './Home.css';
 
 const Home = () => {
   const { addToCart } = useCart();
-
-  // Seleziona il libro in risalto (il nuovo in pre-ordine, id 'b5')
-  const featuredBook = allProducts.find(p => p.id === 'b5');
-  // Seleziona tutti i libri per la sezione della biblioteca nella homepage
+  
   const allBooks = allProducts.filter(p => p.category === 'biblioteca');
   const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
   const featuredOriginals = allProducts.filter(p => p.category === 'originali').slice(0, 3);
 
   useEffect(() => {
-    // 1. Cinematic Title Reveal (expansion & blur-to-clear)
-    gsap.fromTo(".hero-logo-title", 
-      { opacity: 0, letterSpacing: "0.5em", filter: "blur(15px)", y: 30 },
-      { opacity: 1, letterSpacing: "0.2em", filter: "blur(0px)", y: 0, duration: 2.5, ease: "power3.out", clearProps: "filter" }
+    // Animazione di emersione dal buio
+    gsap.fromTo(".giant-artwork", 
+      { opacity: 0, scale: 0.95, filter: "blur(20px)" },
+      { opacity: 0.85, scale: 1, filter: "blur(0px)", duration: 4, ease: "power2.out", clearProps: "filter" }
     );
 
-    // 2. Subtitle Reveal (blur-to-clear from dark)
-    gsap.fromTo(".hero-blur-subtitle", 
-      { opacity: 0, filter: "blur(25px)", y: 15 },
-      { opacity: 1, filter: "blur(0px)", y: 0, duration: 3.2, ease: "power2.out", delay: 0.8, clearProps: "filter" }
+    gsap.fromTo(".hero-manifesto", 
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: 2, delay: 2, ease: "power2.out" }
     );
-
-    // 3. Scroll Indicator Fade
-    gsap.fromTo(".scroll-indicator",
-      { opacity: 0 },
-      { opacity: 0.45, duration: 1.5, delay: 2.2, ease: "power1.out" }
-    );
-
-    // 4. Zero-Gravity Particles Levitation
-    const particles = document.querySelectorAll('.particle');
-    particles.forEach((p, i) => {
-      const colors = ['#b36a4d', '#6b8268', '#f0e9df', '#c47c5f'];
-      const randomColor = colors[Math.floor(Math.random() * colors.length)];
-      
-      const randomX = Math.random() * 100;
-      const randomY = Math.random() * 100;
-      const randomScale = 0.4 + Math.random() * 1.6;
-      const randomBlur = 1.5 + Math.random() * 6;
-      const randomOpacity = 0.04 + Math.random() * 0.18;
-
-      gsap.set(p, {
-        xPercent: randomX,
-        yPercent: randomY,
-        scale: randomScale,
-        backgroundColor: randomColor,
-        filter: `blur(${randomBlur}px)`,
-        opacity: randomOpacity
-      });
-
-      const duration = 10 + Math.random() * 14;
-      const travelY = 60 + Math.random() * 120;
-      const travelX = 30 + Math.random() * 60;
-
-      gsap.to(p, {
-        y: `-=${travelY}`,
-        x: `+=${travelX}`,
-        rotation: Math.random() * 360,
-        duration: duration,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-        delay: -Math.random() * duration
-      });
-    });
   }, []);
 
   const handleAddToCart = (id) => {
     const product = allProducts.find(p => p.id === id);
-    if (product) {
-      addToCart(product);
-    }
+    if (product) addToCart(product);
   };
-
-  if (!featuredBook) {
-    return (
-      <div className="home-page page-transition container" style={{ padding: '8rem 2rem', textHeight: 'center' }}>
-        <h2>Nessun libro disponibile al momento.</h2>
-      </div>
-    );
-  }
 
   return (
     <div className="home-page page-transition">
-      <script type="application/ld+json">
-        {JSON.stringify({
-          "@context": "https://schema.org",
-          "@type": "Person",
-          "name": "Daiana Vaiani",
-          "url": "https://www.daianavaiani.it",
-          "jobTitle": "Autrice e Illustratrice",
-          "sameAs": [
-            "https://www.instagram.com/daianavaiani"
-          ]
-        })}
-      </script>
-      {/* Ambient Parallax background shapes (ink nebulas) */}
-      <div className="ambient-glow-1 parallax-bg" data-parallax-y="160" />
-      <div className="ambient-glow-2 parallax-bg" data-parallax-y="-100" />
-      <div className="ambient-glow-3 parallax-bg" data-parallax-y="130" />
       
-      {/* Cinematic Hero Section */}
-      <section className="cinematic-hero">
-        <div className="particles-container">
-          {[...Array(6)].map((_, i) => (
-            <div key={i} className="particle" />
-          ))}
+      {/* Manifesto Iniziale - Un'opera sola nel buio */}
+      <section className="dark-hero-section">
+        <div className="giant-artwork-wrapper">
+           <img src="/assets/sfiorare_il_buio.webp" alt="Sfiorare il buio" className="giant-artwork" decoding="async" />
         </div>
-        <div className="hero-center-content">
-          <h1 className="hero-logo-title">DAIANA</h1>
-          <p className="hero-blur-subtitle">
-            Frammenti di inchiostro, ombre e coscienza.
-          </p>
-          <div className="scroll-indicator">
-            <span className="scroll-text">Scorri per esplorare</span>
-            <span className="scroll-arrow">↓</span>
-          </div>
+        <div className="hero-manifesto">
+          <h1 className="hero-daiana">DAIANA</h1>
+          <p>L'inchiostro è la voce di chi scava nel buio.</p>
         </div>
       </section>
 
-      {/* Poetic Manifesto Quote */}
-      <section className="manifesto-quote container reveal-3d">
-        <p className="quote-text">
-          “L'inchiostro è la mia voce quando il silenzio si fa troppo grande. 
-          Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.”
-        </p>
-        <span className="quote-author">— Daiana Vaiani</span>
+      {/* Opere - Minimal Grid */}
+      <section className="dark-showcase container">
+        
+        {featuredOriginals.length > 0 && (
+          <div className="showcase-group reveal-3d">
+            <h2 className="showcase-title">Opere Uniche</h2>
+            <div className="dark-grid">
+              {featuredOriginals.map(product => (
+                <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
+              ))}
+            </div>
+            <div className="link-wrapper">
+              <Link to="/originali" className="minimal-link">Esplora l'archivio degli originali</Link>
+            </div>
+          </div>
+        )}
+
+        {featuredPrints.length > 0 && (
+          <div className="showcase-group reveal-3d">
+            <h2 className="showcase-title">Stampe Fine Art</h2>
+            <div className="dark-grid">
+              {featuredPrints.map(product => (
+                <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
+              ))}
+            </div>
+            <div className="link-wrapper">
+              <Link to="/galleria" className="minimal-link">Esplora la galleria stampe</Link>
+            </div>
+          </div>
+        )}
+        
+        {allBooks.length > 0 && (
+          <div className="showcase-group reveal-3d">
+            <h2 className="showcase-title">Volumi & Pubblicazioni</h2>
+            <div className="dark-grid">
+              {allBooks.map(product => (
+                <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
+              ))}
+            </div>
+          </div>
+        )}
+
       </section>
-
-      {/* Editorial Featured Book Section */}
-      <section className="featured-hero container">
-        <Link to={`/product/${featuredBook.id}`} className="featured-image-wrapper floating-slow">
-          <img src={featuredBook.imageUrl} alt={featuredBook.title} className="featured-image" decoding="async" />
-        </Link>
-        <div className="featured-content reveal-3d">
-          <span className="featured-label">{featuredBook.type}</span>
-          <Link to={`/product/${featuredBook.id}`} style={{ textDecoration: 'none' }}>
-            <h1 className="featured-title">{featuredBook.title}</h1>
-          </Link>
-          <p className="featured-desc">{featuredBook.description}</p>
-          <div className="featured-actions">
-            <span className="featured-price">€{featuredBook.price.toFixed(2)}</span>
-            <Button variant="primary" onClick={() => handleAddToCart(featuredBook.id)}>
-              {featuredBook.isPreorder ? 'Pre-ordina ora' : 'Aggiungi al Carrello'}
-            </Button>
-          </div>
-        </div>
-      </section>
-
-      {/* Books Showcase Section */}
-      {allBooks.length > 0 && (
-        <section className="books-showcase container">
-          <div className="section-header reveal-3d">
-            <h2>La Biblioteca</h2>
-            <Link to="/biblioteca" className="view-all-link">Vedi tutti i libri</Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-4xl mx-auto">
-            {allBooks.map(product => (
-              <ProductCard 
-                key={product.id}
-                {...product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Originals & Prints Showcase — sezione unificata */}
-      {(featuredOriginals.length > 0 || featuredPrints.length > 0) && (
-        <section className="products-showcase container">
-          {featuredOriginals.length > 0 && (
-            <>
-              <div className="section-header reveal-3d">
-                <h2>Disegni Fatti a Mano</h2>
-                <Link to="/originali" className="view-all-link">Scopri le Opere Uniche</Link>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                {featuredOriginals.map(product => (
-                  <ProductCard 
-                    key={product.id}
-                    {...product}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-
-          {featuredPrints.length > 0 && (
-            <>
-              <div className="section-header reveal-3d" style={{ marginTop: '3rem' }}>
-                <h2>Stampe Fine Art</h2>
-                <Link to="/galleria" className="view-all-link">Esplora la Galleria</Link>
-              </div>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
-                {featuredPrints.map(product => (
-                  <ProductCard 
-                    key={product.id}
-                    {...product}
-                    onAddToCart={handleAddToCart}
-                  />
-                ))}
-              </div>
-            </>
-          )}
-        </section>
-      )}
       
     </div>
   );

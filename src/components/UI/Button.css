@@ -38,7 +38,7 @@
 }
 
 .btn-primary:hover .btn-content {
-  color: #FFFFFF;
+  color: var(--color-bg-primary);
 }
 
 .btn-secondary {
@@ -65,7 +65,7 @@
 }
 
 .btn-secondary:hover .btn-content {
-  color: #FFFFFF;
+  color: var(--color-bg-primary);
 }
 
 .btn-outline {
