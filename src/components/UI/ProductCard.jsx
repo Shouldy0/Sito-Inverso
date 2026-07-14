@@ -16,7 +16,7 @@ const ProductCard = ({
   return (
     <div className="product-card reveal-3d">
       <Link to={`/product/${id}`} className="product-image-wrapper">
-        <img src={imageUrl} alt={title} className="product-image" />
+        <img src={imageUrl} alt={title} className="product-image" loading="lazy" decoding="async" />
         {isUnique && <span className="badge-unique">Pezzo Unico</span>}
         {isPreorder && <span className="badge-preorder">Pre-ordine</span>}
       </Link>

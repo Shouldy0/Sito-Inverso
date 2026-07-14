@@ -27,7 +27,7 @@ const ProductDetail = () => {
         {/* Left column: Image */}
         <div className="product-detail-image-section">
           <div className="product-image-large floating-slow">
-            <img src={product.imageUrl} alt={product.title} />
+            <img src={product.imageUrl} alt={product.title} loading="lazy" decoding="async" />
             {product.isUnique && <span className="badge-unique">Pezzo Unico</span>}
             {product.isPreorder && <span className="badge-preorder">Pre-ordine</span>}
           </div>

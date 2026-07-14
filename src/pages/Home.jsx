@@ -21,13 +21,13 @@ const Home = () => {
     // 1. Cinematic Title Reveal (expansion & blur-to-clear)
     gsap.fromTo(".hero-logo-title", 
       { opacity: 0, letterSpacing: "0.5em", filter: "blur(15px)", y: 30 },
-      { opacity: 1, letterSpacing: "0.2em", filter: "blur(0px)", y: 0, duration: 2.5, ease: "power3.out" }
+      { opacity: 1, letterSpacing: "0.2em", filter: "blur(0px)", y: 0, duration: 2.5, ease: "power3.out", clearProps: "filter" }
     );
 
     // 2. Subtitle Reveal (blur-to-clear from dark)
     gsap.fromTo(".hero-blur-subtitle", 
       { opacity: 0, filter: "blur(25px)", y: 15 },
-      { opacity: 1, filter: "blur(0px)", y: 0, duration: 3.2, ease: "power2.out", delay: 0.8 }
+      { opacity: 1, filter: "blur(0px)", y: 0, duration: 3.2, ease: "power2.out", delay: 0.8, clearProps: "filter" }
     );
 
     // 3. Scroll Indicator Fade
@@ -104,14 +104,14 @@ const Home = () => {
         })}
       </script>
       {/* Ambient Parallax background shapes (ink nebulas) */}
-      <div className="ambient-glow-1 parallax-bg floating-slow" data-parallax-y="160" />
-      <div className="ambient-glow-2 parallax-bg floating-medium" data-parallax-y="-100" />
-      <div className="ambient-glow-3 parallax-bg floating-slow" data-parallax-y="130" />
+      <div className="ambient-glow-1 parallax-bg" data-parallax-y="160" />
+      <div className="ambient-glow-2 parallax-bg" data-parallax-y="-100" />
+      <div className="ambient-glow-3 parallax-bg" data-parallax-y="130" />
       
       {/* Cinematic Hero Section */}
       <section className="cinematic-hero">
         <div className="particles-container">
-          {[...Array(14)].map((_, i) => (
+          {[...Array(6)].map((_, i) => (
             <div key={i} className="particle" />
           ))}
         </div>
@@ -139,7 +139,7 @@ const Home = () => {
       {/* Editorial Featured Book Section */}
       <section className="featured-hero container">
         <Link to={`/product/${featuredBook.id}`} className="featured-image-wrapper floating-slow">
-          <img src={featuredBook.imageUrl} alt={featuredBook.title} className="featured-image" />
+          <img src={featuredBook.imageUrl} alt={featuredBook.title} className="featured-image" decoding="async" />
         </Link>
         <div className="featured-content reveal-3d">
           <span className="featured-label">{featuredBook.type}</span>
@@ -164,7 +164,7 @@ const Home = () => {
             <Link to="/biblioteca" className="view-all-link">Vedi tutti i libri</Link>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 mt-12 max-w-4xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8 max-w-4xl mx-auto">
             {allBooks.map(product => (
               <ProductCard 
                 key={product.id}
@@ -176,43 +176,44 @@ const Home = () => {
         </section>
       )}
 
-      {/* Originals Showcase Section */}
-      {featuredOriginals.length > 0 && (
-        <section className="originals-showcase container" style={{ marginTop: '6rem', marginBottom: '4rem' }}>
-          <div className="section-header reveal-3d">
-            <h2>Disegni Fatti a Mano</h2>
-            <Link to="/originali" className="view-all-link">Scopri le Opere Uniche</Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
-            {featuredOriginals.map(product => (
-              <ProductCard 
-                key={product.id}
-                {...product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      {/* Originals & Prints Showcase — sezione unificata */}
+      {(featuredOriginals.length > 0 || featuredPrints.length > 0) && (
+        <section className="products-showcase container">
+          {featuredOriginals.length > 0 && (
+            <>
+              <div className="section-header reveal-3d">
+                <h2>Disegni Fatti a Mano</h2>
+                <Link to="/originali" className="view-all-link">Scopri le Opere Uniche</Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                {featuredOriginals.map(product => (
+                  <ProductCard 
+                    key={product.id}
+                    {...product}
+                    onAddToCart={handleAddToCart}
+                  />
+                ))}
+              </div>
+            </>
+          )}
 
-      {/* Prints Showcase Section */}
-      {featuredPrints.length > 0 && (
-        <section className="prints-showcase container">
-          <div className="section-header reveal-3d">
-            <h2>Stampe Fine Art</h2>
-            <Link to="/galleria" className="view-all-link">Esplora la Galleria</Link>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-10 mt-12">
-            {featuredPrints.map(product => (
-              <ProductCard 
-                key={product.id}
-                {...product}
-                onAddToCart={handleAddToCart}
-              />
-            ))}
-          </div>
+          {featuredPrints.length > 0 && (
+            <>
+              <div className="section-header reveal-3d" style={{ marginTop: '3rem' }}>
+                <h2>Stampe Fine Art</h2>
+                <Link to="/galleria" className="view-all-link">Esplora la Galleria</Link>
+              </div>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-8">
+                {featuredPrints.map(product => (
+                  <ProductCard 
+                    key={product.id}
+                    {...product}
+                    onAddToCart={handleAddToCart}
+                  />
+                ))}
+              </div>
+            </>
+          )}
         </section>
       )}
       

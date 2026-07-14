@@ -55,7 +55,7 @@ const Universo = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
-          <div className="narrative-card floating-slow reveal-3d">
+          <div className="narrative-card reveal-3d">
             <span className="narrative-tag">Frammento 01</span>
             <h3 className="narrative-title">L'Ombra del Tempo</h3>
             <p className="narrative-text">
@@ -63,7 +63,7 @@ const Universo = () => {
             </p>
           </div>
 
-          <div className="narrative-card floating-medium reveal-3d" data-reveal-delay="0.15">
+          <div className="narrative-card reveal-3d" data-reveal-delay="0.15">
             <span className="narrative-tag">Personaggio</span>
             <h3 className="narrative-title">Il Custode</h3>
             <p className="narrative-text">
@@ -71,7 +71,7 @@ const Universo = () => {
             </p>
           </div>
 
-          <div className="narrative-card floating-medium reveal-3d">
+          <div className="narrative-card reveal-3d">
             <span className="narrative-tag">Archivi</span>
             <h3 className="narrative-title">La Stanza Vetrificata</h3>
             <p className="narrative-text">
@@ -79,7 +79,7 @@ const Universo = () => {
             </p>
           </div>
 
-          <div className="narrative-card floating-slow reveal-3d" data-reveal-delay="0.15">
+          <div className="narrative-card reveal-3d" data-reveal-delay="0.15">
             <span className="narrative-tag">Poesia</span>
             <h3 className="narrative-title">Pensieri Dispersi</h3>
             <p className="narrative-text">

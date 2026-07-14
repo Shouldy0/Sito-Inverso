@@ -9,7 +9,7 @@ export const useAntiGravity = (dependency) => {
   useEffect(() => {
     // 1. Initialize Lenis Smooth Scroll
     const lenis = new Lenis({
-      duration: 1.4,
+      duration: 0.9,
       easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
       smoothWheel: true,
       wheelMultiplier: 0.95,
@@ -35,10 +35,9 @@ export const useAntiGravity = (dependency) => {
 
       floatingElements.forEach(({ selector, y, duration, rotation }) => {
         gsap.utils.toArray(selector).forEach((el, index) => {
-          // Add a random delay so elements float independently
+          // Force GPU layer to avoid repaint
+          el.style.willChange = 'transform';
           const delay = index * 0.15 + Math.random() * 0.4;
-          
-          // Base float tween
           gsap.to(el, {
             y: `-=${y}`,
             rotation: `+=${rotation}`,
@@ -141,7 +140,8 @@ export const useAntiGravity = (dependency) => {
             scrollTrigger: {
               trigger: el,
               start: "top 88%",
-              toggleActions: "play none none none"
+              toggleActions: "play none none none",
+              once: true,   // non ripete ad ogni scroll
             }
           }
         );

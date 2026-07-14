@@ -1,5 +1,5 @@
 .home-page {
-  padding-bottom: 6rem;
+  padding-bottom: 3.5rem;
   position: relative;
   overflow: hidden;
 }
@@ -7,9 +7,9 @@
 .featured-hero {
   display: flex;
   flex-direction: column;
-  padding: 4rem 2rem;
-  min-height: 80vh;
-  gap: 4rem;
+  padding: 2.5rem 2rem;
+  min-height: auto;
+  gap: 3rem;
 }
 
 @media (min-width: 992px) {
@@ -123,7 +123,7 @@
 .cinematic-hero {
   position: relative;
   width: 100%;
-  height: 90vh; /* Leaves room to suggest scrolling down */
+  height: 65vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -169,7 +169,7 @@
 
 /* Scroll indicator */
 .scroll-indicator {
-  margin-top: 5rem;
+  margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -225,6 +225,7 @@
   background-color: var(--color-gold);
   border-radius: 50%;
   pointer-events: none;
+  will-change: transform;
 }
 
 /* Ambient Parallax background shapes (ink splatters/nebulas) */
@@ -236,7 +237,6 @@
   height: 450px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(179, 106, 77, 0.08) 0%, transparent 70%);
-  filter: blur(60px);
   pointer-events: none;
   z-index: 0;
 }
@@ -249,7 +249,6 @@
   height: 550px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(107, 130, 104, 0.08) 0%, transparent 70%);
-  filter: blur(80px);
   pointer-events: none;
   z-index: 0;
 }
@@ -262,14 +261,13 @@
   height: 400px;
   border-radius: 50%;
   background: radial-gradient(circle, rgba(196, 124, 95, 0.08) 0%, transparent 70%);
-  filter: blur(50px);
   pointer-events: none;
   z-index: 0;
 }
 
 /* Poetic Manifesto Section */
 .manifesto-quote {
-  padding: 8rem 2rem;
+  padding: 3.5rem 2rem;
   text-align: center;
   max-width: 800px;
   margin: 0 auto;
@@ -392,15 +390,22 @@
 
 /* Prints Showcase */
 .prints-showcase {
-  padding: 6rem 2rem 0;
+  padding: 3rem 2rem 0;
   border-top: 1px solid var(--color-border);
-  margin-top: 4rem;
+  margin-top: 2.5rem;
 }
 
 /* Books Showcase */
 .books-showcase {
-  padding: 6rem 2rem 0;
+  padding: 3rem 2rem 0;
   border-top: 1px solid var(--color-border);
-  margin-top: 4rem;
+  margin-top: 2.5rem;
+}
+
+/* Combined products showcase */
+.products-showcase {
+  padding: 3rem 2rem 0;
+  border-top: 1px solid var(--color-border);
+  margin-top: 2.5rem;
 }
 

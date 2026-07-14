@@ -6,7 +6,7 @@ export const allProducts = [
     category: 'biblioteca',
     description: 'Vi porto un progettino nato dalla voglia di tirar fuori ciò che risiede nel profondo. “Nei tuoi occhi dietro all’ombra oltre il buio” è un libricino intimo che non racconta una storia lineare, ma raccoglie pensieri, riflessioni e frammenti di coscienza connessi tra di loro, accompagnati da disegni evocativi a inchiostro.',
     price: 15.00,
-    imageUrl: '/assets/nei_tuoi_occhi.png',
+    imageUrl: '/assets/nei_tuoi_occhi.webp',
     lulu_printable_id: '65kr4dw', // Usiamo l'ID del progetto Lulu per il ristampa
     details: [
       'Pagine: 21',
@@ -23,7 +23,7 @@ export const allProducts = [
     category: 'biblioteca',
     description: 'Un viaggio sussurrato e notturno attraverso 31 pagine di disegni a china e riflessioni intime. “Sfiorare il Buio” è un albo illustrato a inchiostro che scava nell\'inconscio e accarezza le sfumature più sottili della solitudine e della speranza.',
     price: 18.00,
-    imageUrl: '/assets/sfiorare_il_buio.png',
+    imageUrl: '/assets/sfiorare_il_buio.webp',
     lulu_printable_id: 'gjz885k', // Usiamo l'ID del progetto Lulu
     details: [
       'Pagine: 31',
@@ -73,7 +73,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'originali',
     description: 'Pezzo unico irripetibile. Disegno a inchiostro e foglia d\'oro su carta cotone 100%. Viene spedito con certificato di autenticità firmato a mano e sigillo in ceralacca.',
     price: 350.00,
-    imageUrl: '/assets/shop_original.png',
+    imageUrl: '/assets/shop_original.webp',
     isUnique: true,
     details: [
       'Tecnica: Inchiostro di china e foglia d\'oro 24k',
@@ -88,7 +88,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'originali',
     description: 'Pezzo unico irripetibile. Disegno originale a china su carta ruvida. L\'opera rappresenta la frammentazione del pensiero umano. Spedita con certificato di autenticità.',
     price: 280.00,
-    imageUrl: '/assets/opera-2.png',
+    imageUrl: '/assets/opera-2.webp',
     isUnique: true,
     details: [
       'Tecnica: Inchiostro di china',
@@ -103,7 +103,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'originali',
     description: 'Pezzo unico irripetibile. Ritratto surreale realizzato con tecnica mista (china e pastelli). Viene spedito con certificato di autenticità firmato a mano.',
     price: 320.00,
-    imageUrl: '/assets/opera-4.png',
+    imageUrl: '/assets/opera-4.webp',
     isUnique: true,
     details: [
       'Tecnica: Inchiostro di china e pastelli',
@@ -118,7 +118,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Quest\'opera esplora l\'assenza di identità attraverso un\'estetica dark fantasy minimale. I dettagli del tratto a inchiostro si fondono con lo sfondo, creando un\'atmosfera sospesa, onirica e misteriosa.',
     price: 12.00,
-    imageUrl: '/assets/opera-1.png',
+    imageUrl: '/assets/opera-1.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -132,7 +132,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Un intreccio oscuro e profondo che scava nelle paure ataviche dell\'uomo. Le linee incisive esaltano il contrasto netto tra bianco e nero, evocando l\'universo sommerso di DAIANA.',
     price: 12.00,
-    imageUrl: '/assets/opera-2.png',
+    imageUrl: '/assets/opera-2.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -146,7 +146,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Una composizione surrealista dal tratto ruvido e inquieto che cattura l\'essenza dell\'ignoto. Un pezzo d\'arte pensato per collezionisti dell\'occulto e del macabro elegante.',
     price: 12.00,
-    imageUrl: '/assets/opera-3.png',
+    imageUrl: '/assets/opera-3.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -160,7 +160,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Silhouettes inquietanti emergono da un denso e meticoloso tratteggio a china. Un\'aggiunta raffinata per chi ama l\'arte dark e fantastica, dove le ombre raccontano storie dimenticate.',
     price: 12.00,
-    imageUrl: '/assets/opera-4.png',
+    imageUrl: '/assets/opera-4.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -174,7 +174,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Strutture impossibili, organiche e geometriche si fondono in un paesaggio mentale oscuro e affascinante. Questa stampa A4 cattura il senso di vertigine e solitudine tipico del mondo di DAIANA.',
     price: 12.00,
-    imageUrl: '/assets/opera-5.png',
+    imageUrl: '/assets/opera-5.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -188,7 +188,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). L\'enigma della forma umana trasfigurata dall\'inchiostro. Un\'opera dal forte impatto visivo e simbolico, dove l\'oscurità sembra inghiottire la luce lasciando emergere solo i contorni del dubbio.',
     price: 12.00,
-    imageUrl: '/assets/opera-6.png',
+    imageUrl: '/assets/opera-6.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
@@ -202,7 +202,7 @@ I Fili dell'Io è un'opera sul coraggio di guardare le proprie ombre. Un raccont
     category: 'galleria',
     description: 'Stampa Fine Art in formato A4 (21 x 29,7 cm). Riverberi oscuri e vibrazioni tratteggiate a mano prendono vita su carta di pregio. Più che una semplice stampa, un portale visivo e tangibile verso le profondità dell\'universo narrativo.',
     price: 12.00,
-    imageUrl: '/assets/opera-7.png',
+    imageUrl: '/assets/opera-7.webp',
     details: [
       'Formato: A4 (21 x 29,7 cm)',
       'Carta: Fine Art Matte 250g',
