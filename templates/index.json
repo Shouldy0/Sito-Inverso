@@ -12,6 +12,7 @@
     "hero": {
       "type": "hero",
       "settings": {
+        "hero_image": "shopify://shop_images/B9854ADC-024E-475E-BC45-3716E790E28A.jpg",
         "hero_image_alt": "Grifone Ribelle — Opera originale di Daiana Vaiani",
         "eyebrow": "Arte Originale",
         "title": "DAIANA",
@@ -44,15 +45,6 @@
         "link_text": "Vedi tutti i libri"
       }
     },
-    "prints_showcase": {
-      "type": "prints-showcase",
-      "settings": {
-        "title": "Stampe Fine Art",
-        "collection": "stampe",
-        "products_to_show": 3,
-        "link_text": "Esplora la Galleria"
-      }
-    },
     "about": {
       "type": "about",
       "settings": {
@@ -73,7 +65,6 @@
     "manifesto",
     "featured_product",
     "books_showcase",
-    "prints_showcase",
     "about"
   ]
 }
