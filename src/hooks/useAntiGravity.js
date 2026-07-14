@@ -7,23 +7,8 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const useAntiGravity = (dependency) => {
   useEffect(() => {
-    // 1. Initialize Lenis Smooth Scroll
-    const lenis = new Lenis({
-      duration: 0.9,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)), // easeOutExpo
-      smoothWheel: true,
-      wheelMultiplier: 0.95,
-    });
-
-    // Synchronize Lenis with ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-
-    const updateLenis = (time) => {
-      lenis.raf(time * 1000);
-    };
-
-    gsap.ticker.add(updateLenis);
-    gsap.ticker.lagSmoothing(0);
+    // Rimosso Lenis JS: lasciamo che il browser gestisca lo scorrimento nativo fluido e hardware-accelerato
+    // per evitare blocchi della rotellina del mouse o del trackpad.
 
     const ctx = gsap.context(() => {
       // 1. Idle Floating Animations (Zero-Gravity)
@@ -151,8 +136,6 @@ export const useAntiGravity = (dependency) => {
 
     return () => {
       ctx.revert();
-      lenis.destroy();
-      gsap.ticker.remove(updateLenis);
     };
   }, [dependency]);
 };
