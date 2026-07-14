@@ -1,77 +1,79 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
+        "hero_image_alt": "Grifone Ribelle — Opera originale di Daiana Vaiani",
         "eyebrow": "Arte Originale",
-        "title": "INverso — Arte originale di Daiana Vaiani",
+        "title": "DAIANA",
         "artwork_credit": "\"Grifone Ribelle\" — china su carta, 2025",
+        "cta_url": "",
         "cta_label": "Scopri le opere",
-        "scroll_text": "Scorri",
+        "scroll_text": "Scorri per esplorare",
         "overlay_intensity": "medium"
       }
     },
-    "intro": {
-      "type": "homepage-intro",
+    "manifesto": {
+      "type": "manifesto",
       "settings": {
-        "label": "INverso",
-        "text": "Ogni opera è un pezzo unico, disegnato a mano. Nessuna stampa, nessuna riproduzione: solo l'originale.",
-        "sub_text": "Pastello, carboncino, matita, china — firmati da Daiana Vaiani."
+        "quote": "“L'inchiostro è la mia voce quando il silenzio si fa troppo grande. Disegnare è strappare un pezzo di coscienza all'ombra e fissarlo sulla carta.”",
+        "author": "Daiana Vaiani"
       }
     },
-    "featured_grid": {
-      "type": "artworks-showcase",
+    "featured_product": {
+      "type": "featured-product",
       "settings": {
-        "label": "Galleria",
-        "title": "Opere in Evidenza",
-        "products_to_show": 6,
-        "link_text": "Vedi tutte"
+        "featured_product": "senza-titolo-14lug_12-06-43"
       }
     },
-    "diptych": {
-      "type": "collections-diptych",
+    "books_showcase": {
+      "type": "books-showcase",
       "settings": {
-        "section_label": "Due collezioni",
-        "left_eyebrow": "Personaggi inventati",
-        "left_title": "Fantasy Originali",
-        "left_desc": "Creature, eroi e mondi nati dal tratto di Daiana. Ogni opera \u00e8 unica.",
-        "left_cta": "Esplora la collezione",
-        "right_eyebrow": "Fan Art dichiarata",
-        "right_title": "Anime & Manga Art",
-        "right_desc": "Naruto, Dragon Ball, Jujutsu Kaisen \u2014 disegnati a mano, non stampati.",
-        "right_cta": "Esplora la collezione"
+        "title": "La Biblioteca",
+        "collection": "frontpage",
+        "products_to_show": 2,
+        "link_text": "Vedi tutti i libri"
+      }
+    },
+    "prints_showcase": {
+      "type": "prints-showcase",
+      "settings": {
+        "title": "Stampe Fine Art",
+        "collection": "stampe",
+        "products_to_show": 3,
+        "link_text": "Esplora la Galleria"
       }
     },
     "about": {
       "type": "about",
       "settings": {
-        "label": "L'Artista",
+        "label": "Chi sono",
         "title": "Daiana Vaiani",
-        "bio": "Artista e illustratrice, Daiana Vaiani crea opere originali a pastello, carboncino, matita e china. Ogni disegno nasce da un'esigenza di dare forma visibile a ci\u00f2 che non si pu\u00f2 dire a parole \u2014 emozioni, mondi immaginari, frammenti di un universo tutto suo.",
-        "quote": "\u201cDisegnare \u00e8 strappare un pezzo di coscienza all\u2019ombra e fissarlo sulla carta.\u201d\n\u2014 Daiana Vaiani",
-        "cta_url": "/pages/artista",
-        "cta_label": "Scopri di pi\u00f9",
+        "bio": "Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande.",
+        "quote": "“Ogni storia è una soglia. Ogni pagina è un passo oltre il confine del visibile.”",
+        "author_image": "shopify://shop_images/favicon.svg",
+        "author_name": "Daiana Vaiani",
+        "cta_url": "/pages/universo",
+        "cta_label": "Scopri l'Universo",
         "social_instagram": ""
-      }
-    },
-    "newsletter": {
-      "type": "homepage-newsletter",
-      "settings": {
-        "label": "Studio aperto",
-        "title": "Ricevi in anteprima le nuove opere",
-        "subtitle": "Nessuno spam. Solo un messaggio quando nasce qualcosa di nuovo.",
-        "placeholder": "La tua email",
-        "btn_label": "Iscriviti",
-        "privacy_text": "Nessuna condivisione con terze parti. Cancellazione con un click."
       }
     }
   },
   "order": [
     "hero",
-    "intro",
-    "featured_grid",
-    "diptych",
-    "about",
-    "newsletter"
+    "manifesto",
+    "featured_product",
+    "books_showcase",
+    "prints_showcase",
+    "about"
   ]
 }
