@@ -9,14 +9,6 @@
  */
 {
   "sections": {
-    "main": {
-      "type": "main-collection",
-      "settings": {
-        "hero_label": "Collezione",
-        "title": "Fantasy Originali",
-        "hero_desc": ""
-      }
-    },
     "17840332362b79d319": {
       "type": "apps",
       "blocks": {
@@ -29,10 +21,18 @@
         "arki_view_counter_view_counter_product_settings_rEWR4M"
       ],
       "settings": {}
+    },
+    "main": {
+      "type": "main-collection",
+      "settings": {
+        "hero_label": "Collezione",
+        "title": "Fantasy Originali",
+        "hero_desc": ""
+      }
     }
   },
   "order": [
-    "main",
-    "17840332362b79d319"
+    "17840332362b79d319",
+    "main"
   ]
 }
