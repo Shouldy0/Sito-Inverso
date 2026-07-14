@@ -9,19 +9,6 @@
  */
 {
   "sections": {
-    "17840332362b79d319": {
-      "type": "apps",
-      "blocks": {
-        "arki_view_counter_view_counter_product_settings_rEWR4M": {
-          "type": "shopify://apps/arki-view-counter/blocks/view_counter_product_settings/0199b947-9ffb-72a2-b4ab-0a2db9aad5d2",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "arki_view_counter_view_counter_product_settings_rEWR4M"
-      ],
-      "settings": {}
-    },
     "main": {
       "type": "main-collection",
       "settings": {
@@ -29,10 +16,23 @@
         "title": "Fantasy Originali",
         "hero_desc": ""
       }
+    },
+    "1784033176aa528e70": {
+      "type": "apps",
+      "blocks": {
+        "arki_view_counter_view_counter_product_settings_9GL4Q9": {
+          "type": "shopify://apps/arki-view-counter/blocks/view_counter_product_settings/0199b947-9ffb-72a2-b4ab-0a2db9aad5d2",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "arki_view_counter_view_counter_product_settings_9GL4Q9"
+      ],
+      "settings": {}
     }
   },
   "order": [
-    "17840332362b79d319",
-    "main"
+    "main",
+    "1784033176aa528e70"
   ]
 }

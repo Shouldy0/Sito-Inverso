@@ -59,19 +59,6 @@
         "cta_label": "Scopri l'Universo",
         "social_instagram": ""
       }
-    },
-    "17840331023a9f0af3": {
-      "type": "apps",
-      "blocks": {
-        "arki_view_counter_view_counter_product_settings_j3jy4U": {
-          "type": "shopify://apps/arki-view-counter/blocks/view_counter_product_settings/0199b947-9ffb-72a2-b4ab-0a2db9aad5d2",
-          "settings": {}
-        }
-      },
-      "block_order": [
-        "arki_view_counter_view_counter_product_settings_j3jy4U"
-      ],
-      "settings": {}
     }
   },
   "order": [
@@ -79,7 +66,6 @@
     "manifesto",
     "featured_product",
     "books_showcase",
-    "about",
-    "17840331023a9f0af3"
+    "about"
   ]
 }
