@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { getProductById } from '../data/products';
 import { useCart } from '../context/CartContext';
@@ -10,6 +11,26 @@ const ProductDetail = () => {
   const { addToCart } = useCart();
   
   const product = getProductById(id);
+  const [viewers, setViewers] = useState(0);
+
+  // Logica simulata per gli spettatori live
+  useEffect(() => {
+    // Numero iniziale casuale (es. tra 2 e 5)
+    setViewers(Math.floor(Math.random() * 4) + 2);
+
+    // Fluttuazione ogni 10-15 secondi
+    const interval = setInterval(() => {
+      setViewers(prev => {
+        const change = Math.floor(Math.random() * 3) - 1; // -1, 0, or +1
+        let newValue = prev + change;
+        if (newValue < 1) newValue = 1;
+        if (newValue > 12) newValue = 12;
+        return newValue;
+      });
+    }, 12000);
+
+    return () => clearInterval(interval);
+  }, [id]);
 
   if (!product) {
     return (
@@ -46,6 +67,12 @@ const ProductDetail = () => {
           <p className="product-detail-price">€{product.price.toFixed(2)}</p>
 
           <div className="product-detail-actions">
+            {viewers > 0 && (
+              <div className="live-viewers-badge">
+                <span className="live-dot"></span>
+                <span><strong>{viewers}</strong> persone stanno guardando quest'opera ora</span>
+              </div>
+            )}
             <Button variant="primary" onClick={() => addToCart(product)} className="w-full">
               {product.isPreorder ? 'Pre-ordina ora' : 'Aggiungi al Carrello'}
             </Button>
