@@ -9,7 +9,12 @@
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid var(--color-border);
-  transition: all var(--transition-normal);
+  transition: padding 0.4s ease, background-color 0.4s ease;
+}
+
+.navbar.compact {
+  padding: 0.6rem 0;
+  background-color: rgba(10, 10, 10, 0.95);
 }
 
 .navbar-container {
@@ -28,15 +33,21 @@
   letter-spacing: 0.15em;
   text-transform: uppercase;
   color: var(--color-text-primary);
+  transition: font-size 0.4s ease;
+}
+
+.navbar.compact .navbar-logo a {
+  font-size: 1.4rem;
 }
 
 .navbar-logo a:hover {
-  color: var(--color-text-secondary);
+  color: var(--color-gold);
 }
 
 .navbar-links {
   display: flex;
   gap: 3rem;
+  align-items: center;
 }
 
 .navbar-links a {
@@ -46,11 +57,37 @@
   text-transform: uppercase;
   color: var(--color-text-secondary);
   position: relative;
+  padding-bottom: 4px;
+  transition: color 0.3s ease;
 }
 
 .navbar-links a:hover,
 .navbar-links a.active {
   color: var(--color-text-primary);
+}
+
+/* Animated underline */
+.nav-underline {
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: var(--color-gold);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.navbar-links a:hover .nav-underline,
+.navbar-links a.active .nav-underline {
+  transform: scaleX(1);
+}
+
+.navbar-divider {
+  color: var(--color-border);
+  font-weight: 200;
+  user-select: none;
 }
 
 .navbar-actions {
@@ -107,11 +144,11 @@
   .navbar-links {
     display: none;
   }
-  
+
   .mobile-menu-btn {
     display: block;
   }
-  
+
   .mobile-menu {
     display: flex;
     position: fixed;
@@ -128,17 +165,27 @@
     z-index: 99;
     opacity: 0;
     pointer-events: none;
-    transition: opacity var(--transition-normal);
   }
-  
+
   .mobile-menu.open {
-    opacity: 1;
     pointer-events: all;
   }
-  
-  .mobile-menu a {
+
+  .mobile-menu-link {
     font-family: var(--font-heading);
     font-size: 1.5rem;
     color: var(--color-text-primary);
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.4s ease, transform 0.4s ease, color 0.3s ease;
+  }
+
+  .mobile-menu.open .mobile-menu-link {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .mobile-menu-link:hover {
+    color: var(--color-gold);
   }
 }

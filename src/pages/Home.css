@@ -1,6 +1,6 @@
 .home-page {
   padding-bottom: 5rem;
-  overflow: clip; /* Fix for scroll */
+  overflow: clip;
 }
 
 /* 1. Dark Hero Section */
@@ -13,6 +13,7 @@
   align-items: center;
   overflow: hidden;
   background-color: transparent;
+  perspective: 1000px;
 }
 
 .giant-artwork-wrapper {
@@ -32,9 +33,23 @@
   max-width: 100%;
   max-height: 80vh;
   object-fit: contain;
-  opacity: 0.85; /* Blend with dark background */
-  mix-blend-mode: screen; /* If the image has white background, screen blends it into black. Since it's B&W drawings, if they have white bg, screen will make the white bg transparent on black. If they have transparent bg, normal is fine. Let's assume transparent or white. Lighten/Screen works for white background drawings on dark theme. Wait, if they are PNGs/WebPs, they might already be transparent. Normal is safer. */
-  mix-blend-mode: normal; 
+  opacity: 0.85;
+  mix-blend-mode: normal;
+  will-change: transform;
+  transform-style: preserve-3d;
+}
+
+.hero-glow {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, var(--color-gold-glow), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 2;
+  mix-blend-mode: screen;
+  transform: translate(-50%, -50%);
 }
 
 .hero-manifesto {
@@ -56,12 +71,18 @@
   text-transform: uppercase;
 }
 
+.hero-daiana span {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
 .hero-manifesto p {
   font-family: var(--font-text);
   font-size: 0.9rem;
   letter-spacing: 0.2em;
   text-transform: uppercase;
   color: var(--color-text-secondary);
+  opacity: 0;
 }
 
 /* 2. Showcases */
@@ -69,7 +90,7 @@
   margin-top: 5rem;
   display: flex;
   flex-direction: column;
-  gap: 8rem;
+  gap: 4rem;
 }
 
 .showcase-group {
@@ -90,16 +111,73 @@
   margin-bottom: 2rem;
 }
 
+/* Asymmetric grid — first item larger */
+.asymmetric-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+}
+
+@media (min-width: 768px) {
+  .asymmetric-grid {
+    grid-template-columns: 1.4fr 1fr;
+    gap: 2.5rem;
+  }
+
+  .asymmetric-grid .product-card:first-child {
+    grid-row: 1 / 3;
+  }
+}
+
 .dark-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 4rem;
+  gap: 3rem;
 }
 
 @media (min-width: 768px) {
   .dark-grid {
     grid-template-columns: repeat(3, 1fr);
+    gap: 2.5rem;
   }
+}
+
+/* Horizontal scroll section for prints */
+.prints-scroll {
+  display: flex;
+  gap: 2rem;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding: 1rem 0 2rem;
+  scrollbar-width: none;
+}
+
+.prints-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.prints-scroll-item {
+  min-width: 280px;
+  max-width: 340px;
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+@media (min-width: 768px) {
+  .prints-scroll-item {
+    min-width: 300px;
+    max-width: 360px;
+  }
+}
+
+/* Section divider */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-border), transparent);
+  width: 60%;
+  margin: 3rem auto;
+  transform-origin: center;
 }
 
 .link-wrapper {
@@ -119,6 +197,6 @@
 }
 
 .minimal-link:hover {
-  color: var(--color-text-primary);
-  border-bottom-color: var(--color-text-primary);
+  color: var(--color-gold);
+  border-bottom-color: var(--color-gold);
 }

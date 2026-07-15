@@ -1,5 +1,7 @@
+import { useRef, useEffect } from 'react';
 import { X, Trash2, Plus, Minus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import gsap from 'gsap';
 import Button from '../UI/Button';
 import { useCart } from '../../context/CartContext';
 import './CartDrawer.css';
@@ -7,16 +9,55 @@ import './CartDrawer.css';
 const CartDrawer = ({ isOpen, closeCart }) => {
   const { cartItems, removeFromCart, updateQuantity, cartTotal } = useCart();
   const navigate = useNavigate();
+  const drawerRef = useRef(null);
+  const overlayRef = useRef(null);
+  const itemsRef = useRef(null);
+
+  useEffect(() => {
+    if (!drawerRef.current) return;
+
+    if (isOpen) {
+      gsap.to(overlayRef.current, { opacity: 1, duration: 0.3, ease: "power2.out" });
+      gsap.fromTo(drawerRef.current,
+        { x: '100%' },
+        { x: '0%', duration: 0.6, ease: "elastic.out(1, 0.8)" }
+      );
+
+      // Stagger items
+      if (itemsRef.current) {
+        const items = itemsRef.current.querySelectorAll('.cart-item');
+        if (items.length > 0) {
+          gsap.fromTo(items,
+            { opacity: 0, x: 30 },
+            { opacity: 1, x: 0, duration: 0.4, stagger: 0.08, ease: "power2.out", delay: 0.3 }
+          );
+        }
+      }
+    } else {
+      gsap.to(drawerRef.current, { x: '100%', duration: 0.35, ease: "power2.in" });
+      gsap.to(overlayRef.current, { opacity: 0, duration: 0.25 });
+    }
+  }, [isOpen]);
 
   const handleCheckout = () => {
     closeCart();
     navigate('/checkout');
   };
 
+  const handleQuantityChange = (id, newQty, isUnique) => {
+    if (isUnique) return;
+    updateQuantity(id, newQty);
+  };
+
   return (
     <>
-      <div className={`cart-overlay ${isOpen ? 'open' : ''}`} onClick={closeCart}></div>
-      <div className={`cart-drawer ${isOpen ? 'open' : ''}`}>
+      <div
+        className="cart-overlay"
+        ref={overlayRef}
+        style={{ opacity: 0, pointerEvents: 'none' }}
+        onClick={closeCart}
+      />
+      <div className="cart-drawer" ref={drawerRef} style={{ transform: 'translateX(100%)' }}>
         <div className="cart-header">
           <h2>Carrello</h2>
           <button className="close-btn" onClick={closeCart} aria-label="Chiudi">
@@ -33,7 +74,7 @@ const CartDrawer = ({ isOpen, closeCart }) => {
               </Button>
             </div>
           ) : (
-            <div className="cart-items">
+            <div className="cart-items" ref={itemsRef}>
               {cartItems.map(item => (
                 <div key={item.id} className="cart-item">
                   <div className="cart-item-image">
@@ -43,22 +84,22 @@ const CartDrawer = ({ isOpen, closeCart }) => {
                     <h4>{item.title}</h4>
                     <p className="cart-item-type">{item.type}</p>
                     <p className="cart-item-price">€{item.price.toFixed(2)}</p>
-                    
+
                     <div className="cart-item-actions">
                       {!item.isUnique ? (
                         <div className="quantity-controls">
-                          <button onClick={() => updateQuantity(item.id, item.quantity - 1)} disabled={item.quantity <= 1}>
+                          <button onClick={() => handleQuantityChange(item.id, item.quantity - 1, item.isUnique)} disabled={item.quantity <= 1}>
                             <Minus size={14} />
                           </button>
-                          <span>{item.quantity}</span>
-                          <button onClick={() => updateQuantity(item.id, item.quantity + 1)}>
+                          <span className="quantity-value">{item.quantity}</span>
+                          <button onClick={() => handleQuantityChange(item.id, item.quantity + 1, item.isUnique)}>
                             <Plus size={14} />
                           </button>
                         </div>
                       ) : (
                         <span className="unique-label">Pezzo Unico</span>
                       )}
-                      
+
                       <button className="remove-btn" onClick={() => removeFromCart(item.id)}>
                         <Trash2 size={16} />
                       </button>
@@ -76,9 +117,9 @@ const CartDrawer = ({ isOpen, closeCart }) => {
               <span>Totale</span>
               <span>€{cartTotal.toFixed(2)}</span>
             </div>
-            <Button 
-              variant="primary" 
-              className="checkout-btn"
+            <Button
+              variant="primary"
+              className="checkout-btn magnetic-btn"
               onClick={handleCheckout}
             >
               Procedi al Checkout

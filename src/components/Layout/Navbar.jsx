@@ -1,18 +1,43 @@
 import { Link, useLocation } from 'react-router-dom';
 import { ShoppingBag, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import './Navbar.css';
 
+const navLinks = [
+  { to: '/', label: 'Home' },
+  { to: '/biblioteca', label: 'Fumetti' },
+  { to: '/galleria', label: 'Stampe Artistiche' },
+];
+
+const secondaryLinks = [
+  { to: '/universo', label: "L'Universo" },
+];
+
 const Navbar = ({ toggleCart }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isCompact, setIsCompact] = useState(false);
   const location = useLocation();
   const { cartCount } = useCart();
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsCompact(window.scrollY > 80);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setIsMobileMenuOpen(false);
+  }, [location.pathname]);
+
   return (
-    <nav className="navbar">
+    <nav className={`navbar ${isCompact ? 'compact' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-logo">
           <Link to="/" onClick={closeMobileMenu}>DAIANA</Link>
@@ -20,11 +45,27 @@ const Navbar = ({ toggleCart }) => {
 
         {/* Desktop Menu */}
         <div className="navbar-links">
-          <Link to="/" className={location.pathname === '/' ? 'active' : ''}>Home</Link>
-          <Link to="/biblioteca" className={location.pathname === '/biblioteca' ? 'active' : ''}>Fumetti</Link>
-          <Link to="/galleria" className={location.pathname === '/galleria' ? 'active' : ''}>Stampe Artistiche</Link>
+          {navLinks.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={location.pathname === link.to ? 'active' : ''}
+            >
+              {link.label}
+              <span className="nav-underline" />
+            </Link>
+          ))}
           <span className="navbar-divider">|</span>
-          <Link to="/universo" className={location.pathname === '/universo' ? 'active' : ''}>L'Universo</Link>
+          {secondaryLinks.map(link => (
+            <Link
+              key={link.to}
+              to={link.to}
+              className={location.pathname === link.to ? 'active' : ''}
+            >
+              {link.label}
+              <span className="nav-underline" />
+            </Link>
+          ))}
         </div>
 
         <div className="navbar-actions">
@@ -32,10 +73,11 @@ const Navbar = ({ toggleCart }) => {
             <ShoppingBag size={20} />
             {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
           </button>
-          
-          <button 
-            className="mobile-menu-btn" 
+
+          <button
+            className="mobile-menu-btn"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Menu"
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>
@@ -44,11 +86,17 @@ const Navbar = ({ toggleCart }) => {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-        <Link to="/" onClick={closeMobileMenu}>Home</Link>
-        <Link to="/biblioteca" onClick={closeMobileMenu}>Fumetti</Link>
-        <Link to="/galleria" onClick={closeMobileMenu}>Stampe Artistiche</Link>
-        <div className="mobile-divider"></div>
-        <Link to="/universo" onClick={closeMobileMenu}>L'Universo</Link>
+        {[...navLinks, ...secondaryLinks].map((link, i) => (
+          <Link
+            key={link.to}
+            to={link.to}
+            onClick={closeMobileMenu}
+            className="mobile-menu-link"
+            style={{ transitionDelay: isMobileMenuOpen ? `${0.05 + i * 0.06}s` : '0s' }}
+          >
+            {link.label}
+          </Link>
+        ))}
       </div>
     </nav>
   );

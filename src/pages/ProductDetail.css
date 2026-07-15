@@ -34,6 +34,8 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  will-change: transform;
+  transform-style: preserve-3d;
 }
 
 .product-image-large img {
@@ -41,6 +43,7 @@
   max-height: 70vh;
   object-fit: contain;
   filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.08));
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
 }
 
 .product-detail-info-section {
@@ -61,10 +64,11 @@
   font-size: 0.9rem;
   cursor: pointer;
   padding: 0;
+  transition: color 0.3s ease;
 }
 
 .back-link:hover {
-  color: var(--color-text-primary);
+  color: var(--color-gold);
   text-decoration: underline;
 }
 
@@ -88,7 +92,7 @@
 .product-detail-price {
   font-size: 1.5rem;
   font-weight: 500;
-  color: var(--color-text-primary);
+  color: var(--color-gold);
   margin-bottom: 3rem;
 }
 
@@ -107,10 +111,10 @@
   gap: 0.6rem;
   font-size: 0.85rem;
   color: var(--color-text-secondary);
-  background-color: rgba(255, 255, 255, 0.03);
+  background-color: var(--color-card-bg);
   padding: 0.6rem 1rem;
   border-radius: 6px;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--color-card-border);
 }
 
 .live-viewers-badge strong {
@@ -121,7 +125,7 @@
 .live-dot {
   width: 8px;
   height: 8px;
-  background-color: #10b981; /* Emerald green for LIVE */
+  background-color: #10b981;
   border-radius: 50%;
   display: inline-block;
   box-shadow: 0 0 8px rgba(16, 185, 129, 0.6);
@@ -192,35 +196,30 @@
 }
 
 .text-burgundy {
-  color: var(--color-burgundy);
+  color: var(--color-gold);
   font-weight: 500;
 }
 
-.badge-unique {
+/* Badge styles — unified with ProductCard */
+.badge {
   position: absolute;
   top: 1rem;
   right: 1rem;
-  background-color: var(--color-burgundy);
-  color: #FFFFFF;
   font-size: 0.65rem;
   text-transform: uppercase;
   letter-spacing: 0.1em;
   padding: 0.4rem 0.8rem;
   z-index: 2;
-  border-radius: 4px;
+  backdrop-filter: blur(8px);
+}
+
+.badge-unique {
+  background-color: rgba(51, 51, 51, 0.85);
+  color: #ffffff;
 }
 
 .badge-preorder {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-  background-color: var(--color-gold);
+  background-color: rgba(201, 169, 110, 0.9);
   color: #131316;
-  font-size: 0.65rem;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  padding: 0.4rem 0.8rem;
-  z-index: 2;
   font-weight: 600;
-  border-radius: 4px;
 }

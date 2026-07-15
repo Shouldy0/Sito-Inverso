@@ -7,8 +7,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 export const useAntiGravity = (dependency) => {
   useEffect(() => {
-    // Rimosso Lenis JS: lasciamo che il browser gestisca lo scorrimento nativo fluido e hardware-accelerato
-    // per evitare blocchi della rotellina del mouse o del trackpad.
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      smoothWheel: true,
+    });
+
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((time) => {
+      lenis.raf(time * 1000);
+    });
+    gsap.ticker.lagSmoothing(0);
 
     const ctx = gsap.context(() => {
       // 1. Idle Floating Animations (Zero-Gravity)
@@ -20,7 +29,6 @@ export const useAntiGravity = (dependency) => {
 
       floatingElements.forEach(({ selector, y, duration, rotation }) => {
         gsap.utils.toArray(selector).forEach((el, index) => {
-          // Force GPU layer to avoid repaint
           el.style.willChange = 'transform';
           const delay = index * 0.15 + Math.random() * 0.4;
           gsap.to(el, {
@@ -35,10 +43,10 @@ export const useAntiGravity = (dependency) => {
         });
       });
 
-      // 2. Scroll-Triggered Parallax / Lift-up (.anti-gravity-lift)
+      // 2. Scroll-Triggered Parallax / Lift-up
       gsap.utils.toArray('.anti-gravity-lift').forEach((el) => {
         const offset = parseInt(el.getAttribute('data-lift-offset')) || 100;
-        gsap.fromTo(el, 
+        gsap.fromTo(el,
           { y: offset / 2 },
           {
             y: -offset,
@@ -47,7 +55,7 @@ export const useAntiGravity = (dependency) => {
               trigger: el,
               start: "top bottom",
               end: "bottom top",
-              scrub: 1.5, // Smooth lag transition
+              scrub: 1.5,
             }
           }
         );
@@ -105,11 +113,11 @@ export const useAntiGravity = (dependency) => {
         );
       });
 
-      // 4. 3D Spatial Reveal (.reveal-3d)
+      // 4. 3D Spatial Reveal
       gsap.utils.toArray('.reveal-3d').forEach((el) => {
         const delayAttr = parseFloat(el.getAttribute('data-reveal-delay')) || 0;
         gsap.fromTo(el,
-          { 
+          {
             opacity: 0,
             y: 70,
             rotationX: 12,
@@ -126,16 +134,105 @@ export const useAntiGravity = (dependency) => {
               trigger: el,
               start: "top 88%",
               toggleActions: "play none none none",
-              once: true,   // non ripete ad ogni scroll
+              once: true,
             }
           }
         );
+      });
+
+      // 5. Stagger-in animations for grids and lists
+      gsap.utils.toArray('.stagger-in').forEach((container) => {
+        const children = container.querySelectorAll('.stagger-child');
+        if (children.length === 0) return;
+
+        gsap.fromTo(children,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            stagger: 0.12,
+            ease: "power2.out",
+            scrollTrigger: {
+              trigger: container,
+              start: "top 85%",
+              toggleActions: "play none none none",
+              once: true,
+            }
+          }
+        );
+      });
+
+      // 6. Section divider animation — lines that expand on scroll
+      gsap.utils.toArray('.section-divider').forEach((el) => {
+        gsap.fromTo(el,
+          { scaleX: 0 },
+          {
+            scaleX: 1,
+            ease: "power2.inOut",
+            scrollTrigger: {
+              trigger: el,
+              start: "top 90%",
+              toggleActions: "play none none none",
+              once: true,
+            }
+          }
+        );
+      });
+
+      // 7. Magnetic button hover effect
+      gsap.utils.toArray('.magnetic-btn').forEach((el) => {
+        const strength = 0.3;
+        const textStrenght = 0.7;
+
+        el.addEventListener('mousemove', (e) => {
+          const rect = el.getBoundingClientRect();
+          const x = e.clientX - rect.left - rect.width / 2;
+          const y = e.clientY - rect.top - rect.height / 2;
+
+          gsap.to(el, {
+            x: x * strength,
+            y: y * strength,
+            duration: 0.4,
+            ease: "power2.out",
+          });
+
+          const text = el.querySelector('.btn-content');
+          if (text) {
+            gsap.to(text, {
+              x: x * textStrenght,
+              y: y * textStrenght,
+              duration: 0.4,
+              ease: "power2.out",
+            });
+          }
+        });
+
+        el.addEventListener('mouseleave', () => {
+          gsap.to(el, {
+            x: 0,
+            y: 0,
+            duration: 0.7,
+            ease: "elastic.out(1, 0.5)",
+          });
+
+          const text = el.querySelector('.btn-content');
+          if (text) {
+            gsap.to(text, {
+              x: 0,
+              y: 0,
+              duration: 0.7,
+              ease: "elastic.out(1, 0.5)",
+            });
+          }
+        });
       });
 
     });
 
     return () => {
       ctx.revert();
+      lenis.destroy();
     };
   }, [dependency]);
 };

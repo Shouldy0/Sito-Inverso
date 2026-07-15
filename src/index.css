@@ -28,11 +28,17 @@ html.lenis, html.lenis body {
   --color-bg-secondary: #141414;
   --color-text-primary: #f4f4f0;
   --color-text-secondary: #8c8c8c;
-  --color-gold: #ffffff; /* White for accents instead of gold */
-  --color-gold-hover: #cccccc;
+  --color-gold: #c9a96e;
+  --color-gold-hover: #d4b87a;
   --color-burgundy: #333333;
   --color-border: rgba(255, 255, 255, 0.1);
   --color-border-hover: rgba(255, 255, 255, 0.25);
+
+  /* Surfaces */
+  --color-card-bg: rgba(255, 255, 255, 0.025);
+  --color-card-border: rgba(255, 255, 255, 0.06);
+  --color-surface: #111111;
+  --color-gold-glow: rgba(201, 169, 110, 0.15);
 
   /* Typography */
   --font-heading: 'Cinzel', serif;
@@ -69,8 +75,13 @@ body::before {
   width: 100vw;
   height: 100vh;
   z-index: -1;
-  background-image: radial-gradient(circle at 50% 15%, rgba(255,255,255,0.03) 0%, transparent 60%);
+  background-image: radial-gradient(circle at 50% 15%, rgba(255,255,255,0.05) 0%, transparent 60%);
   pointer-events: none;
+}
+
+::selection {
+  background-color: var(--color-gold);
+  color: var(--color-bg-primary);
 }
 
 
@@ -116,14 +127,14 @@ img {
 
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 ::-webkit-scrollbar-track {
   background: var(--color-bg-primary);
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(0, 0, 0, 0.15);
-  border-radius: 4px;
+  background: rgba(201, 169, 110, 0.2);
+  border-radius: 3px;
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-gold);
@@ -141,4 +152,65 @@ img {
 
 .page-transition {
   animation: fadeIn 0.8s ease-out;
+}
+
+/* Stagger-in utility — animata da useAntiGravity */
+.stagger-child {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Main content smooth transitions */
+.main-content {
+  will-change: opacity, transform;
+}
+
+/* Smooth page transitions */
+.page-enter {
+  opacity: 0;
+  transform: translateY(12px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+}
+
+/* Custom Cursor — desktop only */
+@media (pointer: fine) {
+  * {
+    cursor: none !important;
+  }
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99999;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  mix-blend-mode: difference;
+  will-change: transform, width, height;
+  transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
 }
