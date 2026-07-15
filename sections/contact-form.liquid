@@ -1,0 +1,76 @@
+<div class="container" style="max-width: 600px; margin: 4rem auto; padding: 0 1rem;">
+  <div style="text-align: center; margin-bottom: 2rem;">
+    {%- if section.settings.heading != blank -%}
+      <h2 style="font-family: var(--font-heading); margin-bottom: 1rem;">{{ section.settings.heading }}</h2>
+    {%- endif -%}
+    {%- if section.settings.text != blank -%}
+      <p style="color: var(--color-text-secondary);">{{ section.settings.text }}</p>
+    {%- endif -%}
+  </div>
+
+  {%- form 'contact', id: 'ContactForm', class: 'contact-form' -%}
+    {%- if form.posted_successfully? -%}
+      <div style="background: rgba(16, 185, 129, 0.1); color: #10b981; padding: 1rem; border-radius: 6px; margin-bottom: 2rem; text-align: center;">
+        Il tuo messaggio è stato inviato con successo. Ti risponderò al più presto!
+      </div>
+    {%- elsif form.errors -%}
+      <div style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 1rem; border-radius: 6px; margin-bottom: 2rem;">
+        Si è verificato un errore: {{ form.errors | default_errors }}
+      </div>
+    {%- endif -%}
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem;">
+      <div class="field">
+        <label for="ContactForm-name" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Nome</label>
+        <input style="width: 100%; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: white;" autocomplete="name" type="text" id="ContactForm-name" name="contact[Nome]" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="Il tuo nome">
+      </div>
+      <div class="field">
+        <label for="ContactForm-email" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Email <span aria-hidden="true">*</span></label>
+        <input style="width: 100%; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: white;" autocomplete="email" type="email" id="ContactForm-email" name="contact[email]" spellcheck="false" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" aria-required="true" placeholder="La tua email" required>
+      </div>
+    </div>
+
+    <div class="field" style="margin-bottom: 1rem;">
+      <label for="ContactForm-subject" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Oggetto</label>
+      <input style="width: 100%; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: white;" type="text" id="ContactForm-subject" name="contact[Oggetto]" placeholder="Motivo del contatto">
+    </div>
+
+    <div class="field" style="margin-bottom: 2rem;">
+      <label for="ContactForm-body" style="display: block; margin-bottom: 0.5rem; font-size: 0.9rem;">Messaggio</label>
+      <textarea style="width: 100%; padding: 0.8rem; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; color: white; min-height: 150px; resize: vertical;" rows="10" id="ContactForm-body" name="contact[Messaggio]" placeholder="Scrivi qui il tuo messaggio...">{{- form.body -}}</textarea>
+    </div>
+
+    <div class="contact__button" style="text-align: center;">
+      <button type="submit" class="button" style="background: white; color: black; padding: 1rem 2rem; border-radius: 30px; border: none; font-weight: 600; cursor: pointer; width: 100%; max-width: 200px;">
+        Invia Messaggio
+      </button>
+    </div>
+  {%- endform -%}
+</div>
+
+{% schema %}
+{
+  "name": "Modulo di Contatto",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "default": "Scrivimi",
+      "label": "Titolo"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "default": "Hai domande su un'opera o vuoi richiedere una commissione? Compila il modulo qui sotto.",
+      "label": "Testo descrittivo"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Modulo di Contatto"
+    }
+  ]
+}
+{% endschema %}
