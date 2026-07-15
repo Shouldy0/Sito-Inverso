@@ -200,19 +200,19 @@
             {%- assign p_tags_str = product.tags | join: ' ' | downcase -%}
 
             {%- assign p_tecnica = '' -%}
-            {%- if p_tags_str contains 'tecnica-pastello' -%}{%- assign p_tecnica = 'tecnica-pastello' -%}
-            {%- elsif p_tags_str contains 'tecnica-grafite' -%}{%- assign p_tecnica = 'tecnica-grafite' -%}
-            {%- elsif p_tags_str contains 'tecnica-carboncino' -%}{%- assign p_tecnica = 'tecnica-carboncino' -%}
-            {%- elsif p_tags_str contains 'tecnica-china' -%}{%- assign p_tecnica = 'tecnica-china' -%}
-            {%- elsif p_tags_str contains 'tecnica-matita' -%}{%- assign p_tecnica = 'tecnica-matita' -%}
+            {%- if p_tags_str contains 'tecnica-pastello' or p_tags_str contains 'pastello' -%}{%- assign p_tecnica = 'tecnica-pastello' -%}
+            {%- elsif p_tags_str contains 'tecnica-grafite' or p_tags_str contains 'grafite' -%}{%- assign p_tecnica = 'tecnica-grafite' -%}
+            {%- elsif p_tags_str contains 'tecnica-carboncino' or p_tags_str contains 'carboncino' -%}{%- assign p_tecnica = 'tecnica-carboncino' -%}
+            {%- elsif p_tags_str contains 'tecnica-china' or p_tags_str contains 'china' -%}{%- assign p_tecnica = 'tecnica-china' -%}
+            {%- elsif p_tags_str contains 'tecnica-matita' or p_tags_str contains 'matita' -%}{%- assign p_tecnica = 'tecnica-matita' -%}
             {%- endif -%}
 
             {%- assign p_soggetto = '' -%}
-            {%- if p_tags_str contains 'soggetto-creature' -%}{%- assign p_soggetto = 'soggetto-creature' -%}
-            {%- elsif p_tags_str contains 'soggetto-ritratti' -%}{%- assign p_soggetto = 'soggetto-ritratti' -%}
-            {%- elsif p_tags_str contains 'soggetto-natura' -%}{%- assign p_soggetto = 'soggetto-natura' -%}
-            {%- elsif p_tags_str contains 'soggetto-guerrieri' -%}{%- assign p_soggetto = 'soggetto-guerrieri' -%}
-            {%- elsif p_tags_str contains 'soggetto-demoni' -%}{%- assign p_soggetto = 'soggetto-demoni' -%}
+            {%- if p_tags_str contains 'soggetto-creature' or p_tags_str contains 'creature' -%}{%- assign p_soggetto = 'soggetto-creature' -%}
+            {%- elsif p_tags_str contains 'soggetto-ritratti' or p_tags_str contains 'ritratti' or p_tags_str contains 'donna' -%}{%- assign p_soggetto = 'soggetto-ritratti' -%}
+            {%- elsif p_tags_str contains 'soggetto-natura' or p_tags_str contains 'natura' or p_tags_str contains 'cervo' -%}{%- assign p_soggetto = 'soggetto-natura' -%}
+            {%- elsif p_tags_str contains 'soggetto-guerrieri' or p_tags_str contains 'guerrieri' -%}{%- assign p_soggetto = 'soggetto-guerrieri' -%}
+            {%- elsif p_tags_str contains 'soggetto-demoni' or p_tags_str contains 'demoni' or p_tags_str contains 'demone' -%}{%- assign p_soggetto = 'soggetto-demoni' -%}
             {%- endif -%}
 
             {%- assign p_avail = 'disponibile' -%}
