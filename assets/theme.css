@@ -3309,8 +3309,7 @@ img { max-width: 100%; display: block; }
 
 /* ── Galleria ─────────────────────────────────────────────── */
 .pd-gallery {
-  position: sticky;
-  top: 5rem;
+  position: relative;
 }
 
 .pd-gallery__main-frame {
