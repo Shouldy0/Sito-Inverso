@@ -6,6 +6,12 @@ export const useMagneticCursor = () => {
     const isFinePointer = window.matchMedia('(pointer: fine)').matches;
     if (!isFinePointer) return;
 
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reducedMotion) {
+      // Disable magnetic cursor for users who prefer reduced motion
+      return;
+    }
+
     const dot = document.createElement('div');
     dot.className = 'cursor-dot';
     document.body.appendChild(dot);
@@ -19,14 +25,14 @@ export const useMagneticCursor = () => {
         x: e.clientX,
         y: e.clientY,
         duration: 0.1,
-        ease: "power2.out",
+        ease: 'power2.out',
       });
 
       gsap.to(ring, {
         x: e.clientX,
         y: e.clientY,
         duration: 0.35,
-        ease: "power2.out",
+        ease: 'power2.out',
       });
     };
 
@@ -36,7 +42,7 @@ export const useMagneticCursor = () => {
         height: 48,
         borderColor: 'rgba(201, 169, 110, 0.5)',
         duration: 0.3,
-        ease: "power2.out",
+        ease: 'power2.out',
       });
     };
 
@@ -46,7 +52,7 @@ export const useMagneticCursor = () => {
         height: 32,
         borderColor: 'rgba(255, 255, 255, 0.5)',
         duration: 0.3,
-        ease: "power2.out",
+        ease: 'power2.out',
       });
     };
 

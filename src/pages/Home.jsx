@@ -18,6 +18,32 @@ const Home = () => {
   const featuredOriginals = allProducts.filter(p => p.category === 'originali').slice(0, 3);
 
   useEffect(() => {
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    if (reducedMotion) {
+      // Set final states without animation
+      if (artworkRef.current) {
+        artworkRef.current.style.opacity = '0.85';
+        artworkRef.current.style.transform = 'scale(1)';
+        artworkRef.current.style.filter = 'blur(0px)';
+      }
+      // Set title letters to visible (they are split into spans)
+      if (titleRef.current) {
+        Array.from(titleRef.current.children).forEach(span => {
+          span.style.opacity = '1';
+          span.style.transform = 'translateY(0)';
+        });
+      }
+      // Set manifesto paragraph opacity
+      const manifestoP = document.querySelector('.hero-manifesto p');
+      if (manifestoP) {
+        manifestoP.style.opacity = '1';
+        manifestoP.style.transform = 'translateY(0)';
+      }
+      // No need to set up mouse parallax or other animations
+      return;
+    }
+
     const ctx = gsap.context(() => {
       // Artwork emergence from darkness — faster
       gsap.fromTo(artworkRef.current,
@@ -128,6 +154,7 @@ const Home = () => {
         <div className="hero-manifesto">
           <h1 className="hero-daiana" ref={titleRef}>DAIANA</h1>
           <p>L'inchiostro è la voce di chi scava nel buio.</p>
+          <Link to="/biblioteca" className="cta-button">Esplora la collezione</Link>
         </div>
       </section>
 
