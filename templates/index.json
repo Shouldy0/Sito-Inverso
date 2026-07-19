@@ -1,26 +1,32 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
-        "hero_image": "shopify://shop_images/3B7FA316-15AA-4DDD-8EE6-D70914F062F1.jpg",
-        "hero_image_alt": "Grifone Ribelle — Opera originale di Daiana Vaiani",
-        "eyebrow": "Arte Originale",
-        "title": "DAIANA",
-        "artwork_credit": "\"Grifone Ribelle\" — china su carta, 2025",
-        "cta_url": "",
-        "cta_label": "Scopri le opere",
+        "hero_image_alt": "INverso — Opera Manifesto di Daiana Vaiani",
+        "eyebrow": "Mondo Narrativo & Artworks",
+        "title": "INverso — Daiana Vaiani",
+        "artwork_credit": "“Ogni opera è una soglia tra ciò che si mostra e ciò che si nasconde.”",
+        "cta_url": "/collections/originali",
+        "cta_label": "Esplora gli Originali",
         "scroll_text": "Scorri per esplorare",
         "overlay_intensity": "medium"
+      }
+    },
+    "diptych": {
+      "type": "collections-diptych",
+      "settings": {
+        "section_label": "La Filosofia di INverso",
+        "left_eyebrow": "China • Matita • Carboncino",
+        "left_title": "Originali",
+        "left_desc": "Simbolico, introspettivo, psicologico. Pezzi unici irripetibili, bozzetti di studio ed inchiostri dove la linea da figura all'inconscio.",
+        "left_url": "/collections/originali",
+        "left_cta": "Scopri gli Originali",
+        "right_eyebrow": "Pastelli • Colore • Fandom",
+        "right_title": "Universo",
+        "right_desc": "Pop, luminoso ed accessibile. Stampe Fine Art d'autore (Jujutsu Kaisen, Naruto, Dragon Ball) e tirature su carte di pregio.",
+        "right_url": "/collections/universo",
+        "right_cta": "Esplora l'Universo"
       }
     },
     "manifesto": {
@@ -30,42 +36,23 @@
         "author": "Daiana Vaiani"
       }
     },
-    "featured_product": {
-      "type": "featured-product",
-      "settings": {
-        "featured_product": "sfumature-di-colore"
-      }
-    },
-    "books_showcase": {
-      "type": "books-showcase",
-      "name": "Galleria",
-      "settings": {
-        "title": "La Galleria",
-        "collection": "frontpage",
-        "products_to_show": 2,
-        "link_text": "Vedi tutti i quadri"
-      }
-    },
     "about": {
       "type": "about",
       "settings": {
-        "label": "Chi sono",
+        "label": "L'Autrice",
         "title": "Daiana Vaiani",
-        "bio": "Autrice, illustratrice e creatrice di mondi. Racconto storie attraverso parole, immagini e inchiostro — perché ogni storia è una soglia verso qualcosa di più grande.",
-        "quote": "“Ogni storia è una soglia. Ogni pagina è un passo oltre il confine del visibile.”",
-        "author_image": "shopify://shop_images/D9F0B6D3-AA2F-4572-893D-92CB2439267A.jpg",
+        "bio": "Illustratrice e autrice. Il mio lavoro nasce dal bisogno di esplorare le crepe e le luci dell'animo umano attraverso l'inchiostro, le parole e la materia visiva.",
+        "quote": "“L'inchiostro è la mia voce quando il silenzio si fa troppo grande.”",
         "author_name": "Daiana Vaiani",
-        "cta_url": "/pages/universo",
-        "cta_label": "Scopri l'Universo",
-        "social_instagram": ""
+        "cta_url": "/pages/chi-sono",
+        "cta_label": "Bio & Manifesto"
       }
     }
   },
   "order": [
     "hero",
+    "diptych",
     "manifesto",
-    "featured_product",
-    "books_showcase",
     "about"
   ]
 }
