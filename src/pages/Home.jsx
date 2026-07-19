@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import ProductCard from '../components/UI/ProductCard';
 import { useCart } from '../context/CartContext';
 import { allProducts } from '../data/products';
+import { Feather, Compass, Sparkles, ArrowRight } from 'lucide-react';
 import gsap from 'gsap';
 import './Home.css';
 
@@ -13,74 +14,39 @@ const Home = () => {
   const glowRef = useRef(null);
   const titleRef = useRef(null);
 
-  const allBooks = allProducts.filter(p => p.category === 'biblioteca');
-  const featuredPrints = allProducts.filter(p => p.category === 'galleria').slice(0, 3);
-  const featuredOriginals = allProducts.filter(p => p.category === 'originali').slice(0, 3);
+  // Mixed selection of 4 flagship items for "In Evidenza"
+  const featuredSelection = allProducts.filter(p => ['o1', 'o2', 'u1', 'u4'].includes(p.id));
 
   useEffect(() => {
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     if (reducedMotion) {
-      // Set final states without animation
       if (artworkRef.current) {
-        artworkRef.current.style.opacity = '0.85';
+        artworkRef.current.style.opacity = '0.9';
         artworkRef.current.style.transform = 'scale(1)';
-        artworkRef.current.style.filter = 'blur(0px)';
       }
-      // Set title letters to visible (they are split into spans)
-      if (titleRef.current) {
-        Array.from(titleRef.current.children).forEach(span => {
-          span.style.opacity = '1';
-          span.style.transform = 'translateY(0)';
-        });
-      }
-      // Set manifesto paragraph opacity
-      const manifestoP = document.querySelector('.hero-manifesto p');
-      if (manifestoP) {
-        manifestoP.style.opacity = '1';
-        manifestoP.style.transform = 'translateY(0)';
-      }
-      // No need to set up mouse parallax or other animations
       return;
     }
 
     const ctx = gsap.context(() => {
-      // Artwork emergence from darkness — faster
+      // Emergence of Manifesto artwork
       gsap.fromTo(artworkRef.current,
-        { opacity: 0, scale: 0.96, filter: "blur(16px)" },
-        { opacity: 0.85, scale: 1, filter: "blur(0px)", duration: 1.5, ease: "power2.out", clearProps: "filter" }
+        { opacity: 0, scale: 0.95, filter: "blur(12px)" },
+        { opacity: 0.9, scale: 1, filter: "blur(0px)", duration: 1.6, ease: "power2.out" }
       );
 
-      // Letter stagger for "DAIANA"
-      if (titleRef.current) {
-        const text = titleRef.current.textContent;
-        titleRef.current.innerHTML = '';
-        text.split('').forEach((char) => {
-          const span = document.createElement('span');
-          span.textContent = char;
-          span.style.display = 'inline-block';
-          span.style.opacity = '0';
-          span.style.transform = 'translateY(40px)';
-          titleRef.current.appendChild(span);
-        });
+      // Hero Title emergence
+      gsap.fromTo(".hero-brand-title",
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 1, delay: 0.4, ease: "power3.out" }
+      );
 
-        gsap.to(titleRef.current.children, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: "power3.out",
-          delay: 0.6,
-        });
-      }
-
-      // Manifesto subtitle
-      gsap.fromTo(".hero-manifesto p",
+      gsap.fromTo(".hero-manifesto-text",
         { opacity: 0, y: 20 },
-        { opacity: 1, y: 0, duration: 1, delay: 1.6, ease: "power2.out" }
+        { opacity: 1, y: 0, duration: 1, delay: 0.8, ease: "power2.out" }
       );
 
-      // Mouse parallax on artwork
+      // Mouse Parallax on Hero
       const heroEl = heroRef.current;
       if (heroEl && artworkRef.current) {
         const handleMouseMove = (e) => {
@@ -89,10 +55,10 @@ const Home = () => {
           const y = (e.clientY - rect.top) / rect.height - 0.5;
 
           gsap.to(artworkRef.current, {
-            x: x * -20,
-            y: y * -15,
-            rotateY: x * 3,
-            rotateX: y * -3,
+            x: x * -18,
+            y: y * -12,
+            rotateY: x * 2.5,
+            rotateX: y * -2.5,
             duration: 1,
             ease: "power2.out",
           });
@@ -101,7 +67,7 @@ const Home = () => {
             gsap.to(glowRef.current, {
               x: e.clientX - rect.left,
               y: e.clientY - rect.top,
-              opacity: 0.2,
+              opacity: 0.22,
               duration: 0.6,
             });
           }
@@ -123,7 +89,6 @@ const Home = () => {
         return () => {
           heroEl.removeEventListener('mousemove', handleMouseMove);
           heroEl.removeEventListener('mouseleave', handleMouseLeave);
-          ctx.revert();
         };
       }
     });
@@ -139,73 +104,139 @@ const Home = () => {
   return (
     <div className="home-page page-transition">
 
-      {/* Hero — A single artwork in the dark */}
-      <section className="dark-hero-section" ref={heroRef}>
-        <div className="giant-artwork-wrapper">
+      {/* 1. HERO MANIFESTO */}
+      <section className="hero-manifesto-section" ref={heroRef}>
+        <div className="hero-artwork-container">
           <img
             ref={artworkRef}
-            src="/assets/sfiorare_il_buio.webp"
-            alt="Sfiorare il buio"
-            className="giant-artwork"
+            src="/assets/volto-del-baratro.png"
+            alt="Il Volto del Baratro — Opera Manifesto"
+            className="hero-artwork-img"
             decoding="async"
           />
-          <div className="hero-glow" ref={glowRef} />
+          <div className="hero-glow-layer" ref={glowRef} />
         </div>
-        <div className="hero-manifesto">
-          <h1 className="hero-daiana" ref={titleRef}>DAIANA</h1>
-          <p>L'inchiostro è la voce di chi scava nel buio.</p>
-          <Link to="/biblioteca" className="cta-button">Esplora la collezione</Link>
+
+        <div className="hero-content-overlay">
+          <span className="hero-tagline">Mondo Narrativo & Artworks</span>
+          <h1 className="hero-brand-title" ref={titleRef}>INverso</h1>
+          <p className="hero-manifesto-text">
+            "Ogni opera — che nasca dalla china pura o dalla luce dei pastelli — è una soglia tra ciò che si mostra e ciò che si nasconde."
+          </p>
+          <div className="hero-actions">
+            <Link to="/originali" className="cta-button primary-cta">
+              Esplora gli Originali <Feather size={16} />
+            </Link>
+            <Link to="/universo" className="cta-button secondary-cta">
+              Entra nell'Universo <Sparkles size={16} />
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* Opere Uniche — Asymmetric grid */}
-      <section className="dark-showcase container">
-        {featuredOriginals.length > 0 && (
-          <div className="showcase-group reveal-3d">
-            <h2 className="showcase-title">Opere Uniche</h2>
-            <div className="dark-grid asymmetric-grid stagger-in">
-              {featuredOriginals.map(product => (
-                <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
-              ))}
+      {/* 2. LE DUE ANIME */}
+      <section className="two-souls-section container">
+        <div className="section-header text-center">
+          <span className="section-kicker">La Filosofia di INverso</span>
+          <h2 className="section-title">Le Due Anime</h2>
+          <p className="section-subtitle">
+            Un unico universo narrativo guidato dalla ricerca sull'identità, espresso attraverso due percorsi visivi distinti.
+          </p>
+        </div>
+
+        <div className="souls-grid">
+          {/* Card Originali */}
+          <div className="soul-card soul-originali">
+            <div className="soul-card-badge">China • Matita • Carboncino</div>
+            <h3 className="soul-card-title">Originali</h3>
+            <p className="soul-card-desc">
+              Simbolico, introspettivo, psicologico. Pezzi unici irripetibili, studi d'archivio e tavole originali nate dall'inchiostro di china ad alto contrasto.
+            </p>
+            <div className="soul-tiers">
+              <span>Studio Works</span>
+              <span className="dot">•</span>
+              <span>Opere Originali</span>
+              <span className="dot">•</span>
+              <span>Pezzi Unici</span>
             </div>
-            <div className="link-wrapper">
-              <Link to="/originali" className="minimal-link">Esplora l'archivio degli originali</Link>
-            </div>
+            <Link to="/originali" className="soul-link link-originali">
+              Scopri le Opere Originali <ArrowRight size={16} />
+            </Link>
           </div>
-        )}
 
-        <div className="section-divider" />
+          {/* Card Universo */}
+          <div className="soul-card soul-universo">
+            <div className="soul-card-badge badge-universo-color">Pastelli • Colore • Digitale</div>
+            <h3 className="soul-card-title title-universo">Universo</h3>
+            <p className="soul-card-desc">
+              Pop, acceso, fandom-friendly. Stampe fine art di qualità galleria, omaggi ad anime e manga (Jujutsu Kaisen, Naruto, Dragon Ball) e tirature d'autore.
+            </p>
 
-        {/* Stampe — Horizontal scroll section */}
-        {featuredPrints.length > 0 && (
-          <div className="showcase-group reveal-3d">
-            <h2 className="showcase-title">Stampe Fine Art</h2>
-            <div className="prints-scroll stagger-in">
-              {allProducts.filter(p => p.category === 'galleria').map(product => (
-                <div className="prints-scroll-item stagger-child" key={product.id}>
-                  <ProductCard {...product} onAddToCart={handleAddToCart} />
-                </div>
-              ))}
+            <div className="soul-tiers fandom-tags">
+              <span>Jujutsu Kaisen</span>
+              <span className="dot">•</span>
+              <span>Naruto</span>
+              <span className="dot">•</span>
+              <span>Dragon Ball</span>
+              <span className="dot">•</span>
+              <span>One Piece</span>
             </div>
-            <div className="link-wrapper">
-              <Link to="/galleria" className="minimal-link">Esplora la galleria stampe</Link>
-            </div>
+            <Link to="/universo" className="soul-link link-universo">
+              Esplora le Stampe dell'Universo <ArrowRight size={16} />
+            </Link>
           </div>
-        )}
+        </div>
+      </section>
 
-        <div className="section-divider" />
+      <div className="container"><div className="section-divider" /></div>
 
-        {allBooks.length > 0 && (
-          <div className="showcase-group reveal-3d">
-            <h2 className="showcase-title">Volumi & Pubblicazioni</h2>
-            <div className="dark-grid stagger-in">
-              {allBooks.map(product => (
-                <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
-              ))}
-            </div>
+      {/* 3. IN EVIDENZA */}
+      <section className="featured-section container">
+        <div className="section-header">
+          <div>
+            <span className="section-kicker">Selezione Curata</span>
+            <h2 className="section-title">In Evidenza</h2>
           </div>
-        )}
+          <Link to="/originali" className="minimal-link">
+            Tutte le opere <ArrowRight size={14} />
+          </Link>
+        </div>
 
+        <div className="dark-grid showcase-grid">
+          {featuredSelection.map(product => (
+            <ProductCard key={product.id} {...product} onAddToCart={handleAddToCart} />
+          ))}
+        </div>
+      </section>
+
+      <div className="container"><div className="section-divider" /></div>
+
+      {/* 4. CHI È DAIANA */}
+      <section className="artist-snippet-section container">
+        <div className="artist-snippet-wrapper">
+          <div className="artist-image-container">
+            <img
+              src="/assets/artista-daiana.png"
+              alt="Daiana Vaiani — L'Artista"
+              className="artist-portrait"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="artist-bio-content">
+            <span className="section-kicker">L'Autrice</span>
+            <h2 className="artist-title">Daiana Vaiani</h2>
+            <blockquote className="artist-quote">
+              "L'inchiostro è la mia voce quando il silenzio si fa troppo grande."
+            </blockquote>
+            <p className="artist-text">
+              Sono Daiana Vaiani, illustratrice e autrice. Il mio lavoro nasce dal bisogno di dare corpo alle dualità che abitano la nostra mente: l'ombra e la luce, la forza della maschera e la fragilità dell'anima.
+            </p>
+            <Link to="/info/chi-sono" className="cta-button outline-cta">
+              Leggi la Bio & Manifesto <Compass size={16} />
+            </Link>
+          </div>
+        </div>
       </section>
 
     </div>

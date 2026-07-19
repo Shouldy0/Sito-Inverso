@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { getProductById } from '../data/products';
 import { useCart } from '../context/CartContext';
 import Button from '../components/UI/Button';
+import { ShieldCheck, Feather, Truck, ArrowLeft } from 'lucide-react';
 import './ProductDetail.css';
 
 const ProductDetail = () => {
@@ -14,20 +15,6 @@ const ProductDetail = () => {
   const imageRef = useRef(null);
 
   const product = getProductById(id);
-  const [viewers, setViewers] = useState(() => Math.floor(Math.random() * 4) + 2);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setViewers(prev => {
-        const change = Math.floor(Math.random() * 3) - 1;
-        let newValue = prev + change;
-        if (newValue < 1) newValue = 1;
-        if (newValue > 12) newValue = 12;
-        return newValue;
-      });
-    }, 12000);
-    return () => clearInterval(interval);
-  }, [id]);
 
   // Tilt 3D on image
   useEffect(() => {
@@ -42,8 +29,8 @@ const ProductDetail = () => {
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const rotateX = ((y - centerY) / centerY) * -6;
-      const rotateY = ((x - centerX) / centerX) * 6;
+      const rotateX = ((y - centerY) / centerY) * -5;
+      const rotateY = ((x - centerX) / centerX) * 5;
 
       gsap.to(wrap, {
         rotateX, rotateY,
@@ -53,8 +40,7 @@ const ProductDetail = () => {
       });
 
       gsap.to(img, {
-        scale: 1.03,
-        filter: "brightness(1.08)",
+        scale: 1.02,
         duration: 0.5,
         ease: "power2.out",
       });
@@ -67,7 +53,7 @@ const ProductDetail = () => {
         ease: "elastic.out(1, 0.6)",
       });
       gsap.to(img, {
-        scale: 1, filter: "brightness(1)",
+        scale: 1,
         duration: 0.6,
         ease: "power2.out",
       });
@@ -83,20 +69,20 @@ const ProductDetail = () => {
 
   if (!product) {
     return (
-      <div className="product-not-found">
-        <h2>Prodotto non trovato</h2>
+      <div className="product-not-found container">
+        <h2>Opera o prodotto non trovato</h2>
         <Button variant="outline" onClick={() => navigate(-1)}>Torna indietro</Button>
       </div>
     );
   }
 
   return (
-    <div className="product-detail-page page-transition">
-      <div className="product-detail-container">
+    <div className={`product-detail-page page-transition ${product.category ? `detail-${product.category}` : ''}`}>
+      <div className="container product-detail-container">
 
-        {/* Left column: Image with tilt */}
+        {/* Left column: Artwork presentation */}
         <div className="product-detail-image-section">
-          <div className="product-image-large floating-slow" ref={imageWrapRef} style={{ perspective: 800 }}>
+          <div className="product-image-large" ref={imageWrapRef} style={{ perspective: 800 }}>
             <img
               ref={imageRef}
               src={product.imageUrl}
@@ -109,58 +95,76 @@ const ProductDetail = () => {
           </div>
         </div>
 
-        {/* Right column: Info */}
+        {/* Right column: Narrative and specs */}
         <div className="product-detail-info-section reveal-3d">
           <nav className="breadcrumb">
             <button onClick={() => navigate(-1)} className="back-link">
-              ← Torna indietro
+              <ArrowLeft size={16} /> Torna indietro
             </button>
           </nav>
 
-          <span className="product-type-label">{product.type}</span>
+          <span className="product-type-label">{product.type} {product.year ? `• ${product.year}` : ''}</span>
           <h1 className="product-detail-title">{product.title}</h1>
           <p className="product-detail-price">€{product.price.toFixed(2)}</p>
 
-          <div className="product-detail-actions">
-            {viewers > 0 && (
-              <div className="live-viewers-badge">
-                <span className="live-dot"></span>
-                <span><strong>{viewers}</strong> persone stanno guardando quest'opera ora</span>
+          {/* Micro-Story Block */}
+          {product.microStory && (
+            <div className="product-micro-story-box">
+              <div className="story-header">
+                <Feather size={16} className="text-gold" />
+                <span className="story-label">Micro-Storia dell'Opera</span>
               </div>
-            )}
-            <Button variant="primary" onClick={() => addToCart(product)} className="w-full magnetic-btn">
+              <blockquote className="story-text">
+                "{product.microStory}"
+              </blockquote>
+            </div>
+          )}
+
+          {/* Actions */}
+          <div className="product-detail-actions">
+            <Button variant="primary" onClick={() => addToCart(product)} className="w-full primary-buy-btn">
               {product.isPreorder ? 'Pre-ordina ora' : 'Aggiungi al Carrello'}
             </Button>
           </div>
 
-          <div className="product-description-block">
-            <h3>Descrizione</h3>
-            <p>{product.description}</p>
+          {/* Specs & Certificate */}
+          <div className="product-specs-block">
+            <h3>Specifiche dell'Opera</h3>
+            <ul className="specs-list">
+              {product.technique && <li><strong>Tecnica:</strong> {product.technique}</li>}
+              {product.dimensions && <li><strong>Dimensioni:</strong> {product.dimensions}</li>}
+              {product.certificate && (
+                <li className="certificate-item">
+                  <ShieldCheck size={18} className="text-gold inline-icon" />
+                  <strong>Certificato:</strong> {product.certificate}
+                </li>
+              )}
+              {product.details && product.details.map((detail, index) => (
+                <li key={index}>{detail}</li>
+              ))}
+            </ul>
           </div>
 
-          {product.details && product.details.length > 0 && (
-            <div className="product-details-list">
-              <h3>Dettagli</h3>
-              <ul>
-                {product.details.map((detail, index) => (
-                  <li key={index}>{detail}</li>
-                ))}
-              </ul>
+          {/* Shipping & Packaging Note */}
+          <div className="shipping-info-box">
+            <Truck size={18} className="shipping-icon" />
+            <div>
+              {product.isPreorder ? (
+                <p className="shipping-note text-gold">
+                  Pre-ordine: Spedizione speciale prevista a partire dal {product.releaseDate}.
+                </p>
+              ) : product.isUnique ? (
+                <p className="shipping-note">
+                  <strong>Custodia protettiva:</strong> Spedizione assicurata in imballo d'archivio protetto.
+                </p>
+              ) : (
+                <p className="shipping-note">
+                  <strong>Spedizione sicura:</strong> Confezionata con cura in busta protettiva rigida antieghe.
+                </p>
+              )}
             </div>
-          )}
-
-          <div className="shipping-info">
-            {product.isPreorder ? (
-              <p className="text-gold" style={{ fontWeight: '600' }}>
-                Pre-ordine: Questo albo verrà stampato e spedito a partire dal {product.releaseDate}.
-              </p>
-            ) : (
-              <p><strong>Spedizione:</strong> Calcolata al momento del checkout.</p>
-            )}
-            {product.isUnique && (
-              <p className="text-burgundy">Spedizione assicurata con corriere speciale per opere d'arte.</p>
-            )}
           </div>
+
         </div>
 
       </div>

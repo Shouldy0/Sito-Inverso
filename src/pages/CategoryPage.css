@@ -1,36 +1,28 @@
 .category-page {
   padding: 0 0 6rem;
-  max-width: 1280px;
-  margin: 0 auto;
+  width: 100%;
 }
 
-/* Hero section for category pages */
+/* Category Hero */
 .category-hero {
   position: relative;
-  height: 50vh;
-  min-height: 360px;
-  overflow: hidden;
+  min-height: 420px;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 4rem;
+  padding: 5rem 0 3rem;
+  background: radial-gradient(circle at 50% 20%, rgba(201, 169, 110, 0.08) 0%, transparent 60%);
+  border-bottom: 1px solid var(--color-border);
 }
 
-.category-hero-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 120%;
-  object-fit: cover;
-  opacity: 0.25;
-  filter: blur(2px);
-  will-change: transform;
+.universo-hero {
+  background: radial-gradient(circle at 50% 20%, rgba(226, 207, 196, 0.1) 0%, transparent 60%);
 }
 
 .category-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, var(--color-bg-primary) 0%, transparent 50%, var(--color-bg-primary) 100%);
+  background: linear-gradient(to bottom, transparent 60%, var(--color-bg-primary) 100%);
   z-index: 1;
 }
 
@@ -38,61 +30,137 @@
   position: relative;
   z-index: 2;
   text-align: center;
-  padding: 0 2rem;
+  max-width: 840px;
+  margin: 0 auto;
 }
 
-.category-header {
-  margin-bottom: 4rem;
-  text-align: center;
+.category-kicker {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 0.75rem;
 }
 
-.category-header h1,
-.category-hero-content h1 {
+.kicker-universo {
+  color: #e2cfc4;
+}
+
+.category-main-title {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-size: clamp(2.8rem, 6vw, 4.5rem);
+  font-weight: 400;
+  letter-spacing: 0.12em;
   color: var(--color-text-primary);
   margin-bottom: 1rem;
 }
 
-.category-hero-content p {
+.title-universo-heading {
+  font-family: 'Outfit', sans-serif;
+}
+
+.category-description {
+  font-family: var(--font-editorial);
+  font-size: 1.2rem;
+  line-height: 1.6;
   color: var(--color-text-secondary);
-  font-size: 1.1rem;
-  max-width: 600px;
-  margin: 0 auto;
-  opacity: 0;
-  animation: fadeIn 1s ease-out 0.8s forwards;
+  margin: 0 auto 2.5rem;
+  max-width: 680px;
+}
+
+/* Filter Tabs */
+.tier-filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+}
+
+.filter-tab {
+  background: rgba(22, 21, 18, 0.6);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  padding: 0.6rem 1.4rem;
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.filter-tab:hover {
+  border-color: var(--color-border-hover);
+  color: var(--color-text-primary);
+}
+
+.filter-tab.active {
+  background: var(--color-gold);
+  color: #0e0d0b;
+  border-color: var(--color-gold);
+  font-weight: 600;
+}
+
+.tab-universo.active {
+  background: #e2cfc4;
+  color: #0e0d0b;
+  border-color: #e2cfc4;
+}
+
+/* Authenticity & Fine Art Banner */
+.authenticity-banner {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-card-border);
+  padding: 1.5rem 2rem;
+  border-radius: 4px;
+  margin: 3rem auto;
+  max-width: 1000px;
+}
+
+.banner-universo {
+  border-color: rgba(226, 207, 196, 0.2);
+}
+
+.banner-icon {
+  flex-shrink: 0;
+}
+
+.banner-text h4 {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
+  margin-bottom: 0.25rem;
+}
+
+.banner-text p {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--color-text-secondary);
+}
+
+/* Grid Container */
+.category-grid-container {
+  margin-top: 2rem;
 }
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 3rem 2rem;
-  padding: 0 2rem;
-}
-
-/* Fallback grid for tailwind-based pages */
-.grid {
-  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 2.5rem;
-  padding: 0 2rem;
 }
 
-.grid-cols-1 {
-  grid-template-columns: 1fr;
-}
-
-@media (min-width: 768px) {
-  .md\:grid-cols-2 {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (min-width: 1024px) {
-  .lg\:grid-cols-3 {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-.gap-10 {
-  gap: 2.5rem;
+.empty-category {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--color-text-secondary);
+  font-family: var(--font-editorial);
+  font-size: 1.2rem;
 }

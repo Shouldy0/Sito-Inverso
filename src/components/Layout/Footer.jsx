@@ -29,35 +29,39 @@ const Footer = () => {
     <footer className="footer">
       <div className="container footer-content">
         <div className="footer-brand reveal-3d" data-reveal-delay="0">
-          <h3>DAIANA</h3>
-          <p>Ogni storia è una soglia.</p>
+          <h3 className="footer-brand-title">INverso</h3>
+          <span className="footer-artist-name">Daiana Vaiani</span>
+          <p className="footer-quote">
+            "L'inchiostro è la mia voce quando il silenzio si fa troppo grande."
+          </p>
         </div>
 
         <div className="footer-links reveal-3d" data-reveal-delay="0.1">
-          <h4>Esplora</h4>
-          <Link to="/universo">Universo</Link>
-          <Link to="/biblioteca">Fumetti</Link>
-          <Link to="/galleria">Stampe Artistiche</Link>
-          <Link to="/originali">Opere Originali</Link>
+          <h4>Mondo INverso</h4>
+          <Link to="/originali">Originali (Pezzi Unici)</Link>
+          <Link to="/universo">Universo (Fan Art & Stampe)</Link>
+          <Link to="/biblioteca">Biblioteca (Albi Cartacei)</Link>
+          <Link to="/diario">Spostamenti (Diario)</Link>
         </div>
 
         <div className="footer-links reveal-3d" data-reveal-delay="0.2">
           <h4>Informazioni</h4>
-          <Link to="/info/spedizioni">Spedizioni e Resi</Link>
-          <Link to="/info/termini">Termini e Condizioni</Link>
-          <Link to="/contatti">Contatti</Link>
+          <Link to="/info/chi-sono">L'Artista</Link>
+          <Link to="/info/spedizioni">Spedizioni e Certificati</Link>
+          <Link to="/info/termini">Termini e Policy</Link>
+          <Link to="/contatti">Contatti & Commissioni</Link>
         </div>
 
         <div className="footer-newsletter reveal-3d" data-reveal-delay="0.3">
-          <h4>Lettere dall'Ombra</h4>
+          <h4>Entra nell'INverso</h4>
           <p className="newsletter-desc">
-            Ricevi in anteprima estratti dei nuovi fumetti, aggiornamenti sui dietro le quinte e l'accesso prioritario alle opere originali.
+            Iscriviti per ricevere in anteprima gli aggiornamenti sulle nuove opere uniche, i capitoli in uscita e le tirature speciali dell'Universo.
           </p>
 
           {status === 'success' ? (
             <div className="newsletter-success animate-fade-in">
               <Check className="icon-success" size={18} />
-              <span>Ti sei iscritto con successo! A presto.</span>
+              <span>Ti diamo il benvenuto nell'INverso. A presto.</span>
             </div>
           ) : (
             <form onSubmit={handleSubscribe} className="newsletter-form">
@@ -90,7 +94,7 @@ const Footer = () => {
       </div>
 
       <div className="footer-bottom">
-        <p>&copy; {new Date().getFullYear()} DAIANA. Tutti i diritti riservati.</p>
+        <p>&copy; {new Date().getFullYear()} INverso — Daiana Vaiani. Tutti i diritti riservati.</p>
       </div>
     </footer>
   );

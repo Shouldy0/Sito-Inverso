@@ -10,8 +10,12 @@ const ProductCard = ({
   type,
   price,
   imageUrl,
+  category,
+  tier,
+  fandom,
   isUnique = false,
   isPreorder = false,
+  microStory,
   onAddToCart
 }) => {
   const cardRef = useRef(null);
@@ -73,8 +77,20 @@ const ProductCard = ({
     };
   }, []);
 
+  const renderBadge = () => {
+    if (isUnique) return <span className="badge badge-unique">Pezzo Unico</span>;
+    if (tier === 'studio_works') return <span className="badge badge-studio">Studio Work</span>;
+    if (tier === 'opere_originali') return <span className="badge badge-original">Opera Originale</span>;
+    if (category === 'universo' && fandom && fandom !== 'original_art') {
+      return <span className="badge badge-fandom">{fandom.replace('_', ' ').toUpperCase()}</span>;
+    }
+    if (category === 'universo') return <span className="badge badge-universo">Stampa Fine Art</span>;
+    if (isPreorder) return <span className="badge badge-preorder">Pre-ordine</span>;
+    return null;
+  };
+
   return (
-    <div className="product-card reveal-3d stagger-child" ref={cardRef}>
+    <div className={`product-card reveal-3d stagger-child ${category ? `card-${category}` : ''}`} ref={cardRef}>
       <Link to={`/product/${id}`} className="product-image-wrapper">
         <img
           ref={imageRef}
@@ -85,20 +101,27 @@ const ProductCard = ({
           decoding="async"
         />
         <div className="product-card-glow" ref={glowRef} />
-        {isUnique && <span className="badge badge-unique">Pezzo Unico</span>}
-        {isPreorder && <span className="badge badge-preorder">Pre-ordine</span>}
+        {renderBadge()}
       </Link>
 
       <div className="product-info">
+        <div className="product-header-row">
+          <span className="product-type">{type}</span>
+        </div>
         <Link to={`/product/${id}`} style={{ textDecoration: 'none' }}>
           <h3 className="product-title">{title}</h3>
         </Link>
-        <span className="product-type">{type}</span>
+
+        {microStory && (
+          <p className="product-micro-story">
+            {microStory.length > 85 ? `${microStory.substring(0, 85)}...` : microStory}
+          </p>
+        )}
 
         <div className="product-footer">
           <span className="product-price">€{price.toFixed(2)}</span>
           <Button variant="outline" onClick={() => onAddToCart(id)}>
-            {isPreorder ? 'Pre-ordina' : 'Acquista'}
+            {isPreorder ? 'Pre-ordina' : 'Dettagli & Acquista'}
           </Button>
         </div>
       </div>

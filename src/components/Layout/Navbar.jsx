@@ -4,14 +4,16 @@ import { useState, useEffect } from 'react';
 import { useCart } from '../../context/CartContext';
 import './Navbar.css';
 
-const navLinks = [
+const mainNavLinks = [
   { to: '/', label: 'Home' },
-  { to: '/biblioteca', label: 'Fumetti' },
-  { to: '/galleria', label: 'Stampe Artistiche' },
+  { to: '/originali', label: 'Originali' },
+  { to: '/universo', label: 'Universo' },
+  { to: '/biblioteca', label: 'Biblioteca' },
 ];
 
-const secondaryLinks = [
-  { to: '/universo', label: "L'Universo" },
+const secondaryNavLinks = [
+  { to: '/info/chi-sono', label: "L'Artista" },
+  { to: '/diario', label: 'Spostamenti' },
 ];
 
 const Navbar = ({ toggleCart }) => {
@@ -24,7 +26,7 @@ const Navbar = ({ toggleCart }) => {
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsCompact(window.scrollY > 80);
+      setIsCompact(window.scrollY > 60);
     };
 
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -32,7 +34,6 @@ const Navbar = ({ toggleCart }) => {
   }, []);
 
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsMobileMenuOpen(false);
   }, [location.pathname]);
 
@@ -40,12 +41,15 @@ const Navbar = ({ toggleCart }) => {
     <nav className={`navbar ${isCompact ? 'compact' : ''}`}>
       <div className="navbar-container">
         <div className="navbar-logo">
-          <Link to="/" onClick={closeMobileMenu}>DAIANA</Link>
+          <Link to="/" onClick={closeMobileMenu} className="logo-brand">
+            <span className="brand-name">INverso</span>
+            <span className="brand-sub">Daiana Vaiani</span>
+          </Link>
         </div>
 
         {/* Desktop Menu */}
         <div className="navbar-links">
-          {navLinks.map(link => (
+          {mainNavLinks.map(link => (
             <Link
               key={link.to}
               to={link.to}
@@ -56,7 +60,7 @@ const Navbar = ({ toggleCart }) => {
             </Link>
           ))}
           <span className="navbar-divider">|</span>
-          {secondaryLinks.map(link => (
+          {secondaryNavLinks.map(link => (
             <Link
               key={link.to}
               to={link.to}
@@ -86,13 +90,13 @@ const Navbar = ({ toggleCart }) => {
 
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isMobileMenuOpen ? 'open' : ''}`}>
-        {[...navLinks, ...secondaryLinks].map((link, i) => (
+        {[...mainNavLinks, ...secondaryNavLinks].map((link, i) => (
           <Link
             key={link.to}
             to={link.to}
             onClick={closeMobileMenu}
             className="mobile-menu-link"
-            style={{ transitionDelay: isMobileMenuOpen ? `${0.05 + i * 0.06}s` : '0s' }}
+            style={{ transitionDelay: isMobileMenuOpen ? `${0.05 + i * 0.05}s` : '0s' }}
           >
             {link.label}
           </Link>

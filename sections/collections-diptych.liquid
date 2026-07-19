@@ -1,39 +1,38 @@
 {% comment %}
-  SEZIONE "DUE MONDI" — INverso Homepage
-  Due box affiancati: Fantasy Originali / Anime & Manga Art
-  Immagine di sfondo per ciascuno, overlay elegante, testo e CTA.
+  SEZIONE "LE DUE ANIME" — INverso Homepage
+  Due box affiancati: Originali (Inchiostro) / Universo (Stampe & Fan Art)
 {% endcomment %}
 
 <section class="hp-diptych" data-section-id="{{ section.id }}">
 
   {%- if section.settings.section_label != blank -%}
     <div class="hp-diptych__header container">
-      <p class="hp-diptych__label">{{ section.settings.section_label }}</p>
+      <p class="hp-diptych__label">{{ section.settings.section_label | default: 'La Filosofia di INverso' }}</p>
     </div>
   {%- endif -%}
 
   <div class="hp-diptych__grid">
 
-    <!-- Box sinistro: Fantasy Originali -->
+    <!-- Box sinistro: Originali -->
     <a
-      href="{{ section.settings.left_url | default: '/collections/fantasy-originali' }}"
+      href="{{ section.settings.left_url | default: '/collections/originali' }}"
       class="hp-diptych__box hp-diptych__box--left"
-      id="diptych-fantasy"
-      aria-label="{{ section.settings.left_title | default: 'Fantasy Originali' }}"
+      id="diptych-originali"
+      aria-label="{{ section.settings.left_title | default: 'Originali' }}"
     >
       <div class="hp-diptych__media">
         {%- if section.settings.left_image != blank -%}
           <img
             src="{{ section.settings.left_image | image_url: width: 1200 }}"
-            alt="{{ section.settings.left_image_alt | default: 'Fantasy Originali' }}"
+            alt="{{ section.settings.left_image_alt | default: 'Originali — Daiana Vaiani' }}"
             class="hp-diptych__img"
             loading="lazy"
             width="1200"
           >
         {%- else -%}
           <img
-            src="{{ 'fantasy-elfo-druido.png' | asset_url }}"
-            alt="Elfo Druido — Fantasy Originali"
+            src="{{ 'close-up-china.png' | asset_url }}"
+            alt="Originali — China, Matita, Carboncino"
             class="hp-diptych__img"
             loading="lazy"
           >
@@ -42,36 +41,36 @@
       </div>
 
       <div class="hp-diptych__content">
-        <p class="hp-diptych__eyebrow">{{ section.settings.left_eyebrow | default: 'Personaggi inventati' }}</p>
-        <h2 class="hp-diptych__title">{{ section.settings.left_title | default: 'Fantasy Originali' }}</h2>
-        <p class="hp-diptych__desc">{{ section.settings.left_desc | default: 'Creature, eroi e mondi nati dal tratto di Daiana. Ogni opera è unica.' }}</p>
+        <p class="hp-diptych__eyebrow">{{ section.settings.left_eyebrow | default: 'China • Matita • Carboncino' }}</p>
+        <h2 class="hp-diptych__title">{{ section.settings.left_title | default: 'Originali' }}</h2>
+        <p class="hp-diptych__desc">{{ section.settings.left_desc | default: 'Simbolico, introspettivo, psicologico. Pezzi unici irripetibili e bozzetti di studio dove l\'inchiostro dà corpo all\'inconscio.' }}</p>
         <span class="hp-diptych__cta">
-          {{ section.settings.left_cta | default: 'Esplora la collezione' }}
+          {{ section.settings.left_cta | default: 'Scopri gli Originali' }}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </span>
       </div>
     </a>
 
-    <!-- Box destro: Anime & Manga -->
+    <!-- Box destro: Universo -->
     <a
-      href="{{ section.settings.right_url | default: '/collections/anime-manga-art' }}"
+      href="{{ section.settings.right_url | default: '/collections/universo' }}"
       class="hp-diptych__box hp-diptych__box--right"
-      id="diptych-anime"
-      aria-label="{{ section.settings.right_title | default: 'Anime & Manga Art' }}"
+      id="diptych-universo"
+      aria-label="{{ section.settings.right_title | default: 'Universo' }}"
     >
       <div class="hp-diptych__media">
         {%- if section.settings.right_image != blank -%}
           <img
             src="{{ section.settings.right_image | image_url: width: 1200 }}"
-            alt="{{ section.settings.right_image_alt | default: 'Anime & Manga Art' }}"
+            alt="{{ section.settings.right_image_alt | default: 'Universo — Pastelli e Fan Art' }}"
             class="hp-diptych__img"
             loading="lazy"
             width="1200"
           >
         {%- else -%}
           <img
-            src="{{ 'naruto-sketch.png' | asset_url }}"
-            alt="Naruto — Anime & Manga Art Fan Art"
+            src="{{ 'close-up-pastelli.png' | asset_url }}"
+            alt="Universo — Pastelli, Colore, Fandom"
             class="hp-diptych__img"
             loading="lazy"
           >
@@ -80,11 +79,11 @@
       </div>
 
       <div class="hp-diptych__content">
-        <p class="hp-diptych__eyebrow">{{ section.settings.right_eyebrow | default: 'Fan Art dichiarata' }}</p>
-        <h2 class="hp-diptych__title">{{ section.settings.right_title | default: 'Anime & Manga Art' }}</h2>
-        <p class="hp-diptych__desc">{{ section.settings.right_desc | default: 'Naruto, Dragon Ball, Jujutsu Kaisen — disegnati a mano, non stampati.' }}</p>
+        <p class="hp-diptych__eyebrow">{{ section.settings.right_eyebrow | default: 'Pastelli • Colore • Fandom' }}</p>
+        <h2 class="hp-diptych__title">{{ section.settings.right_title | default: 'Universo' }}</h2>
+        <p class="hp-diptych__desc">{{ section.settings.right_desc | default: 'Pop, luminoso e accessibile. Stampe Fine Art d\'autore (Jujutsu Kaisen, Naruto, Dragon Ball) e tirature su carte di pregio.' }}</p>
         <span class="hp-diptych__cta">
-          {{ section.settings.right_cta | default: 'Esplora la collezione' }}
+          {{ section.settings.right_cta | default: 'Esplora l\'Universo' }}
           <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
         </span>
       </div>
@@ -95,46 +94,40 @@
 
 {% schema %}
 {
-  "name": "Due Mondi — Collezioni",
+  "name": "Le Due Anime — INverso",
   "settings": [
     {
       "type": "text",
       "id": "section_label",
       "label": "Etichetta sezione",
-      "default": "Due collezioni"
+      "default": "La Filosofia di INverso"
     },
     {
       "type": "header",
-      "content": "Box Sinistro — Fantasy Originali"
+      "content": "Box Sinistro — Originali"
     },
     {
       "type": "image_picker",
       "id": "left_image",
-      "label": "Immagine Fantasy (elfo, druido…)"
-    },
-    {
-      "type": "text",
-      "id": "left_image_alt",
-      "label": "Alt text immagine sinistra",
-      "default": "Fantasy Originali — Daiana Vaiani"
+      "label": "Immagine Originali"
     },
     {
       "type": "text",
       "id": "left_eyebrow",
       "label": "Etichetta piccola",
-      "default": "Personaggi inventati"
+      "default": "China • Matita • Carboncino"
     },
     {
       "type": "text",
       "id": "left_title",
       "label": "Titolo",
-      "default": "Fantasy Originali"
+      "default": "Originali"
     },
     {
       "type": "textarea",
       "id": "left_desc",
-      "label": "Descrizione breve",
-      "default": "Creature, eroi e mondi nati dal tratto di Daiana. Ogni opera è unica."
+      "label": "Descrizione",
+      "default": "Simbolico, introspettivo, psicologico. Pezzi unici irripetibili dove l'inchiostro dà corpo all'inconscio."
     },
     {
       "type": "url",
@@ -142,59 +135,41 @@
       "label": "Link collezione"
     },
     {
-      "type": "text",
-      "id": "left_cta",
-      "label": "Testo CTA",
-      "default": "Esplora la collezione"
-    },
-    {
       "type": "header",
-      "content": "Box Destro — Anime & Manga"
+      "content": "Box Destro — Universo"
     },
     {
       "type": "image_picker",
       "id": "right_image",
-      "label": "Immagine Anime (Naruto, Dragon Ball…)"
-    },
-    {
-      "type": "text",
-      "id": "right_image_alt",
-      "label": "Alt text immagine destra",
-      "default": "Anime & Manga Art — Fan Art di Daiana Vaiani"
+      "label": "Immagine Universo"
     },
     {
       "type": "text",
       "id": "right_eyebrow",
       "label": "Etichetta piccola",
-      "default": "Fan Art dichiarata"
+      "default": "Pastelli • Colore • Fandom"
     },
     {
       "type": "text",
       "id": "right_title",
       "label": "Titolo",
-      "default": "Anime & Manga Art"
+      "default": "Universo"
     },
     {
       "type": "textarea",
       "id": "right_desc",
-      "label": "Descrizione breve",
-      "default": "Naruto, Dragon Ball, Jujutsu Kaisen — disegnati a mano, non stampati."
+      "label": "Descrizione",
+      "default": "Pop, luminoso e accessibile. Stampe Fine Art d'autore (Jujutsu Kaisen, Naruto, Dragon Ball) e tirature d'autore."
     },
     {
       "type": "url",
       "id": "right_url",
       "label": "Link collezione"
-    },
-    {
-      "type": "text",
-      "id": "right_cta",
-      "label": "Testo CTA",
-      "default": "Esplora la collezione"
     }
   ],
   "presets": [
     {
-      "name": "Due Mondi — Collezioni"
+      "name": "Le Due Anime — INverso"
     }
   ]
 }

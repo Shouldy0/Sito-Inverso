@@ -1,92 +1,104 @@
-import './Universo.css';
+import { useState, useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import ProductCard from '../components/UI/ProductCard';
+import { useCart } from '../context/CartContext';
+import { getUniversoByFandom } from '../data/products';
+import { Sparkles, Palette } from 'lucide-react';
+import './CategoryPage.css';
+
+const fandomFilters = [
+  { id: 'all', label: 'Tutto l\'Universo' },
+  { id: 'naruto', label: 'Naruto' },
+  { id: 'dragon_ball', label: 'Dragon Ball' },
+  { id: 'one_piece', label: 'One Piece' },
+  { id: 'original_art', label: 'Stampe Originali' },
+];
 
 const Universo = () => {
+  const { addToCart } = useCart();
+  const [activeFandom, setActiveFandom] = useState('all');
+  const titleRef = useRef(null);
+
+  const displayedPrints = getUniversoByFandom(activeFandom);
+
+  useEffect(() => {
+    document.body.classList.add('theme-universo');
+    return () => document.body.classList.remove('theme-universo');
+  }, []);
+
+  useEffect(() => {
+    if (titleRef.current) {
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      );
+    }
+  }, [activeFandom]);
+
+  const handleAddToCart = (id) => {
+    const product = displayedPrints.find(p => p.id === id);
+    if (product) addToCart(product);
+  };
+
   return (
-    <div className="universo-page page-transition">
-      <div className="universo-hero">
-        <div className="container">
-          <h1 className="universo-title">L'Universo DAIANA</h1>
-          <p className="universo-subtitle">Non è solo arte, è un portale verso un mondo sommerso.</p>
-        </div>
-      </div>
-
-      <div className="container mt-5">
-        <div className="universo-content">
-          <div className="universo-text-block reveal-3d">
-            <h2>Il Manifesto</h2>
-            <p>
-              DAIANA nasce come esplorazione dei confini tra la parola scritta e l'immagine. 
-              Ogni opera d'arte, ogni stampa e ogni libro che esce da questo studio è un frammento 
-              di una narrazione molto più grande. Un mondo sommerso fatto di ombre, riflessi e rovine antiche.
-            </p>
-            <p>
-              La nostra missione è creare <strong>artefatti fisici</strong> in un'era digitale. 
-              Libri da sfogliare, carte pesanti da toccare, inchiostri che riflettono la luce. 
-              Crediamo nel valore dell'oggetto libro e dell'opera d'arte tangibile.
-            </p>
-          </div>
-
-
-
-          <div className="universo-text-block mt-4 reveal-3d">
-            <h2>L'Artista</h2>
-            <p>
-              Dietro l'universo di DAIANA c'è la mano e la mente di <strong>Daiana Vaiani</strong>.
-              Nata in Colombia nel 2000 e adottata in Italia all'età di nove anni, Daiana esprime la sua complessa sensibilità 
-              attraverso diverse forme d'arte: dal disegno a china alla scrittura di racconti e poesie, passando per la fotografia e il pianoforte.
-            </p>
-            <p>
-              Con un percorso di studi che unisce il diploma al Liceo Artistico alla passione per la Psicologia, Daiana riversa 
-              nelle sue opere un profondo bisogno di "tirar fuori" e dare forma a pensieri ed emozioni intime. 
-              La sua scrittura poetica, già presente in diverse pubblicazioni collettive e raccolte personali (come la sua opera <em>Pensieri dispersi</em>), 
-              si fonde con le sue illustrazioni in bianco e nero in un legame indissolubile, creando opere sospese tra l'ombra, il sogno e l'inconscio.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Narrative Fragments Section */}
-      <div className="container mt-12 mb-16">
-        <div className="universo-narrative-header reveal-3d text-center">
-          <h2>Frammenti dell'Abisso</h2>
-          <p>
-            Frammenti poetici, personaggi e archivi che emergono dall'inchiostro dell'universo DAIANA.
+    <div className="category-page theme-universo-page page-transition">
+      {/* Hero Header */}
+      <div className="category-hero universo-hero">
+        <div className="category-hero-overlay" />
+        <div className="category-hero-content container">
+          <span className="category-kicker kicker-universo">Pastelli • Colore • Fandom</span>
+          <h1 ref={titleRef} className="category-main-title title-universo-heading">Universo</h1>
+          <p className="category-description">
+            Pop, acceso e accessibile. Stampe Fine Art d'autore, omaggi ai grandi anime e manga e tirature su carte di pregio.
           </p>
+
+          {/* Fandom Filters */}
+          <div className="tier-filter-tabs fandom-tabs-container">
+            {fandomFilters.map(tab => (
+              <button
+                key={tab.id}
+                className={`filter-tab tab-universo ${activeFandom === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveFandom(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
+      </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto mt-12">
-          <div className="narrative-card reveal-3d">
-            <span className="narrative-tag">Frammento 01</span>
-            <h3 className="narrative-title">L'Ombra del Tempo</h3>
-            <p className="narrative-text">
-              Ci sono ore in cui l'inchiostro si fa pesante, e le pagine sembrano respirare il buio dello studio. La penna scivola dove i ricordi si fanno rovine.
-            </p>
+      {/* Quality Fine Art Banner */}
+      <div className="container">
+        <div className="authenticity-banner banner-universo">
+          <div className="banner-icon">
+            <Palette size={28} style={{ color: '#e2cfc4' }} />
           </div>
-
-          <div className="narrative-card reveal-3d" data-reveal-delay="0.15">
-            <span className="narrative-tag">Personaggio</span>
-            <h3 className="narrative-title">Il Custode</h3>
-            <p className="narrative-text">
-              Colui che abita tra i risvolti delle pagine. Non parla se non attraverso il fruscio della carta cotone, indicando strade incise nella china.
-            </p>
-          </div>
-
-          <div className="narrative-card reveal-3d">
-            <span className="narrative-tag">Archivi</span>
-            <h3 className="narrative-title">La Stanza Vetrificata</h3>
-            <p className="narrative-text">
-              Un luogo sospeso dove la musica del pianoforte si solidifica in riflessi dorati. Chi vi entra, dimentica il proprio nome ma ritrova la propria ombra.
-            </p>
-          </div>
-
-          <div className="narrative-card reveal-3d" data-reveal-delay="0.15">
-            <span className="narrative-tag">Poesia</span>
-            <h3 className="narrative-title">Pensieri Dispersi</h3>
-            <p className="narrative-text">
-              Oltre la nebbia del giorno, dove la coscienza si incrina e lascia filtrare una luce silenziosa. Scrivere è raccogliere i cocci del mattino.
+          <div className="banner-text">
+            <h4>Stampe Fine Art di Qualità Galleria</h4>
+            <p>
+              Tutte le stampe dell'Universo vengono realizzate con pigmenti ad alta stabilità su carta Fine Art Velvet 270g, confezionate con cura in busta protettiva rigida.
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Grid */}
+      <div className="container category-grid-container">
+        {displayedPrints.length > 0 ? (
+          <div className="dark-grid category-grid">
+            {displayedPrints.map(print => (
+              <ProductCard
+                key={print.id}
+                {...print}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-category">
+            <p>Nessuna stampa disponibile per questa categoria.</p>
+          </div>
+        )}
       </div>
     </div>
   );

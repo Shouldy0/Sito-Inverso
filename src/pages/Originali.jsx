@@ -1,57 +1,104 @@
-import { useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import ProductCard from '../components/UI/ProductCard';
 import { useCart } from '../context/CartContext';
-import { getProductsByCategory } from '../data/products';
+import { getOriginaliByTier } from '../data/products';
+import { ShieldCheck, Sparkles } from 'lucide-react';
 import './CategoryPage.css';
+
+const tierFilters = [
+  { id: 'all', label: 'Tutti gli Originali' },
+  { id: 'pezzi_unici', label: 'Pezzi Unici (Flagship)' },
+  { id: 'opere_originali', label: 'Opere Originali' },
+  { id: 'studio_works', label: 'Studio Works (Entry)' },
+];
 
 const Originali = () => {
   const { addToCart } = useCart();
-  const mockOriginals = getProductsByCategory('originali');
+  const [activeTier, setActiveTier] = useState('all');
   const titleRef = useRef(null);
+
+  const displayedOriginals = getOriginaliByTier(activeTier);
+
+  useEffect(() => {
+    // Add theme class for Originali (scuro inchiostro)
+    document.body.classList.add('theme-originali');
+    return () => document.body.classList.remove('theme-originali');
+  }, []);
 
   useEffect(() => {
     if (titleRef.current) {
-      const text = titleRef.current.textContent;
-      titleRef.current.innerHTML = '';
-      text.split('').forEach((char) => {
-        const span = document.createElement('span');
-        span.textContent = char === ' ' ? '\u00A0' : char;
-        span.style.display = 'inline-block';
-        span.style.opacity = '0';
-        span.style.transform = 'translateY(30px)';
-        titleRef.current.appendChild(span);
-      });
-      gsap.to(titleRef.current.children, {
-        opacity: 1, y: 0, duration: 0.7, stagger: 0.04, ease: "power3.out", delay: 0.2,
-      });
+      gsap.fromTo(titleRef.current,
+        { opacity: 0, y: 20 },
+        { opacity: 1, y: 0, duration: 0.8, ease: "power3.out" }
+      );
     }
-  }, []);
+  }, [activeTier]);
 
   const handleAddToCart = (id) => {
-    const product = mockOriginals.find(p => p.id === id);
+    const product = displayedOriginals.find(p => p.id === id);
     if (product) addToCart(product);
   };
 
   return (
-    <div className="category-page page-transition">
-      <div className="category-hero">
-        <img src="/assets/opera-1.webp" alt="" className="category-hero-bg parallax-bg" loading="lazy" decoding="async" />
+    <div className="category-page theme-originali-page page-transition">
+      {/* Hero Header */}
+      <div className="category-hero originali-hero">
         <div className="category-hero-overlay" />
-        <div className="category-hero-content">
-          <h1 ref={titleRef}>Opere Originali</h1>
-          <p>Pezzi unici, realizzati a mano con inchiostro e foglia d'oro. Solo uno di ciascuno esiste al mondo.</p>
+        <div className="category-hero-content container">
+          <span className="category-kicker">China • Matita • Carboncino</span>
+          <h1 ref={titleRef} className="category-main-title">Originali</h1>
+          <p className="category-description">
+            Simbolico, introspettivo, psicologico. Opere uniche irripetibili e bozzetti di studio dove l'inchiostro da figura al silenzio e la materia vive sulla carta cotone.
+          </p>
+
+          {/* Tier Filters */}
+          <div className="tier-filter-tabs">
+            {tierFilters.map(tab => (
+              <button
+                key={tab.id}
+                className={`filter-tab ${activeTier === tab.id ? 'active' : ''}`}
+                onClick={() => setActiveTier(tab.id)}
+              >
+                {tab.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
 
-      <div className="category-grid stagger-in">
-        {mockOriginals.map(original => (
-          <ProductCard
-            key={original.id}
-            {...original}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
+      {/* Authenticity Guarantee Banner */}
+      <div className="container">
+        <div className="authenticity-banner">
+          <div className="banner-icon">
+            <ShieldCheck size={28} className="text-gold" />
+          </div>
+          <div className="banner-text">
+            <h4>Garanzia di Unicità & Autenticità</h4>
+            <p>
+              Ogni <strong>Pezzo Unico</strong> viene spedito in custodia d'archivio protetta con Certificato di Autenticità firmato a mano da Daiana Vaiani e sigillo originale in ceralacca.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Grid */}
+      <div className="container category-grid-container">
+        {displayedOriginals.length > 0 ? (
+          <div className="dark-grid category-grid">
+            {displayedOriginals.map(original => (
+              <ProductCard
+                key={original.id}
+                {...original}
+                onAddToCart={handleAddToCart}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="empty-category">
+            <p>Nessuna opera al momento disponibile per questo livello.</p>
+          </div>
+        )}
       </div>
     </div>
   );

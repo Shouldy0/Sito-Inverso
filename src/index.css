@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
 /* Lenis Smooth Scroll Recommended CSS */
@@ -23,30 +23,45 @@ html.lenis, html.lenis body {
 }
 
 :root {
-  /* Ink & Paper Palette (Dark Mode) */
-  --color-bg-primary: #0a0a0a;
-  --color-bg-secondary: #141414;
-  --color-text-primary: #f4f4f0;
-  --color-text-secondary: #8c8c8c;
+  /* Ink & Paper Base Palette (Scuro Intenzionale #0e0d0b) */
+  --color-bg-primary: #0e0d0b;
+  --color-bg-secondary: #161512;
+  --color-text-primary: #f4f2eb;
+  --color-text-secondary: #9a968d;
   --color-gold: #c9a96e;
   --color-gold-hover: #d4b87a;
-  --color-burgundy: #333333;
-  --color-border: rgba(255, 255, 255, 0.1);
-  --color-border-hover: rgba(255, 255, 255, 0.25);
+  --color-burgundy: #2a1f1d;
+  --color-border: rgba(244, 242, 235, 0.08);
+  --color-border-hover: rgba(201, 169, 110, 0.3);
 
   /* Surfaces */
-  --color-card-bg: rgba(255, 255, 255, 0.025);
-  --color-card-border: rgba(255, 255, 255, 0.06);
-  --color-surface: #111111;
+  --color-card-bg: rgba(22, 21, 18, 0.7);
+  --color-card-border: rgba(244, 242, 235, 0.07);
+  --color-surface: #141310;
   --color-gold-glow: rgba(201, 169, 110, 0.15);
 
-  /* Typography */
+  /* Typography — Le Due Anime */
   --font-heading: 'Cinzel', serif;
+  --font-editorial: 'Cormorant Garamond', serif;
   --font-text: 'Inter', sans-serif;
+  --font-universo: 'Outfit', sans-serif;
 
   /* Transitions */
   --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   --transition-normal: 0.4s ease;
+}
+
+/* Theme shifts for Le Due Anime */
+.theme-originali {
+  --color-bg-primary: #0a0a09;
+  --color-card-bg: rgba(18, 17, 15, 0.85);
+  --font-heading: 'Cinzel', serif;
+}
+
+.theme-universo {
+  --color-bg-primary: #0d0e12;
+  --color-card-bg: rgba(18, 20, 26, 0.75);
+  --font-heading: 'Outfit', sans-serif;
 }
 
 * {
