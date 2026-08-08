@@ -250,8 +250,8 @@ const Checkout = () => {
       <div className="checkout-container">
         
         <div className="checkout-form-section">
-          <h1>Checkout</h1>
-          <p className="checkout-subtitle">Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
+          <h1 data-reveal>Checkout</h1>
+          <p className="checkout-subtitle" data-reveal>Paga in sicurezza con Stripe e ricevi il libro a casa.</p>
 
           {!stripePromise ? (
             <div className="checkout-error" style={{ padding: '2rem', textAlign: 'center' }}>
@@ -299,7 +299,7 @@ const Checkout = () => {
         </div>
 
         <div className="checkout-summary-section">
-          <div className="summary-card">
+          <div className="summary-card" data-reveal>
             <h2>Riepilogo Ordine</h2>
             <div className="summary-items">
               {cartItems.map(item => (

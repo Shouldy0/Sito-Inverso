@@ -21,35 +21,121 @@
   }
 }
 
+/* ── Viewer 3D: opera sospesa su un fondale a profondità ── */
 .product-detail-image-section {
   width: 100%;
 }
 
-.product-image-large {
+.viewer-tilt-scene {
+  perspective: 1100px;
+}
+
+.viewer-scene {
   position: sticky;
-  top: 100px;
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-card-border);
-  border-radius: 6px;
-  padding: 2rem;
+  top: 110px;
+  min-height: 520px;
   display: flex;
-  justify-content: center;
   align-items: center;
-  overflow: hidden;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  justify-content: center;
+  padding: 3rem;
 }
 
-.product-image-large img {
+.viewer-backdrop {
+  position: absolute;
+  inset: 0;
+  border-radius: 8px;
+  background:
+    radial-gradient(ellipse 70% 55% at 50% 38%, rgba(212, 175, 55, 0.07) 0%, transparent 65%),
+    linear-gradient(165deg, #171512 0%, #0d0c0a 100%);
+  border: 1px solid var(--color-card-border);
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.04) inset,
+    0 40px 90px -30px rgba(0, 0, 0, 0.9);
+}
+
+/* cornice da galleria */
+.viewer-frame {
+  position: absolute;
+  inset: 1.6rem;
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 4px;
+  pointer-events: none;
+}
+
+.viewer-frame::before,
+.viewer-frame::after {
+  content: '';
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-color: rgba(212, 175, 55, 0.55);
+  border-style: solid;
+}
+
+.viewer-frame::before {
+  top: -1px;
+  left: -1px;
+  border-width: 2px 0 0 2px;
+}
+
+.viewer-frame::after {
+  bottom: -1px;
+  right: -1px;
+  border-width: 0 2px 2px 0;
+}
+
+.viewer-image-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 92%;
+}
+
+.viewer-image-wrap img {
   max-width: 100%;
-  max-height: 72vh;
+  max-height: 62vh;
   object-fit: contain;
-  filter: drop-shadow(0 15px 30px rgba(0, 0, 0, 0.4));
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 22px 45px rgba(0, 0, 0, 0.55));
 }
 
+.viewer-badge {
+  position: absolute;
+  top: 2.4rem;
+  right: 2.4rem;
+  z-index: 5;
+}
+
+.viewer-caption {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+}
+
+/* ── Pannello acquisto fluttuante ── */
 .product-detail-info-section {
   display: flex;
   flex-direction: column;
+}
+
+.purchase-panel {
+  background: linear-gradient(160deg, rgba(23, 21, 18, 0.92) 0%, rgba(15, 14, 12, 0.94) 100%);
+  border: 1px solid var(--color-card-border);
+  border-radius: 8px;
+  padding: 2.25rem;
+  box-shadow:
+    0 1px 0 rgba(255, 255, 255, 0.03) inset,
+    0 30px 70px -25px rgba(0, 0, 0, 0.85);
+}
+
+@media (min-width: 992px) {
+  .purchase-panel {
+    position: sticky;
+    top: 110px;
+  }
 }
 
 .breadcrumb {

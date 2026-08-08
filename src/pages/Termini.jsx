@@ -15,9 +15,9 @@ const Termini = () => {
           </button>
         </nav>
         
-        <h1 className="info-title">Termini e Condizioni</h1>
+        <h1 className="info-title" data-reveal>Termini e Condizioni</h1>
         
-        <div className="info-content">
+        <div className="info-content" data-reveal>
           <p><em>Ultimo aggiornamento: 28 Giugno 2026</em></p>
           
           <h2>1. Introduzione</h2>

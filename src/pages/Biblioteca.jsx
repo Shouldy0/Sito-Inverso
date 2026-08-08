@@ -40,18 +40,20 @@ const Biblioteca = () => {
         <div className="category-hero-overlay" />
         <div className="category-hero-content">
           <h1 ref={titleRef}>Fumetti</h1>
-          <p>Romanzi grafici, storie disegnate e libri illustrati — pronti per arricchire il tuo archivio personale.</p>
+          <p data-reveal>Romanzi grafici, storie disegnate e libri illustrati — pronti per arricchire il tuo archivio personale.</p>
         </div>
       </div>
 
-      <div className="category-grid stagger-in">
-        {mockBooks.map(book => (
-          <ProductCard
-            key={book.id}
-            {...book}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
+      <div className="container category-grid-container">
+        <div className="dark-grid category-grid" data-reveal-group>
+          {mockBooks.map(book => (
+            <ProductCard
+              key={book.id}
+              {...book}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

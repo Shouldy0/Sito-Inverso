@@ -109,7 +109,7 @@ const Admin = () => {
   if (!isAuthenticated) {
     return (
       <div className="admin-login-page page-transition">
-        <div className="login-card">
+        <div className="login-card" data-reveal>
           <h2>Area Amministratore</h2>
           <p>Inserisci la password per consultare il registro ordini.</p>
           
@@ -142,7 +142,7 @@ const Admin = () => {
 
   return (
     <div className="admin-page page-transition container">
-      <div className="admin-header">
+      <div className="admin-header" data-reveal>
         <div>
           <h1>Gestione Ordini</h1>
           <p>Tutti gli ordini registrati dal sito web (Salvati in <code>orders.csv</code>).</p>
@@ -158,23 +158,23 @@ const Admin = () => {
       </div>
 
       {/* Pannello statistiche */}
-      <div className="admin-stats-grid">
-        <div className="stat-card">
+      <div className="admin-stats-grid" data-reveal-group>
+        <div className="stat-card" data-reveal>
           <h3>Totale Incassato</h3>
           <p className="stat-value">€{totalSales.toFixed(2)}</p>
           <span className="stat-desc">Fatturato totale registrato</span>
         </div>
-        <div className="stat-card">
+        <div className="stat-card" data-reveal>
           <h3>Spedizioni a tuo carico</h3>
           <p className="stat-value">{merchantOrdersCount}</p>
           <span className="stat-desc">Stampe ed opere da preparare</span>
         </div>
-        <div className="stat-card">
+        <div className="stat-card" data-reveal>
           <h3>Spediti da Lulu</h3>
           <p className="stat-value">{luluOrdersCount}</p>
           <span className="stat-desc">Libri gestiti in automatico</span>
         </div>
-        <div className="stat-card">
+        <div className="stat-card" data-reveal>
           <h3>Ordini Totali</h3>
           <p className="stat-value">{orders.length}</p>
           <span className="stat-desc">Numero totale di transazioni</span>

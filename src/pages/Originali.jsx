@@ -46,14 +46,14 @@ const Originali = () => {
       <div className="category-hero originali-hero">
         <div className="category-hero-overlay" />
         <div className="category-hero-content container">
-          <span className="category-kicker">China • Matita • Carboncino</span>
+          <span className="category-kicker" data-reveal>China • Matita • Carboncino</span>
           <h1 ref={titleRef} className="category-main-title">Originali</h1>
-          <p className="category-description">
+          <p className="category-description" data-reveal>
             Simbolico, introspettivo, psicologico. Opere uniche irripetibili e bozzetti di studio dove l'inchiostro da figura al silenzio e la materia vive sulla carta cotone.
           </p>
 
           {/* Tier Filters */}
-          <div className="tier-filter-tabs">
+          <div className="tier-filter-tabs" data-reveal>
             {tierFilters.map(tab => (
               <button
                 key={tab.id}
@@ -69,7 +69,7 @@ const Originali = () => {
 
       {/* Authenticity Guarantee Banner */}
       <div className="container">
-        <div className="authenticity-banner">
+        <div className="authenticity-banner" data-reveal>
           <div className="banner-icon">
             <ShieldCheck size={28} className="text-gold" />
           </div>
@@ -85,7 +85,7 @@ const Originali = () => {
       {/* Grid */}
       <div className="container category-grid-container">
         {displayedOriginals.length > 0 ? (
-          <div className="dark-grid category-grid">
+          <div className="dark-grid category-grid" data-reveal-group>
             {displayedOriginals.map(original => (
               <ProductCard
                 key={original.id}

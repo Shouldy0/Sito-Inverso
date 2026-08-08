@@ -46,14 +46,14 @@ const Universo = () => {
       <div className="category-hero universo-hero">
         <div className="category-hero-overlay" />
         <div className="category-hero-content container">
-          <span className="category-kicker kicker-universo">Pastelli • Colore • Fandom</span>
+          <span className="category-kicker kicker-universo" data-reveal>Pastelli • Colore • Fandom</span>
           <h1 ref={titleRef} className="category-main-title title-universo-heading">Universo</h1>
-          <p className="category-description">
+          <p className="category-description" data-reveal>
             Pop, acceso e accessibile. Stampe Fine Art d'autore, omaggi ai grandi anime e manga e tirature su carte di pregio.
           </p>
 
           {/* Fandom Filters */}
-          <div className="tier-filter-tabs fandom-tabs-container">
+          <div className="tier-filter-tabs fandom-tabs-container" data-reveal>
             {fandomFilters.map(tab => (
               <button
                 key={tab.id}
@@ -69,7 +69,7 @@ const Universo = () => {
 
       {/* Quality Fine Art Banner */}
       <div className="container">
-        <div className="authenticity-banner banner-universo">
+        <div className="authenticity-banner banner-universo" data-reveal>
           <div className="banner-icon">
             <Palette size={28} style={{ color: '#e2cfc4' }} />
           </div>
@@ -85,7 +85,7 @@ const Universo = () => {
       {/* Grid */}
       <div className="container category-grid-container">
         {displayedPrints.length > 0 ? (
-          <div className="dark-grid category-grid">
+          <div className="dark-grid category-grid" data-reveal-group>
             {displayedPrints.map(print => (
               <ProductCard
                 key={print.id}

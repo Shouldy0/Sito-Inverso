@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import useTilt3D from '../hooks/useTilt3D';
 import './Diario.css';
 
 const blogPosts = [
@@ -25,28 +26,47 @@ const blogPosts = [
   }
 ];
 
+const BlogCard = ({ post }) => {
+  const tiltRef = useTilt3D({ max: 9, scale: 1.015 });
+
+  return (
+    <div className="tilt-scene">
+      <article ref={tiltRef} className="blog-card tilt-card">
+        <div className="blog-card-inner">
+          <div className="blog-card-meta tilt-layer" style={{ '--depth': '18px' }}>
+            <span className="blog-category">{post.category}</span>
+            <span className="blog-date">{post.date}</span>
+          </div>
+          <h2 className="blog-card-title tilt-layer" style={{ '--depth': '42px' }}>{post.title}</h2>
+          <p className="blog-card-excerpt tilt-layer" style={{ '--depth': '26px' }}>{post.excerpt}</p>
+          <Link to="#" className="blog-read-more tilt-layer" style={{ '--depth': '34px' }}>
+            Leggi l'articolo <span className="blog-read-arrow" aria-hidden="true">→</span>
+          </Link>
+        </div>
+        <div className="tilt-glare" aria-hidden="true" />
+      </article>
+    </div>
+  );
+};
+
 const Diario = () => {
   return (
     <div className="diario-page page-transition">
-      <div className="diario-header">
-        <div className="container">
-          <h1 className="diario-title">Il Diario</h1>
-          <p className="diario-subtitle">Appunti, retroscena e cronache dalla scrivania dell'artista.</p>
+      <header className="diario-header">
+        <div className="container diario-header-inner">
+          <p className="diario-kicker depth-s" data-reveal>Appunti dalla scrivania</p>
+          <h1 className="diario-title depth-m" data-reveal>Il Diario</h1>
+          <p className="diario-subtitle depth-l" data-reveal>
+            Retroscena, cronache e frammenti di processo — come pagine di un quaderno lasciato aperto.
+          </p>
         </div>
-      </div>
+        <div className="diario-header-fade" aria-hidden="true" />
+      </header>
 
       <div className="container mt-5">
-        <div className="blog-grid">
+        <div className="blog-grid" data-reveal-group>
           {blogPosts.map(post => (
-            <article key={post.id} className="blog-card">
-              <div className="blog-card-meta">
-                <span className="blog-category">{post.category}</span>
-                <span className="blog-date">{post.date}</span>
-              </div>
-              <h2 className="blog-card-title">{post.title}</h2>
-              <p className="blog-card-excerpt">{post.excerpt}</p>
-              <Link to="#" className="blog-read-more">Leggi l'articolo</Link>
-            </article>
+            <BlogCard key={post.id} post={post} />
           ))}
         </div>
       </div>

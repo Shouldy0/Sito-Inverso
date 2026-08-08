@@ -3,7 +3,8 @@
   width: 100%;
 }
 
-/* Category Hero */
+/* ---------- Category Hero ---------- */
+
 .category-hero {
   position: relative;
   min-height: 420px;
@@ -11,6 +12,8 @@
   align-items: center;
   justify-content: center;
   padding: 5rem 0 3rem;
+  perspective: 1000px;
+  overflow: hidden;
   background: radial-gradient(circle at 50% 20%, rgba(201, 169, 110, 0.08) 0%, transparent 60%);
   border-bottom: 1px solid var(--color-border);
 }
@@ -19,11 +22,54 @@
   background: radial-gradient(circle at 50% 20%, rgba(226, 207, 196, 0.1) 0%, transparent 60%);
 }
 
+/* Alone decorativo profondo dietro il titolo */
+.category-hero::before {
+  content: "";
+  position: absolute;
+  top: 12%;
+  left: 50%;
+  width: 62vmin;
+  height: 62vmin;
+  transform: translateX(-50%) translateZ(-140px);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201, 169, 110, 0.1) 0%, transparent 65%);
+  filter: blur(40px);
+  pointer-events: none;
+}
+
+.universo-hero::before {
+  background: radial-gradient(circle, rgba(226, 207, 196, 0.12) 0%, transparent 65%);
+}
+
 .category-hero-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to bottom, transparent 60%, var(--color-bg-primary) 100%);
+  background: linear-gradient(to bottom, rgba(10, 9, 8, 0.25) 0%, transparent 45%, var(--color-bg-primary) 100%);
   z-index: 1;
+}
+
+/* Immagine di sfondo hero (Galleria, Biblioteca) — respiro lento per profondità */
+.category-hero-bg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 0;
+  opacity: 0.5;
+  animation: hero-bg-breathe 26s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes hero-bg-breathe {
+  from { transform: scale(1.03) translateY(0); }
+  to { transform: scale(1.1) translateY(-12px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .category-hero-bg {
+    animation: none;
+  }
 }
 
 .category-hero-content {
@@ -55,10 +101,18 @@
   letter-spacing: 0.12em;
   color: var(--color-text-primary);
   margin-bottom: 1rem;
+  text-shadow:
+    0 1px 0 rgba(244, 242, 235, 0.06),
+    0 12px 34px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(201, 169, 110, 0.12);
 }
 
 .title-universo-heading {
   font-family: 'Outfit', sans-serif;
+  text-shadow:
+    0 1px 0 rgba(244, 242, 235, 0.06),
+    0 12px 34px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(226, 207, 196, 0.12);
 }
 
 .category-description {
@@ -70,7 +124,8 @@
   max-width: 680px;
 }
 
-/* Filter Tabs */
+/* ---------- Filter Tabs ---------- */
+
 .tier-filter-tabs {
   display: flex;
   justify-content: center;
@@ -90,12 +145,15 @@
   text-transform: uppercase;
   border-radius: 3px;
   cursor: pointer;
-  transition: all 0.3s ease;
+  transition: all 0.3s var(--ease-out);
+  transform: translateY(0);
 }
 
 .filter-tab:hover {
   border-color: var(--color-border-hover);
   color: var(--color-text-primary);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px -10px rgba(0, 0, 0, 0.6);
 }
 
 .filter-tab.active {
@@ -103,15 +161,19 @@
   color: #0e0d0b;
   border-color: var(--color-gold);
   font-weight: 600;
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px -10px rgba(201, 169, 110, 0.45);
 }
 
 .tab-universo.active {
   background: #e2cfc4;
   color: #0e0d0b;
   border-color: #e2cfc4;
+  box-shadow: 0 12px 28px -10px rgba(226, 207, 196, 0.4);
 }
 
-/* Authenticity & Fine Art Banner */
+/* ---------- Authenticity & Fine Art Banner ---------- */
+
 .authenticity-banner {
   display: flex;
   align-items: center;
@@ -122,10 +184,43 @@
   border-radius: 4px;
   margin: 3rem auto;
   max-width: 1000px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: border-color 0.4s ease, box-shadow 0.5s ease, transform 0.5s var(--ease-out);
+}
+
+.authenticity-banner::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(201, 169, 110, 0.12);
+  transform: translateZ(-12px) translateY(6px);
+  pointer-events: none;
+  transition: transform 0.5s var(--ease-out);
+}
+
+.authenticity-banner:hover {
+  border-color: rgba(201, 169, 110, 0.3);
+  transform: translateY(-2px);
+  box-shadow: 0 26px 60px -22px rgba(0, 0, 0, 0.7), 0 0 50px -18px rgba(201, 169, 110, 0.15);
+}
+
+.authenticity-banner:hover::before {
+  transform: translateZ(-16px) translateY(9px);
 }
 
 .banner-universo {
   border-color: rgba(226, 207, 196, 0.2);
+}
+
+.banner-universo::before {
+  border-color: rgba(226, 207, 196, 0.1);
+}
+
+.banner-universo:hover {
+  border-color: rgba(226, 207, 196, 0.32);
+  box-shadow: 0 26px 60px -22px rgba(0, 0, 0, 0.7), 0 0 50px -18px rgba(226, 207, 196, 0.14);
 }
 
 .banner-icon {
@@ -146,7 +241,8 @@
   color: var(--color-text-secondary);
 }
 
-/* Grid Container */
+/* ---------- Grid ---------- */
+
 .category-grid-container {
   margin-top: 2rem;
 }

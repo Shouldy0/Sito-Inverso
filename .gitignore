@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# Artwork personali (non vanno su GitHub pubblico)
+DISEGNI/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

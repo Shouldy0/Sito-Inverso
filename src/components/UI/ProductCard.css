@@ -1,71 +1,109 @@
-.product-card {
-  background: var(--color-card-bg);
-  border: 1px solid var(--color-card-border);
-  border-radius: 4px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  position: relative;
-  transition: border-color var(--transition-normal), transform 0.4s ease, box-shadow 0.4s ease;
-  transform-style: preserve-3d;
+/* ============================================================
+   PRODUCT CARD — 3D depth system
+   La card è un .tilt-card (preserve-3d) con strati a
+   profondità diverse: artwork 50px, info 30px, storia 18px,
+   footer 24px. Il badge fluttua a +34px sopra l'artwork.
+   ============================================================ */
+
+.product-cell {
+  height: 100%;
 }
 
-.product-card:hover {
+.tilt-scene {
+  height: 100%;
+}
+
+.tilt-card.product-card {
+  background: var(--color-card-bg);
+  border: 1px solid var(--color-card-border);
+  border-radius: 6px;
+  padding: 0.9rem 0.9rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: border-color var(--transition-normal), box-shadow 0.5s ease;
+}
+
+.tilt-card.product-card:hover {
   border-color: var(--color-border-hover);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 30px 60px -18px rgba(0, 0, 0, 0.7);
 }
 
 .card-originali:hover {
-  border-color: rgba(201, 169, 110, 0.4);
-  box-shadow: 0 16px 36px rgba(201, 169, 110, 0.08);
+  border-color: rgba(201, 169, 110, 0.45);
+  box-shadow: 0 30px 60px -18px rgba(201, 169, 110, 0.12);
 }
 
 .card-universo:hover {
-  border-color: rgba(226, 207, 196, 0.4);
-  box-shadow: 0 16px 36px rgba(226, 207, 196, 0.08);
+  border-color: rgba(226, 207, 196, 0.45);
+  box-shadow: 0 30px 60px -18px rgba(226, 207, 196, 0.12);
 }
 
-.product-image-wrapper {
+/* --- Artwork layer --- */
+.tilt-artwork {
+  margin-bottom: 1.2rem;
+}
+
+.product-image-frame {
   position: relative;
-  width: 100%;
-  padding-top: 125%; /* 4:5 aspect ratio */
-  overflow: hidden;
-  background-color: var(--color-surface);
   display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  overflow: hidden;
+  border-radius: 4px;
+  background-color: var(--color-surface);
+  border: 1px solid rgba(244, 242, 235, 0.05);
+  transition: border-color 0.4s ease, box-shadow 0.5s ease;
+}
+
+.tilt-card:hover .product-image-frame {
+  border-color: rgba(201, 169, 110, 0.25);
+  box-shadow: 0 18px 44px -16px rgba(201, 169, 110, 0.25);
+}
+
+.card-universo:hover .product-image-frame {
+  border-color: rgba(226, 207, 196, 0.3);
+  box-shadow: 0 18px 44px -16px rgba(226, 207, 196, 0.22);
 }
 
 .product-image {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.9s var(--ease-out);
 }
 
-.product-card:hover .product-image {
-  transform: scale(1.05);
+.tilt-card:hover .product-image {
+  transform: scale(1.06);
 }
 
-.product-card-glow {
+/* Bordo interno sottile al passaggio */
+.product-image-frame::after {
+  content: "";
   position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 180px;
-  height: 180px;
-  background: radial-gradient(circle, rgba(201, 169, 110, 0.25) 0%, transparent 70%);
-  border-radius: 50%;
-  pointer-events: none;
+  inset: 0;
+  border: 1px solid rgba(201, 169, 110, 0.25);
+  border-radius: inherit;
   opacity: 0;
-  transform: translate(-50%, -50%);
+  transition: opacity 0.4s ease;
+  pointer-events: none;
 }
 
-/* Badges */
-.badge {
+.tilt-card:hover .product-image-frame::after {
+  opacity: 1;
+}
+
+/* --- Badge: galleggia sopra l'artwork --- */
+.product-badge-layer {
   position: absolute;
-  top: 1rem;
-  left: 1rem;
+  top: 0.85rem;
+  left: 0.85rem;
+  z-index: 3;
+  transform-style: preserve-3d;
+}
+
+.badge {
+  display: inline-block;
   padding: 0.35rem 0.75rem;
   font-size: 0.65rem;
   font-weight: 600;
@@ -73,11 +111,12 @@
   text-transform: uppercase;
   border-radius: 2px;
   backdrop-filter: blur(8px);
-  z-index: 2;
+  box-shadow: 0 8px 20px -8px rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
 }
 
 .badge-unique {
-  background-color: rgba(201, 169, 110, 0.9);
+  background-color: rgba(201, 169, 110, 0.92);
   color: #0e0d0b;
 }
 
@@ -105,16 +144,13 @@
 }
 
 .badge-preorder {
-  background-color: rgba(180, 80, 80, 0.9);
+  background-color: rgba(180, 80, 80, 0.92);
   color: #ffffff;
 }
 
-/* Product Info */
-.product-info {
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
+/* --- Info layer --- */
+.tilt-info {
+  padding: 0 0.2rem;
 }
 
 .product-type {
@@ -126,6 +162,8 @@
   margin-bottom: 0.4rem;
 }
 
+.product-title-link { text-decoration: none; }
+
 .product-title {
   font-family: var(--font-heading);
   font-size: 1.15rem;
@@ -133,11 +171,17 @@
   color: var(--color-text-primary);
   margin-bottom: 0.5rem;
   line-height: 1.3;
-  transition: color 0.3s ease;
+  transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-.product-card:hover .product-title {
+.tilt-card:hover .product-title {
   color: var(--color-gold);
+  text-shadow: 0 0 18px rgba(201, 169, 110, 0.35);
+}
+
+/* --- Story layer --- */
+.tilt-story {
+  padding: 0 0.2rem;
 }
 
 .product-micro-story {
@@ -149,12 +193,17 @@
   margin-bottom: 1rem;
 }
 
-.product-footer {
+/* --- Footer layer --- */
+.tilt-footer {
   margin-top: auto;
+  padding: 0 0.2rem;
+}
+
+.product-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 0.8rem;
+  padding-top: 0.9rem;
   border-top: 1px solid var(--color-border);
 }
 

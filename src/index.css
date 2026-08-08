@@ -1,29 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600&display=swap');
 @import "tailwindcss";
 
-/* Lenis Smooth Scroll Recommended CSS */
-html.lenis, html.lenis body {
-  height: auto;
-}
+/* ============================================================
+   LENIS SMOOTH SCROLL
+   ============================================================ */
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
 
-.lenis.lenis-smooth {
-  scroll-behavior: auto !important;
-}
-
-.lenis.lenis-smooth [data-lenis-prevent] {
-  overscroll-behavior: contain;
-}
-
-.lenis.lenis-stopped {
-  overflow: hidden;
-}
-
-.lenis.lenis-smooth iframe {
-  pointer-events: none;
-}
-
+/* ============================================================
+   DESIGN TOKENS — Ink & Paper, espanso in profondità
+   ============================================================ */
 :root {
-  /* Ink & Paper Base Palette (Scuro Intenzionale #0e0d0b) */
+  /* Ink & Paper Base Palette */
   --color-bg-primary: #0e0d0b;
   --color-bg-secondary: #161512;
   --color-text-primary: #f4f2eb;
@@ -47,8 +38,18 @@ html.lenis, html.lenis body {
   --font-universo: 'Outfit', sans-serif;
 
   /* Transitions */
-  --transition-slow: 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-spring: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --transition-slow: 0.8s var(--ease-out);
   --transition-normal: 0.4s ease;
+
+  /* ====== SISTEMA 3D ====== */
+  --persp-card: 900px;      /* tilt cards */
+  --persp-scene: 1400px;    /* scene hero / sezioni */
+  --depth-s: 20px;
+  --depth-m: 45px;
+  --depth-l: 80px;
+  --depth-xl: 130px;
 }
 
 /* Theme shifts for Le Due Anime */
@@ -64,11 +65,10 @@ html.lenis, html.lenis body {
   --font-heading: 'Outfit', sans-serif;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
+/* ============================================================
+   BASE
+   ============================================================ */
+* { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   position: relative;
@@ -85,20 +85,14 @@ body {
 body::before {
   content: "";
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
   z-index: -1;
   background-image: radial-gradient(circle at 50% 15%, rgba(255,255,255,0.05) 0%, transparent 60%);
   pointer-events: none;
 }
 
-::selection {
-  background-color: var(--color-gold);
-  color: var(--color-bg-primary);
-}
-
+::selection { background-color: var(--color-gold); color: var(--color-bg-primary); }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: var(--font-heading);
@@ -108,103 +102,331 @@ h1, h2, h3, h4, h5, h6 {
   margin-bottom: 1rem;
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
-  transition: color var(--transition-normal);
-}
-
-a:hover {
-  color: var(--color-gold);
-}
-
-button {
-  font-family: var(--font-text);
-  cursor: pointer;
-}
-
-img {
-  max-width: 100%;
-  display: block;
-}
+a { color: inherit; text-decoration: none; transition: color var(--transition-normal); }
+a:hover { color: var(--color-gold); }
+button { font-family: var(--font-text); cursor: pointer; }
+img { max-width: 100%; display: block; }
 
 /* Utils */
-.container {
-  width: 100%;
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 0 2rem;
-}
-
+.container { width: 100%; max-width: 1280px; margin: 0 auto; padding: 0 2rem; }
 .text-gold { color: var(--color-gold); }
 .text-burgundy { color: var(--color-burgundy); }
 .text-center { text-align: center; }
+.text-gradient-gold {
+  background: linear-gradient(120deg, #f4e7c6 0%, var(--color-gold) 45%, #8a6d3b 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+.hairline { border: 1px solid rgba(201, 169, 110, 0.25); }
+.glass-panel {
+  background: rgba(20, 19, 16, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--color-card-border);
+}
 
 /* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 6px;
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--color-bg-primary); }
+::-webkit-scrollbar-thumb { background: rgba(201, 169, 110, 0.2); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--color-gold); }
+
+/* ============================================================
+   SISTEMA 3D — scene, tilt, profondità, reveal, parallasse
+   ============================================================ */
+
+/* --- Scene: wrapper con prospettiva --- */
+.scene-3d {
+  perspective: var(--persp-scene);
+  perspective-origin: 50% 30%;
 }
-::-webkit-scrollbar-track {
-  background: var(--color-bg-primary);
-}
-::-webkit-scrollbar-thumb {
-  background: rgba(201, 169, 110, 0.2);
-  border-radius: 3px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--color-gold);
+.preserve-3d { transform-style: preserve-3d; }
+
+/* --- Tilt card: JS scrive --rx/--ry/--gx/--gy/--tilt-scale --- */
+.tilt-scene {
+  perspective: var(--persp, var(--persp-card));
+  transform-style: preserve-3d;
 }
 
-/* Fade in animation */
+.tilt-card {
+  position: relative;
+  transform-style: preserve-3d;
+  transform:
+    rotateX(var(--rx, 0deg))
+    rotateY(var(--ry, 0deg))
+    scale3d(var(--tilt-scale, 1), var(--tilt-scale, 1), 1);
+  transition: transform 0.6s var(--ease-out);
+  will-change: transform;
+}
+.tilt-card.is-tilting { transition: transform 0.08s linear; }
+
+/* Spessore fisico della card: piano retrostante */
+.tilt-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: #0a0908;
+  transform: translateZ(-8px);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.8);
+}
+
+/* Strati interni: ogni .tilt-layer è un piano a profondità diversa */
+.tilt-layer {
+  position: relative;
+  transform: translateZ(var(--depth, 0));
+  transform-style: preserve-3d;
+}
+
+/* Bagliore che segue il mouse */
+.tilt-glare {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%),
+    rgba(201, 169, 110, 0.16) 0%,
+    rgba(255, 255, 255, 0.06) 35%,
+    transparent 60%);
+  opacity: var(--glare-o, 0);
+  transition: opacity 0.5s ease;
+  z-index: 6;
+}
+
+/* --- Profondità manuale --- */
+.depth-s { transform: translateZ(var(--depth-s)); }
+.depth-m { transform: translateZ(var(--depth-m)); }
+.depth-l { transform: translateZ(var(--depth-l)); }
+.depth-xl { transform: translateZ(var(--depth-xl)); }
+
+/* --- Fluttuazione (elementi sospesi, ognuno su un proprio asse Z) --- */
+@keyframes float-a {
+  0%, 100% { transform: translate3d(0, 0, 0) rotateZ(0deg); }
+  50%      { transform: translate3d(0, -16px, 20px) rotateZ(0.6deg); }
+}
+@keyframes float-b {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(0, -26px, 34px); }
+}
+@keyframes float-c {
+  0%, 100% { transform: translate3d(0, 0, 0); }
+  50%      { transform: translate3d(6px, -10px, 12px); }
+}
+.float-a { animation: float-a 7s ease-in-out infinite; }
+.float-b { animation: float-b 9s ease-in-out infinite; }
+.float-c { animation: float-c 6s ease-in-out infinite; }
+
+/* --- Reveal dalla profondità (JS aggiunge .is-visible) --- */
+[data-reveal] {
+  opacity: 0;
+  transform: perspective(1200px) translateZ(-260px) rotateX(9deg) translateY(26px);
+  transition:
+    opacity 1s var(--ease-out),
+    transform 1s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0s);
+  will-change: opacity, transform;
+}
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: perspective(1200px) translateZ(0) rotateX(0deg) translateY(0);
+}
+
+/* --- Parallasse scroll-driven: JS scrive transform inline --- */
+[data-parallax] { will-change: transform; }
+
+/* --- Particelle / polvere d'oro (decorative) --- */
+@keyframes dust-drift {
+  0%   { transform: translate3d(0, 0, 0); opacity: 0; }
+  12%  { opacity: var(--dust-o, 0.5); }
+  88%  { opacity: var(--dust-o, 0.5); }
+  100% { transform: translate3d(var(--dust-x, 20px), var(--dust-y, -140px), 30px); opacity: 0; }
+}
+.dust-field { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+.dust-particle {
+  position: absolute;
+  width: var(--dust-size, 3px);
+  height: var(--dust-size, 3px);
+  border-radius: 50%;
+  background: radial-gradient(circle, #e8d5a4 0%, var(--color-gold) 60%, transparent 100%);
+  opacity: 0;
+  animation: dust-drift var(--dust-dur, 12s) linear infinite;
+  animation-delay: var(--dust-delay, 0s);
+}
+
+/* ============================================================
+   COMPONENTI CONDIVISI
+   ============================================================ */
+
+/* --- Intestazioni sezione --- */
+.section-header { margin-bottom: 3rem; }
+.section-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--color-gold);
+  margin-bottom: 1rem;
+}
+.section-kicker::before {
+  content: "";
+  width: 2.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-gold));
+}
+.section-kicker::after {
+  content: "";
+  width: 2.2rem;
+  height: 1px;
+  background: linear-gradient(90deg, var(--color-gold), transparent);
+}
+.section-kicker.left-only::after { display: none; }
+.section-kicker.left-only::before { width: 0; }
+.section-title {
+  font-size: clamp(1.9rem, 3.4vw, 2.9rem);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.9rem;
+}
+.section-subtitle {
+  color: var(--color-text-secondary);
+  max-width: 56ch;
+  font-family: var(--font-editorial);
+  font-size: 1.15rem;
+  font-style: italic;
+}
+
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(201,169,110,0.35), transparent);
+  margin: 4.5rem auto;
+  max-width: 900px;
+}
+
+/* --- Bottoni con sollevamento 3D --- */
+.cta-button {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.95rem 1.7rem;
+  border-radius: 2px;
+  border: 1px solid transparent;
+  font-family: var(--font-text);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  overflow: hidden;
+  transition:
+    transform 0.35s var(--ease-out),
+    box-shadow 0.35s var(--ease-out),
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease;
+}
+.cta-button:hover {
+  transform: translateY(-3px);
+  color: inherit;
+}
+.cta-button:active { transform: translateY(-1px) scale(0.99); }
+
+.primary-cta {
+  background: linear-gradient(135deg, #d9bc85 0%, var(--color-gold) 60%, #a8874e 100%);
+  color: #14120c;
+  box-shadow: 0 10px 30px -8px rgba(201, 169, 110, 0.45);
+}
+.primary-cta:hover {
+  box-shadow: 0 18px 44px -10px rgba(201, 169, 110, 0.6);
+}
+
+.secondary-cta {
+  border-color: rgba(201, 169, 110, 0.45);
+  color: var(--color-gold);
+  background: rgba(201, 169, 110, 0.06);
+}
+.secondary-cta:hover {
+  border-color: var(--color-gold);
+  background: rgba(201, 169, 110, 0.12);
+  box-shadow: 0 14px 34px -14px rgba(201, 169, 110, 0.5);
+}
+
+.outline-cta {
+  border-color: rgba(244, 242, 235, 0.3);
+  color: var(--color-text-primary);
+}
+.outline-cta:hover {
+  border-color: var(--color-gold);
+  color: var(--color-gold);
+  box-shadow: 0 14px 34px -16px rgba(201, 169, 110, 0.45);
+}
+
+/* Riflesso che attraversa il bottone */
+.cta-button::after {
+  content: "";
+  position: absolute;
+  top: 0; left: -80%;
+  width: 50%; height: 100%;
+  background: linear-gradient(105deg, transparent, rgba(255,255,255,0.35), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s var(--ease-out);
+  pointer-events: none;
+}
+.cta-button:hover::after { left: 130%; }
+
+.minimal-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid transparent;
+  padding-bottom: 0.2rem;
+  transition: color 0.3s, border-color 0.3s, transform 0.3s var(--ease-out);
+}
+.minimal-link:hover {
+  color: var(--color-gold);
+  border-color: var(--color-gold);
+  transform: translateX(4px);
+}
+
+/* --- Griglie --- */
+.dark-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+/* --- Fade in --- */
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(20px); }
   to { opacity: 1; transform: translateY(0); }
 }
-
-.animate-fade-in {
-  animation: fadeIn 1s var(--transition-slow) forwards;
-}
-
-.page-transition {
-  animation: fadeIn 0.8s ease-out;
-}
-
-/* Stagger-in utility — animata da useAntiGravity */
-.stagger-child {
-  opacity: 0;
-  transform: translateY(30px);
-}
+.animate-fade-in { animation: fadeIn 1s var(--transition-slow) forwards; }
+.page-transition { animation: fadeIn 0.8s ease-out; }
 
 /* Main content smooth transitions */
-.main-content {
-  will-change: opacity, transform;
-}
-
-/* Smooth page transitions */
-.page-enter {
-  opacity: 0;
-  transform: translateY(12px);
-}
-
+.main-content { will-change: opacity, transform; }
+.page-enter { opacity: 0; transform: translateY(12px); }
 .page-enter-active {
-  opacity: 1;
-  transform: translateY(0);
+  opacity: 1; transform: translateY(0);
   transition: opacity 0.4s ease-out, transform 0.4s ease-out;
 }
 
-/* Custom Cursor — desktop only, respect reduced motion */
+/* ============================================================
+   CURSOR PERSONALIZZATO
+   ============================================================ */
 @media (pointer: fine) and (prefers-reduced-motion: no-preference) {
-  * {
-    cursor: none !important;
-  }
+  * { cursor: none !important; }
 }
 
 .cursor-dot {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 4px;
-  height: 4px;
+  top: 0; left: 0;
+  width: 4px; height: 4px;
   background-color: #ffffff;
   border-radius: 50%;
   pointer-events: none;
@@ -216,10 +438,8 @@ img {
 
 .cursor-ring {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 32px;
-  height: 32px;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
   border: 1px solid rgba(255, 255, 255, 0.5);
   border-radius: 50%;
   pointer-events: none;
@@ -228,4 +448,20 @@ img {
   mix-blend-mode: difference;
   will-change: transform, width, height;
   transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease;
+}
+
+/* ============================================================
+   ACCESSIBILITÀ — riduzione del movimento
+   ============================================================ */
+@media (prefers-reduced-motion: reduce) {
+  .float-a, .float-b, .float-c, .dust-particle { animation: none !important; }
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  .tilt-card { transform: none !important; transition: none !important; }
+  .tilt-card::before { display: none; }
+  .cta-button, .cta-button::after { transition: none !important; }
+  * { scroll-behavior: auto !important; }
 }

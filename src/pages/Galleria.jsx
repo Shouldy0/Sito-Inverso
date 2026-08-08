@@ -40,18 +40,20 @@ const Galleria = () => {
         <div className="category-hero-overlay" />
         <div className="category-hero-content">
           <h1 ref={titleRef}>Stampe Artistiche</h1>
-          <p>Riproduzioni Fine Art in edizione limitata, per portare frammenti dell'universo creativo sulle tue pareti.</p>
+          <p data-reveal>Riproduzioni Fine Art in edizione limitata, per portare frammenti dell'universo creativo sulle tue pareti.</p>
         </div>
       </div>
 
-      <div className="category-grid stagger-in">
-        {mockPrints.map(print => (
-          <ProductCard
-            key={print.id}
-            {...print}
-            onAddToCart={handleAddToCart}
-          />
-        ))}
+      <div className="container category-grid-container">
+        <div className="dark-grid category-grid" data-reveal-group>
+          {mockPrints.map(print => (
+            <ProductCard
+              key={print.id}
+              {...print}
+              onAddToCart={handleAddToCart}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );

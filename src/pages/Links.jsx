@@ -34,17 +34,17 @@ const Links = () => {
       <div className="links-container">
         {/* Profile Header */}
         <header className="links-header">
-          <div className="links-avatar">
+          <div className="links-avatar" data-reveal>
             <img src="/assets/noi_siamo_persona.jpg" alt="Daiana Vaiani Avatar" />
           </div>
-          <h1 className="links-title">DAIANA</h1>
-          <p className="links-subtitle">Frammenti di inchiostro, ombre e coscienza.</p>
+          <h1 className="links-title" data-reveal>DAIANA</h1>
+          <p className="links-subtitle" data-reveal>Frammenti di inchiostro, ombre e coscienza.</p>
         </header>
 
         {/* Links List */}
-        <main className="links-list">
+        <main className="links-list" data-reveal-group>
           {/* Primary Featured Link (Preorder) */}
-          <Link to="/product/b5" className="link-item featured-link pulse-animation">
+          <Link to="/product/b5" className="link-item featured-link pulse-animation" data-reveal>
             <span className="link-icon"><BookOpen size={20} /></span>
             <div className="link-content">
               <span className="link-label">Pre-ordina "Noi siamo persona"</span>
@@ -54,7 +54,7 @@ const Links = () => {
           </Link>
 
           {/* Other Links */}
-          <Link to="/biblioteca" className="link-item">
+          <Link to="/biblioteca" className="link-item" data-reveal>
             <span className="link-icon"><BookOpen size={20} /></span>
             <div className="link-content">
               <span className="link-label">La Biblioteca</span>
@@ -63,7 +63,7 @@ const Links = () => {
             <span className="link-arrow"><ArrowRight size={18} /></span>
           </Link>
 
-          <Link to="/galleria" className="link-item">
+          <Link to="/galleria" className="link-item" data-reveal>
             <span className="link-icon"><Image size={20} /></span>
             <div className="link-content">
               <span className="link-label">Stampe Fine Art</span>
@@ -72,7 +72,7 @@ const Links = () => {
             <span className="link-arrow"><ArrowRight size={18} /></span>
           </Link>
 
-          <Link to="/originali" className="link-item">
+          <Link to="/originali" className="link-item" data-reveal>
             <span className="link-icon"><Heart size={20} /></span>
             <div className="link-content">
               <span className="link-label">Opere Originali</span>
@@ -81,7 +81,7 @@ const Links = () => {
             <span className="link-arrow"><ArrowRight size={18} /></span>
           </Link>
 
-          <Link to="/universo" className="link-item">
+          <Link to="/universo" className="link-item" data-reveal>
             <span className="link-icon"><Award size={20} /></span>
             <div className="link-content">
               <span className="link-label">L'Universo DAIANA</span>
@@ -90,7 +90,7 @@ const Links = () => {
             <span className="link-arrow"><ArrowRight size={18} /></span>
           </Link>
 
-          <Link to="/" className="link-item">
+          <Link to="/" className="link-item" data-reveal>
             <span className="link-icon"><ArrowRight size={20} /></span>
             <div className="link-content">
               <span className="link-label">Sito Ufficiale</span>
@@ -101,7 +101,7 @@ const Links = () => {
         </main>
 
         {/* Links Newsletter Section */}
-        <section className="links-newsletter">
+        <section className="links-newsletter" data-reveal>
           <h3>Unisciti alle Lettere dall'Ombra</h3>
           <p>Ricevi estratti gratuiti e aggiornamenti sui dietro le quinte.</p>
 

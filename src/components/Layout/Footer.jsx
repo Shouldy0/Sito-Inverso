@@ -28,7 +28,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="container footer-content">
-        <div className="footer-brand reveal-3d" data-reveal-delay="0">
+        <div className="footer-brand" data-reveal>
           <h3 className="footer-brand-title">INverso</h3>
           <span className="footer-artist-name">Daiana Vaiani</span>
           <p className="footer-quote">
@@ -36,7 +36,7 @@ const Footer = () => {
           </p>
         </div>
 
-        <div className="footer-links reveal-3d" data-reveal-delay="0.1">
+        <div className="footer-links" data-reveal data-reveal-delay>
           <h4>Mondo INverso</h4>
           <Link to="/originali">Originali (Pezzi Unici)</Link>
           <Link to="/universo">Universo (Fan Art & Stampe)</Link>
@@ -44,7 +44,7 @@ const Footer = () => {
           <Link to="/diario">Spostamenti (Diario)</Link>
         </div>
 
-        <div className="footer-links reveal-3d" data-reveal-delay="0.2">
+        <div className="footer-links" data-reveal data-reveal-delay>
           <h4>Informazioni</h4>
           <Link to="/info/chi-sono">L'Artista</Link>
           <Link to="/info/spedizioni">Spedizioni e Certificati</Link>
@@ -52,7 +52,7 @@ const Footer = () => {
           <Link to="/contatti">Contatti & Commissioni</Link>
         </div>
 
-        <div className="footer-newsletter reveal-3d" data-reveal-delay="0.3">
+        <div className="footer-newsletter" data-reveal data-reveal-delay>
           <h4>Entra nell'INverso</h4>
           <p className="newsletter-desc">
             Iscriviti per ricevere in anteprima gli aggiornamenti sulle nuove opere uniche, i capitoli in uscita e le tirature speciali dell'Universo.

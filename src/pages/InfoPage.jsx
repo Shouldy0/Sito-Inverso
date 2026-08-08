@@ -90,18 +90,18 @@ const InfoPage = ({ pageId: propPageId }) => {
     <div className="info-page page-transition">
       <div className="container">
         <div className={isContact ? "contact-page-container animate-fade-in" : "info-content-wrapper"}>
-          <h1 className="info-title">{page.title}</h1>
+          <h1 className="info-title" data-reveal>{page.title}</h1>
 
           {isContact ? (
             <div className="contact-grid">
               <div className="contact-details-col">
-                <p className="contact-intro-text">
+                <p className="contact-intro-text" data-reveal>
                   Per commissioni private, informazioni sulle opere o collaborazioni editoriali, 
                   compila il modulo a fianco o scrivi direttamente allo studio.
                 </p>
 
-                <div className="contact-cards-list">
-                  <div className="contact-detail-card">
+                <div className="contact-cards-list" data-reveal-group>
+                  <div className="contact-detail-card" data-reveal>
                     <div className="detail-icon">
                       <Mail size={20} />
                     </div>
@@ -133,12 +133,12 @@ const InfoPage = ({ pageId: propPageId }) => {
                 </div>
               </div>
 
-              <div className="contact-form-col">
+              <div className="contact-form-col" data-reveal>
                 <ContactForm />
               </div>
             </div>
           ) : (
-            <div className="info-body">
+            <div className="info-body" data-reveal>
               {page.content}
             </div>
           )}
